@@ -11,6 +11,7 @@ Montréal et Rive-Sud. Trois livrables, trois angles distincts.
 |---|---|---|---|
 | `ht-construction-ad/` | Vidéo | 30 s · 9:16 · 14 plans | Le risque, c'est l'entrepreneur |
 | `ht-construction-ad-petit/` | Vidéo | 21 s · 9:16 · 11 plans | Aucun projet n'est trop petit |
+| `ht-construction-ad-directe/` | Vidéo | 28 s · 9:16 · 8 plans | Génération de leads — accroche, services, confiance, appel à l'action |
 | `ht-construction-static/` | Affiches | 4:5 · 1:1 · 9:16 | Trois concepts statiques |
 
 Ouvrir le `index.html` de chaque dossier dans un navigateur. Chaque page contient le
