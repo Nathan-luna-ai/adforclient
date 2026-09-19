@@ -1,0 +1,1007 @@
+<title>On Travaille Autrement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#121a15; --ink2:#1f2b26; --slate:#2f4a3f;
+  --sage:#93b07f; --sage2:#7fa06a; --sage3:#587a4a; --sage-light:#e4ecdb;
+  --paper:#f6f7f2; --paper2:#e9eee3; --white:#fcfcf9;
+
+  --bg:var(--paper); --surface:var(--white); --surface2:var(--paper2);
+  --text:#1c241f; --muted:#55605a; --line:rgba(31,43,38,.14);
+  --accent:var(--sage3); --accent-soft:var(--sage-light);
+  --rough:#a8552f; --rough-soft:#f7e9e1;
+  --stage:#070a08; --warn:#8a5a2b; --warn-soft:#f6ecdd;
+  --sans:"Manrope",ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1411; --surface:#161f1a; --surface2:#1c2721;
+    --text:#e8ede8; --muted:#97a69d; --line:rgba(232,237,232,.14);
+    --accent:var(--sage); --accent-soft:#26342a;
+    --rough:#d98f62; --rough-soft:#2e2019;
+    --warn:#d6a866; --warn-soft:#2b2318;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1411; --surface:#161f1a; --surface2:#1c2721;
+  --text:#e8ede8; --muted:#97a69d; --line:rgba(232,237,232,.14);
+  --accent:var(--sage); --accent-soft:#26342a;
+  --rough:#d98f62; --rough-soft:#2e2019;
+  --warn:#d6a866; --warn-soft:#2b2318;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--sans); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:34px 72px}
+
+.mast{display:flex; flex-wrap:wrap; gap:16px 28px; align-items:baseline; margin-bottom:26px}
+.mast h1{font-size:clamp(25px,3.4vw,36px); font-weight:800; letter-spacing:-.022em; margin:0; text-wrap:balance}
+.mast .sub{color:var(--muted); font-size:14px; margin:4px 0 0}
+.specs{display:flex; flex-wrap:wrap; gap:7px; margin-left:auto}
+.spec{
+  font-family:var(--mono); font-size:11px; letter-spacing:.02em;
+  padding:5px 9px; border:1px solid var(--line); border-radius:999px;
+  color:var(--muted); white-space:nowrap;
+}
+.spec.on{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+
+.studio{display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:34px; align-items:start}
+@media (max-width:860px){ .studio{grid-template-columns:minmax(0,1fr)} }
+.player{position:sticky; top:calc(env(safe-area-inset-top,0px) + 18px)}
+@media (max-width:860px){ .player{position:static} }
+
+.stage{
+  position:relative; width:100%; aspect-ratio:9/16; max-width:100%;
+  background:var(--stage); border-radius:16px; overflow:hidden;
+  box-shadow:0 2px 4px rgba(0,0,0,.18), 0 30px 60px -22px rgba(18,26,21,.55);
+  isolation:isolate; user-select:none; container-type:inline-size;
+}
+.reel{position:absolute; inset:0; transform-origin:center; will-change:transform,filter}
+.reel.hit{animation:hit .17s cubic-bezier(.2,.9,.3,1)}
+.reel.hit.big{animation:hitbig .3s cubic-bezier(.2,.9,.3,1)}
+@keyframes hit{0%{transform:scale(1.02); filter:brightness(1.34)} 100%{transform:scale(1); filter:brightness(1)}}
+@keyframes hitbig{0%{transform:scale(1.05); filter:brightness(1.7) contrast(1.08)} 100%{transform:scale(1); filter:none}}
+.flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:3}
+.flash.go{animation:fl .3s ease-out}
+@keyframes fl{0%{opacity:.9} 100%{opacity:0}}
+
+.shot{position:absolute; inset:0; opacity:0; will-change:opacity}
+.shot .ph{position:absolute; inset:0; background-size:cover; background-position:center; transform-origin:center; will-change:transform}
+.shot .veil{position:absolute; inset:0}
+
+.cap{position:absolute; left:7.5%; right:7.5%; opacity:0; will-change:opacity,transform; z-index:2}
+.cap.mid{top:50%}
+.cap.low{bottom:17%}
+.cap.hi{top:15%}
+
+.kicker{font-family:var(--mono); font-size:min(11px,2.9cqw); letter-spacing:.16em; text-transform:uppercase; color:var(--sage); margin-bottom:9px}
+.hed{font-weight:800; letter-spacing:-.025em; line-height:1.08; font-size:7.6cqw; color:#fff; text-wrap:balance; text-shadow:0 2px 26px rgba(0,0,0,.42)}
+.hed.sm{font-size:6.1cqw}
+.hed em{font-style:normal; color:var(--sage)}
+.dek{font-size:4.1cqw; font-weight:600; color:rgba(255,255,255,.88); line-height:1.34; margin-top:10px; text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.bullets{display:flex; flex-direction:column; gap:2.6cqw}
+.bul{display:flex; gap:2.6cqw; align-items:baseline; font-size:5.1cqw; font-weight:700; color:#fff; letter-spacing:-.012em; opacity:0; text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.bul i{flex:none; width:2.1cqw; height:2.1cqw; border-radius:50%; background:#d98f62; transform:translateY(-.35em)}
+.chips{display:flex; flex-direction:column; gap:2.2cqw}
+.chip{
+  display:flex; align-items:center; justify-content:space-between; gap:3cqw;
+  padding:3cqw 4cqw; border-radius:2.6cqw; opacity:0;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+}
+.chip b{font-family:var(--sans); font-weight:800; font-size:4.3cqw; color:#fff; letter-spacing:-.01em}
+.chip span{font-family:var(--mono); font-size:3.5cqw; color:var(--sage); letter-spacing:.02em}
+.quote{font-size:5.3cqw; font-weight:700; color:#fff; line-height:1.28; letter-spacing:-.015em; text-shadow:0 2px 20px rgba(0,0,0,.45)}
+.attrib{font-family:var(--mono); font-size:3.4cqw; color:var(--sage); letter-spacing:.06em; text-transform:uppercase; margin-top:3.4cqw}
+
+.endcard{position:absolute; inset:0; background:var(--ink); opacity:0; z-index:2}
+.endcard .inner{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:9%}
+.endcard img{width:44%; height:auto; opacity:0}
+.ec{opacity:0}
+.svc{font-family:var(--mono); font-size:3.15cqw; letter-spacing:.055em; color:var(--sage); margin-top:6.5cqw; line-height:1.9}
+.zone{font-size:4.5cqw; font-weight:700; color:#fff; margin-top:2.4cqw; letter-spacing:-.01em}
+.offer{margin-top:6cqw; padding:3.2cqw 6cqw; border-radius:999px; background:var(--sage); color:var(--ink); font-weight:800; font-size:4.6cqw; letter-spacing:-.01em}
+.tel{font-family:var(--mono); font-size:5.4cqw; color:#fff; font-weight:500; margin-top:5cqw; letter-spacing:.01em}
+.site{font-family:var(--mono); font-size:3.3cqw; color:rgba(255,255,255,.62); margin-top:1.8cqw; letter-spacing:.05em}
+
+.safe{position:absolute; inset:0; display:none; pointer-events:none; z-index:4}
+.safe.on{display:block}
+.safe .band{position:absolute; left:0; right:0; background:rgba(226,86,64,.17)}
+.safe .band.t{top:0; height:14%; border-bottom:1px dashed rgba(255,255,255,.55)}
+.safe .band.b{bottom:0; height:35%; border-top:1px dashed rgba(255,255,255,.55)}
+.safe .band.r{top:14%; bottom:35%; left:auto; right:0; width:16%; border-left:1px dashed rgba(255,255,255,.55); background:rgba(226,86,64,.12)}
+.safe s{position:absolute; right:7px; font-family:var(--mono); font-size:9px; color:#fff; letter-spacing:.09em; text-decoration:none; text-transform:uppercase}
+
+.sndbadge{
+  position:absolute; top:12px; right:12px; z-index:5; display:flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.09em;
+  color:rgba(255,255,255,.92); background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:4px 9px;
+  backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+}
+.eq{display:flex; align-items:flex-end; gap:1.5px; height:9px}
+.eq i{width:2px; background:var(--sage); height:3px; border-radius:1px; transition:height .08s linear}
+
+.bigplay{position:absolute; inset:0; z-index:6; display:grid; place-items:center; background:rgba(7,10,8,.42); border:0; cursor:pointer; padding:0}
+.bigplay[hidden]{display:none}
+.bigplay span.k{width:66px; height:66px; border-radius:50%; background:rgba(252,252,249,.95); display:grid; place-items:center; box-shadow:0 10px 30px -8px rgba(0,0,0,.6)}
+.bigplay svg{margin-left:4px}
+.bigplay small{position:absolute; bottom:10%; left:0; right:0; text-align:center; font-family:var(--mono); font-size:10px; letter-spacing:.1em; color:rgba(255,255,255,.8); text-transform:uppercase}
+
+.transport{margin-top:12px}
+.scrub{position:relative; height:26px; cursor:pointer; touch-action:none; display:flex; align-items:center}
+.track{position:relative; height:4px; width:100%; border-radius:99px; background:var(--line); overflow:hidden}
+.fill{position:absolute; inset:0 auto 0 0; width:0; background:var(--accent); border-radius:99px}
+.ticks{position:absolute; inset:0; pointer-events:none}
+.ticks b{position:absolute; top:0; bottom:0; width:1px; background:var(--bg); opacity:.85}
+.ticks u{position:absolute; top:50%; width:3px; height:3px; margin:-1.5px 0 0 -1.5px; border-radius:50%; background:var(--accent); opacity:.55; text-decoration:none}
+.ticks u.rough{background:var(--rough)}
+.tbar{display:flex; align-items:center; gap:8px; margin-top:2px; flex-wrap:wrap}
+.btn{font-family:var(--sans); font-weight:700; font-size:13px; border:1px solid var(--line); background:var(--surface); color:var(--text); border-radius:9px; padding:7px 13px; cursor:pointer; line-height:1}
+.btn:hover{border-color:var(--accent); color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.btn.pri{background:var(--accent); border-color:var(--accent); color:var(--white)}
+.btn.pri:hover{filter:brightness(1.08); color:var(--white)}
+.btn.snd[aria-pressed="false"]{color:var(--muted)}
+.btn.snd[aria-pressed="true"]{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 48%,transparent)}
+.tc{font-family:var(--mono); font-size:12px; color:var(--muted); margin-left:auto; font-variant-numeric:tabular-nums}
+.tc b{color:var(--text); font-weight:500}
+.toggles{display:flex; gap:14px; margin-top:11px; flex-wrap:wrap}
+.tog{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--muted); cursor:pointer}
+.tog input{accent-color:var(--accent); margin:0; width:14px; height:14px}
+.audiowarn{display:none; margin-top:10px; padding:9px 11px; border-radius:9px; background:var(--warn-soft); color:var(--warn); font-size:12px; line-height:1.45; border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
+.audiowarn.on{display:block}
+
+.sheet h2, .col h2{font-size:12px; font-family:var(--mono); font-weight:500; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin:0 0 3px}
+.sheet .lede{color:var(--muted); font-size:13.5px; margin:0 0 18px; max-width:62ch}
+.acts{display:flex; gap:3px; margin-bottom:16px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase}
+.acts div{padding:7px 10px; border-radius:7px; line-height:1.3}
+.acts .a1{flex:104; background:var(--rough-soft); color:var(--rough)}
+.acts .a2{flex:162; background:var(--accent-soft); color:var(--accent)}
+.acts .a3{flex:34; background:var(--ink); color:var(--sage)}
+.rows{display:flex; flex-direction:column; border-top:1px solid var(--line)}
+.row{
+  display:grid; grid-template-columns:76px minmax(0,1fr); gap:0 18px;
+  padding:15px 12px 15px 0; border-bottom:1px solid var(--line);
+  cursor:pointer; background:none; border-left:0; border-right:0; border-top:0;
+  text-align:left; font:inherit; color:inherit; width:100%; transition:background .14s ease;
+}
+.row:hover{background:var(--surface2)}
+.row:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+.row[aria-current="true"]{background:var(--accent-soft)}
+.row[aria-current="true"].rough{background:var(--rough-soft)}
+.row[aria-current="true"] .rtc{color:var(--accent)}
+.row[aria-current="true"].rough .rtc{color:var(--rough)}
+.rtc{font-family:var(--mono); font-size:11.5px; color:var(--text); font-variant-numeric:tabular-nums; padding-top:2px; letter-spacing:.01em}
+.rtc span{color:var(--muted); font-size:10.5px}
+.rbeat{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.row.rough .rbeat{color:var(--rough)}
+.rfr{font-weight:700; font-size:15.5px; letter-spacing:-.012em; margin-bottom:6px; text-wrap:balance}
+.rson{font-size:13px; color:var(--text); line-height:1.45; margin-bottom:5px; padding-left:10px; border-left:2px solid var(--accent)}
+.row.rough .rson{border-left-color:var(--rough)}
+.rson em{font-style:normal; font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:2px}
+.row.rough .rson em{color:var(--rough)}
+.rvis{color:var(--muted); font-size:12.5px; line-height:1.5}
+.rvis b{color:var(--text); font-weight:600}
+
+.lower{margin-top:56px; display:grid; grid-template-columns:repeat(auto-fit,minmax(275px,1fr)); gap:30px}
+.col{border-top:2px solid var(--text); padding-top:14px}
+.col > p.lede{color:var(--muted); font-size:13px; margin:0 0 16px}
+.alt{padding:13px 0; border-bottom:1px solid var(--line)}
+.alt:last-child{border-bottom:0}
+.alt .tag{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px}
+.alt .fr{font-weight:700; font-size:14.5px; letter-spacing:-.01em; line-height:1.32}
+.alt .why{color:var(--muted); font-size:12.5px; margin-top:4px; line-height:1.5}
+.note{margin-top:40px; padding:18px 20px; border-radius:12px; background:var(--surface); border:1px solid var(--line)}
+.note h3{margin:0 0 9px; font-size:13.5px; font-weight:800; letter-spacing:-.01em}
+.note ul{margin:0; padding-left:19px; color:var(--muted); font-size:13px; line-height:1.68}
+.note li + li{margin-top:3px}
+.note b{color:var(--text); font-weight:600}
+@media (prefers-reduced-motion:reduce){
+  .shot .ph{transform:none!important}
+  .reel.hit,.reel.hit.big,.flash.go{animation:none}
+}
+
+/* ------------------------------------------------------------------
+   Ajouts du format long. Deux procédés repris du modèle Canva :
+
+   1. LE TEXTE ARRIVE PAR MORCEAUX. Dans le modèle, le sous-titre suit
+      la voix mot à mot. Ici il n'y a pas de voix — les mêmes morceaux
+      arrivent donc sur les repères sonores. L'œil suit un rythme au
+      lieu de lire un bloc, ce qui est le seul vrai apport du procédé.
+   2. UNE SCÈNE DE DONNÉES. Le modèle montre une quantité en
+      pictogrammes plutôt qu'en phrase. On garde le procédé, avec un
+      chiffre vérifiable : les douze villes desservies. Aucune
+      statistique inventée n'entre dans une publicité client.
+   ------------------------------------------------------------------ */
+.word{display:inline-block; will-change:opacity,transform}
+.hed.xl{font-size:9.2cqw; letter-spacing:-.03em}
+.hed mark{
+  background:var(--sage); color:var(--ink); border-radius:.1em;
+  padding:0 .18em; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+}
+
+.datacard{position:absolute; inset:0; background:var(--ink); opacity:0; z-index:2}
+.datacard .in{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; padding:10% 9%;
+}
+.pins{display:grid; grid-template-columns:repeat(4,1fr); gap:3.2cqw; width:56%}
+.pin{opacity:0; width:100%; aspect-ratio:1}
+.pin svg{display:block; width:100%; height:100%}
+.bignum{
+  font-weight:800; font-size:19cqw; line-height:.95; letter-spacing:-.045em;
+  color:var(--sage); opacity:0; margin-top:6cqw;
+}
+.biglab{
+  font-weight:800; font-size:6cqw; line-height:1.15; color:#fff;
+  letter-spacing:-.022em; opacity:0; margin-top:1cqw;
+}
+.towns{
+  font-family:var(--mono); font-size:2.7cqw; line-height:2.15;
+  letter-spacing:.04em; color:rgba(255,255,255,.62); opacity:0; margin-top:5cqw;
+}
+/* Chaque ligne est insécable : une ville coupée en deux se lit comme une faute. */
+.towns span{display:block; white-space:nowrap}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <h1>« On travaille autrement » — 54 s</h1>
+      <p class="sub">HT Construction · format long · Meta Reels &amp; TikTok · Montréal et Rive-Sud</p>
+    </div>
+    <div class="specs">
+      <span class="spec">9:16 · 1080×1920</span>
+      <span class="spec">54 s · 15 plans</span>
+      <span class="spec on">Structure reprise du modèle Canva</span>
+      <span class="spec">Aucune voix · aucune musique</span>
+      <span class="spec on">Aucune personne à l'écran</span>
+    </div>
+  </header>
+
+  <div class="studio">
+
+    <div class="player">
+      <div class="stage" id="stage">
+        <div class="reel" id="reel">
+
+          <!-- ACTE 1 · le blocage — trois cadrages du même chantier -->
+          <div class="shot" data-in="0" data-out="4.3" data-z0="1.06" data-z1="1.16">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:50% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.8) 0%,rgba(7,10,8,.52) 48%,rgba(7,10,8,.88) 100%)"></div>
+          </div>
+          <div class="cap hi" data-in="0.3" data-out="4.15">
+            <div class="hed">
+              <span class="word" data-in="0.35" data-out="4.15" data-f="0.14">Vous repoussez</span>
+              <span class="word" data-in="1.25" data-out="4.15" data-f="0.14">ces travaux</span>
+              <span class="word" data-in="2.15" data-out="4.15" data-f="0.14">depuis des mois.</span>
+            </div>
+          </div>
+
+          <div class="shot" data-in="4.3" data-out="8.4" data-f="0.05" data-z0="1.22" data-z1="1.3">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:25% 62%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.86) 0%,rgba(7,10,8,.62) 50%,rgba(7,10,8,.9) 100%)"></div>
+          </div>
+          <div class="cap hi" data-in="4.55" data-out="8.25">
+            <div class="hed">
+              <span class="word" data-in="4.6" data-out="8.25" data-f="0.14">Ce n'est pas</span>
+              <span class="word" data-in="5.5" data-out="8.25" data-f="0.14">une question</span>
+              <span class="word" data-in="6.4" data-out="8.25" data-f="0.14">d'argent.</span>
+            </div>
+          </div>
+
+          <div class="shot" data-in="8.4" data-out="12.7" data-f="0.05" data-z0="1.1" data-z1="1.2">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:72% 35%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.84) 0%,rgba(7,10,8,.66) 45%,rgba(7,10,8,.92) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="8.7" data-out="12.5" style="transform:translateY(-50%)">
+            <div class="hed sm">
+              <span class="word" data-in="8.75" data-out="12.5" data-f="0.14">C'est de ne pas savoir</span>
+              <span class="word" data-in="9.7" data-out="12.5" data-f="0.14">à qui ouvrir</span>
+              <span class="word" data-in="10.65" data-out="12.5" data-f="0.14">votre porte.</span>
+            </div>
+          </div>
+
+          <!-- ACTE 2 · les trois irritants -->
+          <div class="shot" data-in="12.7" data-out="20.3" data-f="0.05" data-z0="1.28" data-z1="1.12">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:45% 72%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.9) 0%,rgba(7,10,8,.78) 50%,rgba(7,10,8,.94) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="12.95" data-out="20.1" style="transform:translateY(-50%)">
+            <div class="kicker" data-in="13" data-out="20.1">Ce qui fait vraiment peur</div>
+            <div class="bullets">
+              <div class="bul" data-in="13.3" data-out="20.1" data-f="0.16"><i></i>Des délais qui glissent</div>
+              <div class="bul" data-in="15.1" data-out="20.1" data-f="0.16"><i></i>Des extras jamais annoncés</div>
+              <div class="bul" data-in="16.9" data-out="20.1" data-f="0.16"><i></i>Un chantier laissé sale</div>
+            </div>
+          </div>
+
+          <!-- ACTE 3 · la bascule -->
+          <div class="shot" data-in="20.3" data-out="24.9" data-f="0.04" data-z0="1.2" data-z1="1.03">
+            <div class="ph" style="background-image:url('img/cuisine.jpg')"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.28) 0%,rgba(7,10,8,.1) 42%,rgba(7,10,8,.8) 100%)"></div>
+          </div>
+          <div class="cap low" data-in="20.9" data-out="24.7">
+            <div class="kicker" data-in="20.95" data-out="24.7">HT Construction</div>
+            <div class="hed xl">On travaille<br><mark>autrement.</mark></div>
+          </div>
+
+          <!-- ACTE 4 · le mécanisme -->
+          <div class="shot" data-in="24.9" data-out="29.7" data-z0="1.03" data-z1="1.12">
+            <div class="ph" style="background-image:url('img/sdb.jpg'); background-position:55% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.76) 0%,rgba(7,10,8,.24) 44%,rgba(7,10,8,.78) 100%)"></div>
+          </div>
+          <div class="cap hi" data-in="25.25" data-out="29.5">
+            <div class="hed sm">
+              <span class="word" data-in="25.3" data-out="29.5" data-f="0.13">On se déplace.</span>
+              <span class="word" data-in="26.55" data-out="29.5" data-f="0.13">On mesure.</span>
+              <span class="word" data-in="27.8" data-out="29.5" data-f="0.13">On chiffre.</span>
+            </div>
+          </div>
+
+          <div class="shot" data-in="29.7" data-out="34.3" data-f="0.05" data-z0="1.05" data-z1="1.14">
+            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:28% 58%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.3) 0%,rgba(7,10,8,.44) 40%,rgba(7,10,8,.9) 100%)"></div>
+          </div>
+          <div class="cap low" data-in="30.05" data-out="34.1">
+            <div class="quote">«&#8239;Un prix précis après la visite, pas une estimation vague.&#8239;»</div>
+            <div class="attrib" data-in="31.4" data-out="34.1">constructionht.com · FAQ</div>
+          </div>
+
+          <!-- ACTE 4b · la scène de données, procédé repris du modèle -->
+          <div class="datacard" data-in="34.3" data-out="40.3" data-f="0.12">
+            <div class="in">
+              <div class="pins">
+                <div class="pin" data-in="34.9" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.11" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.32" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.53" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.74" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.95" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.16" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.37" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.58" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.79" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="37" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="37.21" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+              </div>
+              <div class="bignum" data-in="37.7" data-out="40.2" data-f="0.14">12</div>
+              <div class="biglab" data-in="38" data-out="40.2" data-f="0.14">villes desservies</div>
+              <div class="towns" data-in="38.4" data-out="40.2" data-f="0.16">
+                <span>MONTRÉAL · LONGUEUIL · BROSSARD</span>
+                <span>SAINT-LAMBERT · BOUCHERVILLE · SAINT-HUBERT</span>
+                <span>LA PRAIRIE · CANDIAC · CHAMBLY</span>
+                <span>SAINTE-JULIE · VARENNES · CHÂTEAUGUAY</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTE 5 · la preuve -->
+          <div class="shot" data-in="40.3" data-out="44.7" data-f="0.05" data-z0="1.12" data-z1="1.03">
+            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:40% 55%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.88) 0%,rgba(7,10,8,.8) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="40.75" data-out="44.5" style="transform:translateY(-50%)">
+            <div class="kicker" data-in="40.8" data-out="44.5">Vérifiable en ligne</div>
+            <div class="chips">
+              <div class="chip" data-in="41" data-out="44.5" data-f="0.12"><b>RBQ</b><span>5823-1101-01</span></div>
+              <div class="chip" data-in="41.5" data-out="44.5" data-f="0.12"><b>CCQ</b><span>er937209</span></div>
+              <div class="chip" data-in="42" data-out="44.5" data-f="0.12"><b>ASSURÉS</b><span>APCHQ</span></div>
+            </div>
+          </div>
+
+          <div class="shot" data-in="44.7" data-out="48.7" data-f="0.05" data-z0="1.03" data-z1="1.1">
+            <div class="ph" style="background-image:url('img/balcon.jpg'); background-position:55% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.34) 0%,rgba(7,10,8,.16) 40%,rgba(7,10,8,.86) 100%)"></div>
+          </div>
+          <div class="cap low" data-in="45.15" data-out="48.5">
+            <div class="hed">Aucun projet<br>n'est <em>trop petit</em>.</div>
+            <div class="dek" data-in="46.5" data-out="48.5">Une soumission détaillée, sans frais.</div>
+          </div>
+
+          <!-- rafale avant le logo -->
+          <div class="shot" data-in="48.7" data-out="49.05" data-f="0.03" data-z0="1.1" data-z1="1.16">
+            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:40% 50%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+          <div class="shot" data-in="49.05" data-out="49.4" data-f="0.03" data-z0="1.14" data-z1="1.2">
+            <div class="ph" style="background-image:url('img/sdb.jpg'); background-position:62% 50%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+          <div class="shot" data-in="49.4" data-out="49.75" data-f="0.03" data-z0="1.08" data-z1="1.14">
+            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:35% 55%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+          <div class="shot" data-in="49.75" data-out="50.1" data-f="0.03" data-z0="1.16" data-z1="1.22">
+            <div class="ph" style="background-image:url('img/balcon.jpg'); background-position:55% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+
+          <!-- carte de fin -->
+          <div class="endcard" data-in="50.1" data-out="54" data-f="0.12">
+            <div class="inner">
+              <img src="img/logo.png" alt="HT Construction" data-in="50.3" data-out="54" data-f="0.2">
+              <div class="ec svc" data-in="50.65" data-out="54">CUISINE · SALLE DE BAIN · PLANCHER<br>GYPSE · BALCON</div>
+              <div class="ec zone" data-in="50.95" data-out="54">Montréal et Rive-Sud</div>
+              <div class="ec offer" data-in="51.35" data-out="54" data-f="0.16">Soumission gratuite</div>
+              <div class="ec tel" data-in="51.75" data-out="54">514 674-8697</div>
+              <div class="ec site" data-in="52.05" data-out="54">CONSTRUCTIONHT.COM</div>
+            </div>
+          </div>
+          <div class="flash" id="flash"></div>
+        </div>
+
+        <div class="sndbadge" id="sndbadge">
+          <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span id="sndlabel">SON ACTIF</span>
+        </div>
+
+        <div class="safe" id="safe">
+          <div class="band t"><s style="bottom:5px">UI haut</s></div>
+          <div class="band b"><s style="top:5px">UI bas · légende &amp; CTA</s></div>
+          <div class="band r"></div>
+        </div>
+
+        <button class="bigplay" id="bigplay" aria-label="Lire la publicité avec le son">
+          <span class="k"><svg width="22" height="26" viewBox="0 0 22 26" aria-hidden="true"><path d="M0 0 L22 13 L0 26 Z" fill="#121a15"/></svg></span>
+          <small>Lire avec le son</small>
+        </button>
+      </div>
+
+      <div class="transport">
+        <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="Position dans la publicité"
+             aria-valuemin="0" aria-valuemax="54" aria-valuenow="0" aria-valuetext="0,0 seconde">
+          <div class="track"><div class="fill" id="fill"></div><div class="ticks" id="ticks"></div></div>
+        </div>
+        <div class="tbar">
+          <button class="btn pri" id="play">Lire</button>
+          <button class="btn" id="restart">Reprendre</button>
+          <button class="btn snd" id="mute" aria-pressed="true">Son activé</button>
+          <button class="btn" id="sndtest" title="Joue un impact, une note et un souffle, hors ligne de temps">Tester le son</button>
+          <div class="tc"><b id="cur">0,0</b> / 54,0 s</div>
+        </div>
+        <div class="toggles">
+          <label class="tog"><input type="checkbox" id="sfxtog" checked> Effets sonores</label>
+          <label class="tog"><input type="checkbox" id="safetog"> Zones sûres</label>
+          <label class="tog"><input type="checkbox" id="looptog" checked> Boucle</label>
+        </div>
+        <div class="audiowarn" id="audiowarn"></div>
+      </div>
+    </div>
+
+    <section class="sheet">
+      <h2>Découpage technique</h2>
+      <p class="lede">Format long, construit sur l'ossature du modèle Canva : une accroche qui nomme le blocage, trois irritants, une bascule, le mécanisme, une scène de données, la preuve, l'appel à l'action. Ce qui change, c'est le matériau — pas de voix, pas de personne à l'écran, et aucun chiffre qui ne vienne pas du site. Cliquez une ligne pour sauter au plan.</p>
+      <div class="acts">
+        <div class="a1">Acte 1 · le blocage<br>0 – 20,3 s</div>
+        <div class="a2">Acte 2 · le mécanisme<br>20,3 – 40,3 s</div>
+        <div class="a3">Preuve &amp; fin<br>40,3 – 54</div>
+      </div>
+      <div class="rows" id="rows"></div>
+    </section>
+  </div>
+
+  <div class="lower">
+    <div class="col">
+      <h2>Ce qui vient du modèle</h2>
+      <p class="lede">Le modèle Canva est une publicité solaire de 61 s : une personne parle à la caméra, les sous-titres suivent sa voix mot à mot, et une scène en pictogrammes affiche un pourcentage. Trois procédés valent d'être repris, le reste non.</p>
+      <div class="alt">
+        <span class="tag">Repris · le texte par morceaux</span>
+        <div class="fr">Chaque phrase arrive en trois temps</div>
+        <div class="why">Dans le modèle, le découpage suit la voix. Ici il suit les repères sonores. L'effet utile est le même : l'œil suit un rythme au lieu de lire un bloc, ce qui tient l'attention sur un format long.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Repris · la scène de données</span>
+        <div class="fr">Douze pastilles, puis le chiffre</div>
+        <div class="why">Le modèle montre une quantité en pictogrammes plutôt qu'en phrase. On garde le procédé avec la seule quantité vérifiable dont on dispose : les douze villes desservies, listées sur le site.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Repris · la durée</span>
+        <div class="fr">54 s au lieu de 21 ou 30</div>
+        <div class="why">Un format long laisse la place au mécanisme et à la preuve. Il se teste contre les deux versions courtes, il ne les remplace pas.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h2>Ce qui a été écarté</h2>
+      <p class="lede">Deux éléments du modèle ne peuvent pas passer tels quels, pour des raisons différentes.</p>
+      <div class="alt">
+        <span class="tag">Écarté · la personne à l'écran</span>
+        <div class="fr">Les plans de comédien du modèle</div>
+        <div class="why">Ce sont des banques d'images sous licence Canva, utilisables dans Canva. Les reprendre dans un projet distinct pour une campagne payante sort de cette licence. Et la règle posée dès la première publicité tient : aucune personne à l'écran.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Écarté · la voix</span>
+        <div class="fr">La narration du modèle</div>
+        <div class="why">Elle est en anglais et parle de panneaux solaires. Elle ne peut pas porter un message français pour un entrepreneur en rénovation. Une voix de synthèse serait une création nouvelle, écartée selon la consigne.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Écarté · le témoignage</span>
+        <div class="fr">Marie-Ève T., présente dans la 30 s</div>
+        <div class="why">Son autorisation écrite n'est pas confirmée. Elle n'est pas reprise ici pour ne pas créer un deuxième visuel bloqué par la même question.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h2>Ce qu'il reste à tester</h2>
+      <p class="lede">Un format long coûte cher en attention. Il faut savoir où il décroche.</p>
+      <div class="alt">
+        <span class="tag">Point de décrochage</span>
+        <div class="fr">Regarder la rétention à 3 s, 15 s et 30 s</div>
+        <div class="why">Si la chute est à 15 s, c'est la liste d'irritants qui est trop longue. Si elle est à 30 s, c'est le mécanisme qui n'intéresse pas et il faut couper vers la version 30 s.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Variante d'accroche</span>
+        <div class="fr">« Ce n'est pas une question d'argent. » en ouverture</div>
+        <div class="why">Déplace le démenti en première seconde. Plus abrupt, à tester contre la version retenue.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Variante de scène de données</span>
+        <div class="fr">Cinq spécialités au lieu de douze villes</div>
+        <div class="why">Même procédé, autre promesse : un seul interlocuteur pour tous les corps de métier. À produire si la version « proximité » plafonne.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>Notes de production</h3>
+    <ul>
+      <li><b>Aucun chiffre inventé.</b> Le modèle affiche « 48 % » sans source. La scène de données reprend le procédé, pas l'habitude : le seul nombre à l'écran est le compte des villes listées sur constructionht.com. Une statistique de performance inventée dans une publicité client est un risque juridique, pas une licence créative.</li>
+      <li><b>Le texte arrive par morceaux, sur les repères sonores.</b> Chaque segment de phrase est un élément à part avec son propre temps d'entrée. C'est ce qui remplace le sous-titrage mot à mot du modèle, sans voix à suivre.</li>
+      <li><b>Toujours lisible en sourdine.</b> Comme les deux autres publicités : le son ajoute le rythme, jamais l'information. Coupez-le, le message passe entièrement par le texte incrusté.</li>
+      <li><b>15 plans en 54 secondes.</b> L'acte 1 enchaîne quatre cadrages de la même photo de chantier pour créer de la nervosité sans nouvelle image. La rafale de quatre plans à 48,7 s relance l'attention juste avant la carte de fin.</li>
+      <li><b>Aucune personne à l'écran, aucune voix, aucune musique.</b> Rien à libérer de droits, rien à faire enregistrer, rien à cadrer avec un comédien.</li>
+      <li><b>À valider avant diffusion :</b> les numéros RBQ et CCQ, la gratuité de la soumission, et la liste des douze villes — si la zone desservie change, le chiffre à l'écran change avec elle.</li>
+      <li><b>Pour exporter en MP4 :</b> <code>node tools/render.js ht-construction-ad-long</code>, ou <code>npm run render</code> pour les trois publicités.</li>
+    </ul>
+  </div>
+<script src="sfx.js"></script>
+<script>
+(function(){
+  var DUR=54, stage=document.getElementById('stage'), reel=document.getElementById('reel');
+  var shots=[].slice.call(reel.querySelectorAll('.shot'));
+  var endcard=reel.querySelector('.endcard');
+  var timed=[].slice.call(reel.querySelectorAll('[data-in]'));
+  var flash=document.getElementById('flash');
+  var fill=document.getElementById('fill'), cur=document.getElementById('cur');
+  var play=document.getElementById('play'), scrub=document.getElementById('scrub');
+  var bigplay=document.getElementById('bigplay');
+  var muteBtn=document.getElementById('mute'), sndbadge=document.getElementById('sndbadge');
+  var sndlabel=document.getElementById('sndlabel'), audiowarn=document.getElementById('audiowarn');
+  var sfxtog=document.getElementById('sfxtog');
+  var eqBars=[].slice.call(sndbadge.querySelectorAll('.eq i'));
+  var reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var muted=false;
+
+  var SHEET=[
+    {t:'00:00',dur:'4,3 s',beat:'Accroche',rough:true,
+     fr:"« Vous repoussez ces travaux depuis des mois. »",
+     son:"Marteau en trois couches, puis une nappe basse qui s'installe et s'ouvre pendant vingt secondes. Un tic de bois sec sur chaque morceau de phrase.",
+     vis:"<b>Plan :</b> chantier en cours, cadrage large, zoom avant lent. Le texte arrive en trois temps.",at:0},
+    {t:'00:04',dur:'4,1 s',beat:'Démenti',rough:true,
+     fr:"« Ce n'est pas une question d'argent. »",
+     son:"Un souffle de 0,24 s annonce la coupe et culmine dessus. Deuxième marteau, décalé à droite. La nappe monte d'un cran.",
+     vis:"<b>Plan :</b> coupe sèche, même chantier, cadrage serré à gauche.",at:4.3},
+    {t:'00:08',dur:'4,3 s',beat:'Le vrai blocage',rough:true,
+     fr:"« C'est de ne pas savoir à qui ouvrir votre porte. »",
+     son:"Souffle traversant de droite à gauche, marteau sur la coupe, tics de bois plus graves à chaque morceau.",
+     vis:"<b>Plan :</b> troisième cadrage du même chantier, côté droit.",at:8.4},
+    {t:'00:12',dur:'7,6 s',beat:'Les trois irritants',rough:true,
+     fr:"Délais qui glissent · Extras jamais annoncés · Chantier laissé sale",
+     son:"Une perceuse par puce, chaque fois plus haute et plus proche. Raclement à 18,6 s, puis souffle inversé de 0,92 s qui annonce la bascule.",
+     vis:"<b>Plan :</b> quatrième cadrage, zoom arrière. Les puces tombent à 1,8 s d'intervalle.",at:12.7},
+    {t:'00:20',dur:'4,6 s',beat:'Bascule',
+     fr:"« On travaille autrement. »",
+     son:"<b>Le moment clé :</b> impact en trois couches sur la coupe, flash blanc, tout le rugueux s'arrête net. Il ne reste que la queue de réverbe et un lit très bas.",
+     vis:"<b>Plan :</b> coupe franche sur la cuisine terminée. Zoom arrière — on respire. « autrement » est surligné en sauge.",at:20.3},
+    {t:'00:24',dur:'4,8 s',beat:'Mécanisme',
+     fr:"« On se déplace. On mesure. On chiffre. »",
+     son:"Trois maillets accordés qui montent — ré, mi, sol. L'oreille entend une progression sous contrôle.",
+     vis:"<b>Plan :</b> salle de bain terminée, zoom avant doux. Un morceau de phrase par maillet.",at:24.9},
+    {t:'00:29',dur:'4,6 s',beat:'La promesse, mot pour mot',
+     fr:"« Un prix précis après la visite, pas une estimation vague. »",
+     son:"Tic de bois sur la coupe, maillet plus haut, puis presque rien : la phrase doit se lire, pas s'entendre.",
+     vis:"<b>Plan :</b> cuisine, autre cadrage. Citation reprise mot pour mot de la FAQ, avec la source sous le texte.",at:29.7},
+    {t:'00:34',dur:'6,0 s',beat:'Scène de données',
+     fr:"12 villes desservies",
+     son:"Douze tics de bois, un par pastille, montant d'un quart de ton chacun. Puis deux maillets sur le chiffre et son libellé.",
+     vis:"<b>Procédé repris du modèle.</b> Douze pastilles apparaissent en 2,3 s, puis le chiffre, puis la liste des villes. Fond plein, pas de photo.",at:34.3},
+    {t:'00:40',dur:'4,4 s',beat:'Preuve',
+     fr:"RBQ 5823-1101-01 · CCQ er937209 · Assurés APCHQ",
+     son:"Impact moyen sur la coupe, un maillet par puce — sol, la, do.",
+     vis:"<b>Plan :</b> plancher terminé. Trois puces en verre dépoli, une demi-seconde d'écart.",at:40.3},
+    {t:'00:44',dur:'4,0 s',beat:"Levée d'objection",
+     fr:"« Aucun projet n'est trop petit. » — soumission détaillée, sans frais",
+     son:"Tic de bois sur la coupe, maillet grave et long. La phrase reste seule à l'écran.",
+     vis:"<b>Plan :</b> balcon, zoom avant lent. Citation reprise mot pour mot du site.",at:44.7},
+    {t:'00:48',dur:'1,4 s',beat:'Rafale',
+     fr:"Cuisine · Salle de bain · Plancher · Balcon",
+     son:"Souffle inversé court, puis quatre impacts secs de plus en plus rapprochés.",
+     vis:"<b>Plans :</b> quatre cadrages de 0,35 s. Relance l'attention juste avant la carte de fin.",at:48.7},
+    {t:'00:50',dur:'3,9 s',beat:'Carte de fin',
+     fr:"HT Construction · Montréal et Rive-Sud · Soumission gratuite · 514 674-8697",
+     son:"Dernier impact, flash, nappe tenue. Quatre maillets qui montent, un par ligne, puis un souffle d'air sur l'adresse du site.",
+     vis:"<b>Plan :</b> fond plein. Logo, services, zone, offre, téléphone, site — dans cet ordre.",at:50.1}
+  ];
+
+  var rows=document.getElementById('rows'), ticks=document.getElementById('ticks');
+  SHEET.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.className='row'+(s.rough?' rough':''); b.type='button'; b.dataset.at=s.at;
+    b.innerHTML='<div class="rtc">'+s.t+'<br><span>'+s.dur+'</span></div>'+
+      '<div><div class="rbeat">'+s.beat+'</div><div class="rfr">'+s.fr+'</div>'+
+      '<div class="rson"><em>Son</em>'+s.son+'</div>'+
+      '<div class="rvis">'+s.vis+'</div></div>';
+    b.addEventListener('click',function(){ seek(parseFloat(this.dataset.at)); if(!playing) toggle(true); });
+    rows.appendChild(b);
+    if(i>0){ var k=document.createElement('b'); k.style.left=(s.at/DUR*100)+'%'; ticks.appendChild(k); }
+  });
+  var rowEls=[].slice.call(rows.children);
+
+  /* ---------- repères sonores ----------
+     Chaque coupe importante reçoit trois temps :
+       anticipation (avant)  ->  impact (sur la coupe)  ->  queue (réverbe)
+     C'est l'anticipation qui manque à la plupart des montages : sans elle,
+     un son sur une coupe s'entend comme un bip, pas comme une transition. */
+  var fxLog=[], fxRec=false;
+  function punch(big){
+    if(fxRec) fxLog.push({at:t,kind:big?'big':'hit',dur:big?0.3:0.17});
+    if(reduce) return;
+    reel.classList.remove('hit','big'); void reel.offsetWidth;
+    reel.classList.add('hit'); if(big) reel.classList.add('big');
+    setTimeout(function(){ reel.classList.remove('hit','big'); }, big?310:180);
+  }
+  function doFlash(){
+    if(fxRec) fxLog.push({at:t,kind:'flash',dur:0.3});
+    if(reduce) return;
+    flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
+    setTimeout(function(){ flash.classList.remove('go'); },320);
+  }
+
+  var CUES=[
+    /* ACTE 1 — matières rugueuses. Un tic de bois par morceau de phrase :
+       c'est ce qui remplace le sous-titrage mot à mot du modèle. */
+    {t:0    ,r:1,f:function(){ SFX.hammer({peak:0.6}); SFX.rumble({dur:20.3,peak:0.085,open:700}); punch(); }},
+    {t:0.35 ,r:1,f:function(){ SFX.wood({freq:760,peak:0.13,pan:-0.25}); }},
+    {t:1.25 ,r:1,f:function(){ SFX.wood({freq:700,peak:0.12,pan:0.2}); }},
+    {t:2.15 ,r:1,f:function(){ SFX.wood({freq:650,peak:0.12,pan:-0.15}); }},
+
+    {t:4.10 ,r:1,f:function(){ SFX.whoosh({dur:0.24,peak:0.06,from:400,to:2600,pan:-0.45,panTo:0.3}); }},
+    {t:4.30 ,r:1,f:function(){ SFX.hammer({peak:0.5,pan:0.15}); punch(); }},
+    {t:4.60 ,r:1,f:function(){ SFX.wood({freq:780,peak:0.13,pan:0.25}); }},
+    {t:5.50 ,r:1,f:function(){ SFX.wood({freq:720,peak:0.12,pan:-0.2}); }},
+    {t:6.40 ,r:1,f:function(){ SFX.wood({freq:660,peak:0.12,pan:0.15}); }},
+
+    {t:8.20 ,r:1,f:function(){ SFX.whoosh({dur:0.22,peak:0.062,from:380,to:3000,pan:0.4,panTo:-0.35}); }},
+    {t:8.40 ,r:1,f:function(){ SFX.hammer({peak:0.54,pan:-0.12}); punch(); }},
+    {t:8.75 ,r:1,f:function(){ SFX.wood({freq:800,peak:0.13,pan:-0.3}); }},
+    {t:9.70 ,r:1,f:function(){ SFX.wood({freq:735,peak:0.12,pan:0.25}); }},
+    {t:10.65,r:1,f:function(){ SFX.wood({freq:670,peak:0.13}); }},
+
+    /* Les irritants : une perceuse par puce, chaque fois plus haute. */
+    {t:12.50,r:1,f:function(){ SFX.whoosh({dur:0.26,peak:0.065,from:420,to:3200,pan:-0.5,panTo:0.45}); }},
+    {t:12.70,r:1,f:function(){ SFX.hammer({peak:0.58}); punch(); }},
+    {t:13.30,r:1,f:function(){ SFX.drill({dur:0.22,freq:132,peak:0.2,pan:-0.3}); }},
+    {t:15.10,r:1,f:function(){ SFX.drill({dur:0.24,freq:150,peak:0.22,pan:0.25}); }},
+    {t:16.90,r:1,f:function(){ SFX.drill({dur:0.26,freq:168,peak:0.24,pan:-0.15}); }},
+    {t:18.60,r:1,f:function(){ SFX.scrape({peak:0.22,pan:0.3}); }},
+
+    /* LA BASCULE — anticipation longue, impact, flash, puis le rugueux
+       disparaît d'un coup. Le contraste le plus fort de l'annonce. */
+    {t:19.35,f:function(){ SFX.reverseSwell({dur:0.92,peak:0.15}); }},
+    {t:20.30,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.8,f0:160,f1:32,dec:0.75,body:2200,send:0.42}); doFlash(); punch(true); }},
+    {t:20.85,f:function(){ SFX.mallet({freq:110,peak:0.10,dec:1.8}); SFX.roomTone({dur:19.4,peak:0.018}); }},
+
+    /* ACTE 2 — maillets accordés, une note plus haut à chaque preuve. */
+    {t:24.75,f:function(){ SFX.air({peak:0.045,pan:-0.3}); }},
+    {t:24.90,f:function(){ SFX.wood({freq:620,peak:0.2}); punch(); }},
+    {t:25.30,f:function(){ SFX.mallet({freq:146.83,peak:0.09,dec:1.3,pan:-0.2}); }},
+    {t:26.55,f:function(){ SFX.mallet({freq:164.81,peak:0.09,dec:1.3,pan:0.2}); }},
+    {t:27.80,f:function(){ SFX.mallet({freq:196,peak:0.09,dec:1.4}); }},
+
+    {t:29.55,f:function(){ SFX.air({peak:0.042,pan:0.3}); }},
+    {t:29.70,f:function(){ SFX.wood({freq:640,peak:0.18,pan:0.15}); punch(); }},
+    {t:30.10,f:function(){ SFX.mallet({freq:220,peak:0.085,dec:1.6,pan:-0.15}); }},
+
+    /* Scène de données : les douze tics sont générés plus bas. */
+    {t:34.15,f:function(){ SFX.whoosh({dur:0.3,peak:0.055,from:500,to:2200,pan:0.4,panTo:-0.4}); }},
+    {t:34.30,f:function(){ SFX.hit({peak:0.5,f0:120,f1:40,dec:0.4,body:1200,send:0.3}); punch(); }},
+    {t:37.70,f:function(){ SFX.mallet({freq:261.63,peak:0.1,dec:1.5}); }},
+    {t:38.00,f:function(){ SFX.mallet({freq:329.63,peak:0.085,dec:1.4,pan:0.15}); }},
+    {t:38.40,f:function(){ SFX.air({peak:0.04}); }},
+
+    /* Preuve */
+    {t:40.15,f:function(){ SFX.air({peak:0.042,pan:-0.25}); }},
+    {t:40.30,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.55,f0:140,f1:38,dec:0.45,body:1500,send:0.32}); punch(); SFX.roomTone({dur:8.2,peak:0.018}); }},
+    {t:41.00,f:function(){ SFX.mallet({freq:392,peak:0.09,dec:1.1,pan:-0.2}); }},
+    {t:41.50,f:function(){ SFX.mallet({freq:440,peak:0.09,dec:1.1}); }},
+    {t:42.00,f:function(){ SFX.mallet({freq:523.25,peak:0.09,dec:1.2,pan:0.2}); }},
+
+    {t:44.55,f:function(){ SFX.air({peak:0.04,pan:0.25}); }},
+    {t:44.70,f:function(){ SFX.wood({freq:600,peak:0.18}); punch(); }},
+    {t:45.20,f:function(){ SFX.mallet({freq:196,peak:0.1,dec:1.7}); }},
+
+    /* Rafale puis carte de fin */
+    {t:48.55,f:function(){ SFX.reverseSwell({dur:0.5,peak:0.1}); }},
+    {t:48.70,f:function(){ SFX.hit({peak:0.5,f0:130,f1:44,dec:0.22,body:1800,send:0.24}); punch(); }},
+    {t:49.05,f:function(){ SFX.hammer({peak:0.42,pan:-0.3}); punch(); }},
+    {t:49.40,f:function(){ SFX.hammer({peak:0.44,pan:0.3}); punch(); }},
+    {t:49.75,f:function(){ SFX.hammer({peak:0.46}); punch(); }},
+    {t:50.10,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.75,f0:150,f1:34,dec:0.7,body:2000,send:0.44}); doFlash(); punch(true); SFX.pad({dur:3.8,peak:0.05}); }},
+    {t:50.65,f:function(){ SFX.mallet({freq:261.63,peak:0.1,dec:1.6}); }},
+    {t:51.35,f:function(){ SFX.mallet({freq:329.63,peak:0.095,dec:1.5,pan:-0.15}); }},
+    {t:51.75,f:function(){ SFX.mallet({freq:392,peak:0.09,dec:1.4,pan:0.15}); }},
+    {t:52.05,f:function(){ SFX.mallet({freq:523.25,peak:0.085,dec:1.3}); SFX.air({peak:0.045}); }}
+  ];
+
+  /* Un tic par pastille de la scène de données, calé sur les mêmes temps
+     que les éléments du DOM. Généré plutôt qu'écrit douze fois : si
+     l'espacement change, il ne change qu'ici et dans le balisage. */
+  for(var pi=0; pi<12; pi++){
+    (function(i){
+      CUES.push({t:+(34.90+i*0.21).toFixed(2), f:function(){
+        SFX.wood({freq:520+i*26, peak:0.10, pan:((i%4)-1.5)/3});
+      }});
+    })(pi);
+  }
+  CUES.sort(function(a,b){ return a.t-b.t; });
+  CUES.forEach(function(c){
+    var u=document.createElement('u');
+    u.style.left=(c.t/DUR*100)+'%'; if(c.r) u.className='rough';
+    ticks.appendChild(u);
+  });
+  if(!SFX.supported()){
+    audiowarn.textContent='Ce navigateur ne permet pas la synthèse audio : la publicité joue en silence. Le montage reste lisible, tout le message est dans le texte incrusté.';
+    audiowarn.classList.add('on');
+  }
+  var cursor=0;
+
+  /* ---------- rendu ---------- */
+  function fade(el,t){
+    var a=parseFloat(el.dataset.in), b=parseFloat(el.dataset.out);
+    var f=el.dataset.f?parseFloat(el.dataset.f):0.42;
+    if(t<a-f||t>b) return 0;
+    if(t<a) return (t-(a-f))/f;
+    if(t>b-f) return Math.max(0,(b-t)/f);
+    return 1;
+  }
+  var t=0, playing=false, last=null;
+
+  function render(){
+    shots.forEach(function(s){
+      var o=fade(s,t); s.style.opacity=o;
+      if(o>0&&!reduce){
+        var a=parseFloat(s.dataset.in), b=parseFloat(s.dataset.out);
+        var p=Math.min(1,Math.max(0,(t-a)/(b-a)));
+        var z0=parseFloat(s.dataset.z0), z1=parseFloat(s.dataset.z1);
+        s.querySelector('.ph').style.transform='scale('+(z0+(z1-z0)*p).toFixed(4)+')';
+      }
+    });
+    endcard.style.opacity=fade(endcard,t);
+    timed.forEach(function(el){
+      if(el.classList.contains('shot')||el===endcard) return;
+      var o=fade(el,t);
+      el.style.opacity=o;
+      if(!el.classList.contains('cap')&&!reduce){
+        el.style.transform='translateY('+((1-o)*9).toFixed(2)+'px)';
+      }
+    });
+    fill.style.width=(t/DUR*100)+'%';
+    cur.textContent=t.toFixed(1).replace('.',',');
+    scrub.setAttribute('aria-valuenow',t.toFixed(1));
+    scrub.setAttribute('aria-valuetext',t.toFixed(1).replace('.',',')+' seconde');
+    var ai=0;
+    for(var i=0;i<SHEET.length;i++){ if(t>=SHEET[i].at-0.1) ai=i; }
+    rowEls.forEach(function(r,i){ r.setAttribute('aria-current', i===ai?'true':'false'); });
+    var lvl=SFX.peak();
+    var on=playing&&!muted&&sfxtog.checked;
+    eqBars.forEach(function(b,i){
+      b.style.height=(on? Math.max(3, 3+lvl*6*(i===1?1:0.72)) : 3).toFixed(1)+'px';
+    });
+  }
+
+  function frame(ts){
+    if(!playing) return;
+    if(last===null) last=ts;
+    t+=(ts-last)/1000; last=ts;
+    if(t>=DUR){
+      if(document.getElementById('looptog').checked){ t=0; cursor=0; SFX.kill(); }
+      else { t=DUR; toggle(false); render(); return; }
+    }
+    while(cursor<CUES.length && CUES[cursor].t<=t){ CUES[cursor].f(); cursor++; }
+    render(); requestAnimationFrame(frame);
+  }
+  function syncCursor(){ cursor=0; while(cursor<CUES.length && CUES[cursor].t<=t) cursor++; }
+
+  function toggle(on){
+    playing=(on===undefined)?!playing:on;
+    last=null;
+    play.textContent=playing?'Pause':'Lire';
+    bigplay.hidden=playing;
+    if(playing){
+      if(t>=DUR){ t=0; syncCursor(); }
+      SFX.resume(function(){ audioState(); });
+      requestAnimationFrame(frame);
+    } else SFX.kill();
+    badge();
+  }
+  function seek(v){
+    t=Math.min(DUR,Math.max(0,v)); last=null;
+    SFX.kill(); syncCursor(); render();
+  }
+  function badge(){
+    sndlabel.textContent = (muted||!sfxtog.checked) ? 'SANS SON — TEXTE INCRUSTÉ' : 'SON ACTIF';
+  }
+
+  play.addEventListener('click',function(){ toggle(); });
+  bigplay.addEventListener('click',function(){ toggle(true); });
+  document.getElementById('restart').addEventListener('click',function(){ seek(0); toggle(true); });
+  muteBtn.addEventListener('click',function(){
+    muted=!muted;
+    this.setAttribute('aria-pressed',String(!muted));
+    this.textContent=muted?'Son coupé':'Son activé';
+    SFX.mute(muted);
+    badge();
+  });
+  sfxtog.addEventListener('change',function(){ SFX.enable(this.checked); badge(); });
+  document.getElementById('safetog').addEventListener('change',function(){
+    document.getElementById('safe').classList.toggle('on',this.checked);
+  });
+
+  function fromEvent(e){
+    var r=scrub.getBoundingClientRect();
+    var x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    seek(x/r.width*DUR);
+  }
+  var dragging=false;
+  scrub.addEventListener('pointerdown',function(e){ dragging=true; scrub.setPointerCapture(e.pointerId); toggle(false); fromEvent(e); });
+  scrub.addEventListener('pointermove',function(e){ if(dragging) fromEvent(e); });
+  scrub.addEventListener('pointerup',function(e){ dragging=false; scrub.releasePointerCapture(e.pointerId); });
+  scrub.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){ seek(t+0.5); e.preventDefault(); }
+    if(e.key==='ArrowLeft'){ seek(t-0.5); e.preventDefault(); }
+    if(e.key===' '||e.key==='Enter'){ toggle(); e.preventDefault(); }
+  });
+  stage.addEventListener('click',function(e){ if(e.target===stage) toggle(); });
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) toggle(false); });
+  window.addEventListener('pagehide',function(){ SFX.kill(); });
+
+  function audioState(){
+    var st=SFX.state();
+    if(!SFX.supported()) return;
+    if(st==='suspended'){
+      audiowarn.textContent='Le navigateur garde le son en veille. Cliquez « Tester le son » : un clic direct suffit à le réveiller.';
+      audiowarn.classList.add('on');
+    } else if(st==='running'){
+      audiowarn.classList.remove('on');
+    }
+  }
+  document.getElementById('sndtest').addEventListener('click',function(){
+    if(muted){ muted=false; SFX.mute(false);
+      muteBtn.setAttribute('aria-pressed','true'); muteBtn.textContent='Son activé'; badge(); }
+    if(!sfxtog.checked){ sfxtog.checked=true; SFX.enable(true); badge(); }
+    SFX.test(); setTimeout(audioState,300);
+  });
+
+  /* ---------- crochet d'export ----------
+     Le rendu MP4 avance la ligne de temps image par image. Deux choses ne
+     survivent pas au pas-à-pas : le punch et le flash, qui sont des
+     animations CSS pilotées par l'horloge du navigateur, pas par t. On les
+     rejoue donc analytiquement, avec les mêmes courbes que la feuille de
+     style — sinon les accents disparaissent de la vidéo livrée.
+     Rien ici ne s'exécute pendant la lecture normale. */
+  function bezier(p1x,p1y,p2x,p2y){
+    function ca(a1,a2){ return 1-3*a2+3*a1; }
+    function cb(a1,a2){ return 3*a2-6*a1; }
+    function cc(a1){ return 3*a1; }
+    function calc(u,a1,a2){ return ((ca(a1,a2)*u+cb(a1,a2))*u+cc(a1))*u; }
+    function slope(u,a1,a2){ return 3*ca(a1,a2)*u*u+2*cb(a1,a2)*u+cc(a1); }
+    return function(x){
+      var u=x;
+      for(var i=0;i<8;i++){ var s=slope(u,p1x,p2x); if(!s) break; u-=(calc(u,p1x,p2x)-x)/s; }
+      return calc(u,p1y,p2y);
+    };
+  }
+  var easePunch=bezier(.2,.9,.3,1), easeOut=bezier(0,0,.58,1);
+
+  function wav(buf,gain){
+    var ch=buf.numberOfChannels, n=buf.length, sr=buf.sampleRate, bytes=n*ch*2;
+    var d=new DataView(new ArrayBuffer(44+bytes));
+    function s(o,str){ for(var i=0;i<str.length;i++) d.setUint8(o+i,str.charCodeAt(i)); }
+    s(0,'RIFF'); d.setUint32(4,36+bytes,true); s(8,'WAVEfmt ');
+    d.setUint32(16,16,true); d.setUint16(20,1,true); d.setUint16(22,ch,true);
+    d.setUint32(24,sr,true); d.setUint32(28,sr*ch*2,true);
+    d.setUint16(32,ch*2,true); d.setUint16(34,16,true);
+    s(36,'data'); d.setUint32(40,bytes,true);
+    var cd=[],c; for(c=0;c<ch;c++) cd.push(buf.getChannelData(c));
+    var o=44;
+    for(var i=0;i<n;i++) for(c=0;c<ch;c++){
+      var v=Math.max(-1,Math.min(1,cd[c][i]*gain));
+      d.setInt16(o,v<0?v*0x8000:v*0x7fff,true); o+=2;
+    }
+    var u8=new Uint8Array(d.buffer), out='';
+    for(var k=0;k<u8.length;k+=0x8000) out+=String.fromCharCode.apply(null,u8.subarray(k,k+0x8000));
+    return btoa(out);
+  }
+
+  window.AD={
+    DUR:DUR, stage:stage, cueCount:CUES.length,
+
+    /* Relève les punchs et les flashs en parcourant les repères à vide. */
+    scanFx:function(){
+      fxLog=[]; fxRec=true;
+      var keepT=t, keepC=cursor;
+      SFX.enable(false);
+      for(var i=0;i<CUES.length;i++){ t=CUES[i].t; CUES[i].f(); }
+      SFX.enable(true);
+      fxRec=false; t=keepT; cursor=keepC;
+      return fxLog.length;
+    },
+
+    /* La bande son entière, rendue hors ligne.
+       Le mixage de la page vise l'impact, pas un niveau de livraison :
+       sommé d'un bout à l'autre il dépasse le 0 dBFS. On mesure donc la
+       crête réelle et on redescend le tout sous -1 dBFS AVANT de
+       quantifier en 16 bits, sinon l'écrêtage est gravé dans le fichier
+       livré. La cible de loudness est posée ensuite, par ffmpeg. */
+    renderAudio:async function(SR){
+      var oc=new OfflineAudioContext(2,Math.ceil(SR*(DUR+1.5)),SR);
+      SFX.offline(oc);
+      for(var i=0;i<CUES.length;i++){ SFX.seek(CUES[i].t); CUES[i].f(); }
+      var buf=await oc.startRendering(), peak=0, c, k;
+      for(c=0;c<buf.numberOfChannels;c++){
+        var d=buf.getChannelData(c);
+        for(k=0;k<d.length;k++){ var a=Math.abs(d[k]); if(a>peak) peak=a; }
+      }
+      var ceil=Math.pow(10,-1/20), gain=peak>ceil?ceil/peak:1;
+      return { b64:wav(buf,gain), peak:peak, gain:gain };
+    },
+
+    /* Positionne la page sur un temps donné, effets compris. */
+    seekExport:function(sec){
+      t=sec; syncCursor(); render();
+      reel.classList.remove('hit','big'); flash.classList.remove('go');
+      var sc=1, br=1, ct=1, fo=0;
+      for(var i=0;i<fxLog.length;i++){
+        var e=fxLog[i], el=sec-e.at;
+        if(el<0||el>=e.dur) continue;
+        if(e.kind==='flash'){ fo=Math.max(fo,0.9*(1-easeOut(el/e.dur))); continue; }
+        var q=easePunch(el/e.dur), big=e.kind==='big';
+        var s0=big?1.05:1.02, b0=big?1.7:1.34, c0=big?1.08:1;
+        sc=s0+(1-s0)*q; br=b0+(1-b0)*q; ct=c0+(1-c0)*q;
+      }
+      reel.style.animation='none';
+      reel.style.transform='scale('+sc.toFixed(4)+')';
+      reel.style.filter='brightness('+br.toFixed(3)+') contrast('+ct.toFixed(3)+')';
+      flash.style.animation='none';
+      flash.style.opacity=fo.toFixed(3);
+    },
+
+    /* Isole le cadre 9:16 et le fixe à la taille de livraison.
+       Le fichier livré ne doit contenir que la publicité : on retire
+       l'habillage du lecteur — bouton de lecture (qui pose en plus un
+       voile sombre sur toute l'image), badge de son, repères de zone
+       sûre. Ils n'ont de sens que sur la page. */
+    framePage:function(w,h){
+      var b=document.body;
+      [].slice.call(stage.children).forEach(function(el){ if(el!==reel) el.remove(); });
+      b.appendChild(stage);
+      [].slice.call(b.children).forEach(function(el){ if(el!==stage) el.style.display='none'; });
+      document.documentElement.style.cssText='margin:0;padding:0;background:#000';
+      b.style.cssText='margin:0;padding:0;background:#000;overflow:hidden';
+      stage.style.cssText+=';position:fixed;left:0;top:0;margin:0;width:'+w+'px;height:'+h+
+        'px;max-width:none;aspect-ratio:auto;border-radius:0;box-shadow:none';
+    }
+  };
+
+  badge(); render();
+})();
+</script>
