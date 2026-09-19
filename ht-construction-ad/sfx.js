@@ -20,8 +20,15 @@
                            -> départ réverbe -> convolution -> sortie
    ------------------------------------------------------------------ */
 (function (g) {
-  var ctx = null, comp = null, master = null, conv = null, noiseBuf = null;
+  var ctx = null, comp = null, master = null, limiter = null, conv = null, noiseBuf = null, bedBuf = null;
   var live = [], beds = [], muted = false, enabled = true, peakVal = 0;
+
+  /* Horloge d'ordonnancement. En lecture normale c'est « maintenant » ;
+     en rendu hors ligne l'outil d'export fixe le temps absolu du repère,
+     car currentTime n'avance pas dans un OfflineAudioContext. */
+  var schedAt = null;
+  function now() { return schedAt === null ? ctx.currentTime : schedAt; }
+  function stopNode(n) { try { schedAt === null ? n.stop() : n.stop(schedAt); } catch (e) {} }
 
   function makeIR(dur, decay, damp) {
     var len = Math.floor(ctx.sampleRate * dur);
@@ -37,19 +44,53 @@
     return ir;
   }
 
-  function ensure() {
-    if (ctx) return ctx;
-    var AC = g.AudioContext || g.webkitAudioContext;
-    if (!AC) return null;
-    ctx = new AC();
 
+  /* Boucle d'ambiance sans couture. Un bruit blanc bouclé sur 1,4 s se
+     trahit deux fois : la couture claque à chaque tour, et l'oreille
+     finit par reconnaître le motif. On génère donc un bruit déjà brun
+     (intégrateur à un pôle), plus long, et on replie la queue sur la
+     tête en fondu enchaîné pour que le raccord soit inaudible. */
+  function bedBuffer() {
+    if (bedBuf) return bedBuf;
+    var sr = ctx.sampleRate;
+    var len = Math.floor(sr * 6), xf = Math.floor(sr * 0.5);
+    var raw = new Float32Array(len + xf), run = 0, top = 0;
+    for (var i = 0; i < raw.length; i++) {
+      run = run + 0.05 * ((Math.random() * 2 - 1) - run);
+      raw[i] = run;
+      if (Math.abs(run) > top) top = Math.abs(run);
+    }
+    var norm = top > 0 ? 0.9 / top : 1;
+    bedBuf = ctx.createBuffer(1, len, sr);
+    var d = bedBuf.getChannelData(0);
+    for (var j = 0; j < len; j++) d[j] = raw[j] * norm;
+    for (var k = 0; k < xf; k++) {
+      var f = k / xf;
+      d[k] = d[k] * f + raw[len + k] * norm * (1 - f);
+    }
+    return bedBuf;
+  }
+  /* Construit la chaîne sur le contexte courant. Séparé de ensure() parce
+     que le rendu hors ligne monte la même chaîne sur un contexte fourni
+     de l'extérieur : l'export doit sonner comme la page, pas « comme la
+     page à peu près ». */
+  function buildGraph() {
     comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -13; comp.ratio.value = 4.5;
     comp.attack.value = 0.003; comp.release.value = 0.16;
 
     master = ctx.createGain();
-    master.gain.value = muted ? 0 : 0.85;
-    comp.connect(master); master.connect(ctx.destination);
+    master.gain.value = muted ? 0 : 0.55;
+
+    /* Limiteur de sortie. Sans lui la somme des repères dépasse le 0 dBFS
+       d'une douzaine de décibels sur les impacts : la carte son écrête, et
+       l'écrêtage s'entend comme de la dureté sur les coups. Genou nul,
+       ratio élevé, attaque très courte : on plafonne au lieu de colorer. */
+    limiter = ctx.createDynamicsCompressor();
+    limiter.threshold.value = -1.5; limiter.knee.value = 0;
+    limiter.ratio.value = 20; limiter.attack.value = 0.001; limiter.release.value = 0.08;
+
+    comp.connect(master); master.connect(limiter); limiter.connect(ctx.destination);
 
     conv = ctx.createConvolver();
     conv.buffer = makeIR(1.9, 3.1, 0.34);
@@ -62,6 +103,14 @@
     noiseBuf = ctx.createBuffer(1, n, ctx.sampleRate);
     var d = noiseBuf.getChannelData(0);
     for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+  }
+
+  function ensure() {
+    if (ctx) return ctx;
+    var AC = g.AudioContext || g.webkitAudioContext;
+    if (!AC) return null;
+    ctx = new AC();
+    buildGraph();
     return ctx;
   }
 
@@ -76,7 +125,7 @@
 
   /* routage commun : pan (fixe ou mobile) + départ réverbe */
   function route(node, o) {
-    var t = ctx.currentTime, last = node;
+    var t = now(), last = node;
     if (ctx.createStereoPanner && (o.pan !== undefined || o.panTo !== undefined)) {
       var p = ctx.createStereoPanner();
       var from = o.pan === undefined ? 0 : o.pan;
@@ -91,7 +140,7 @@
     }
   }
   function env(g2, peak, att, dec) {
-    var t = ctx.currentTime;
+    var t = now();
     g2.gain.setValueAtTime(0.0001, t);
     g2.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), t + att);
     g2.gain.exponentialRampToValueAtTime(0.0001, t + att + dec);
@@ -129,12 +178,11 @@
   A.enable = function (on) { enabled = !!on; if (!enabled) A.kill(); };
   A.mute = function (m) {
     muted = !!m;
-    if (master) master.gain.value = muted ? 0 : 0.85;
+    if (master) master.gain.value = muted ? 0 : 0.55;
     if (muted) A.kill();
   };
   A.kill = function () {
-    live.forEach(function (n) { try { n.stop(); } catch (e) {} });
-    beds.forEach(function (n) { try { n.stop(); } catch (e) {} });
+    live.forEach(stopNode); beds.forEach(stopNode);
     live = []; beds = [];
   };
   A.peak = function () { var p = peakVal; peakVal *= 0.82; return p; };
@@ -144,7 +192,7 @@
   A.whoosh = function (o) {
     if (!ok()) return;
     o = o || {};
-    var dur = o.dur || 0.4, t = ctx.currentTime;
+    var dur = o.dur || 0.4, t = now();
     var s = noise(), bp = ctx.createBiquadFilter(), g2 = ctx.createGain();
     bp.type = 'bandpass'; bp.Q.value = o.q || 1.3;
     bp.frequency.setValueAtTime(o.from || 320, t);
@@ -163,7 +211,7 @@
   A.reverseSwell = function (o) {
     if (!ok()) return;
     o = o || {};
-    var dur = o.dur || 0.9, t = ctx.currentTime;
+    var dur = o.dur || 0.9, t = now();
     var s = noise(), hp = ctx.createBiquadFilter(), lp = ctx.createBiquadFilter(), g2 = ctx.createGain();
     hp.type = 'highpass'; hp.frequency.setValueAtTime(180, t);
     hp.frequency.exponentialRampToValueAtTime(1100, t + dur);
@@ -182,7 +230,7 @@
   A.hit = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, peak = o.peak || 0.55, dec = o.dec || 0.5;
+    var t = now(), peak = o.peak || 0.55, dec = o.dec || 0.5;
     hitPeak(peak);
 
     var sub = ctx.createOscillator(), sg = ctx.createGain();
@@ -222,7 +270,7 @@
   A.wood = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, f = o.freq || 800, peak = o.peak || 0.3;
+    var t = now(), f = o.freq || 800, peak = o.peak || 0.3;
     hitPeak(peak);
     var osc = ctx.createOscillator(), g2 = ctx.createGain();
     osc.type = 'triangle';
@@ -243,7 +291,7 @@
   A.drill = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, dur = o.dur || 0.24, f = o.freq || 140, peak = o.peak || 0.2;
+    var t = now(), dur = o.dur || 0.24, f = o.freq || 140, peak = o.peak || 0.2;
     hitPeak(peak);
     var osc = ctx.createOscillator(), g2 = ctx.createGain(), lp = ctx.createBiquadFilter();
     osc.type = 'sawtooth'; osc.frequency.value = f;
@@ -263,7 +311,7 @@
   A.scrape = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, peak = o.peak || 0.2;
+    var t = now(), peak = o.peak || 0.2;
     hitPeak(peak);
     var s = noise(), bp = ctx.createBiquadFilter(), g2 = ctx.createGain();
     bp.type = 'bandpass'; bp.Q.value = 3.2;
@@ -277,7 +325,7 @@
   A.mallet = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, f = o.freq || 220, peak = o.peak || 0.09, dec = o.dec || 1;
+    var t = now(), f = o.freq || 220, peak = o.peak || 0.09, dec = o.dec || 1;
     hitPeak(peak * 1.4);
     [1, 2.01, 3.02].forEach(function (m, i) {
       var osc = ctx.createOscillator(), g2 = ctx.createGain();
@@ -288,21 +336,26 @@
       osc.start(); osc.stop(t + dec + 0.4); reg(osc, dec + 0.4);
     });
   };
+  /* Un highpass très haut ne donne pas de l'air, il donne du souffle de
+     bande : on garde une bande, et on la referme en descendant. */
   A.air = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime;
-    var s = noise(), hp = ctx.createBiquadFilter(), g2 = ctx.createGain();
-    hp.type = 'highpass'; hp.frequency.value = 4200;
-    env(g2, o.peak || 0.05, 0.02, o.dec || 0.32);
-    s.connect(hp); hp.connect(g2);
+    var t = now(), dec = o.dec || 0.32;
+    var s = noise(), hp = ctx.createBiquadFilter(), lp = ctx.createBiquadFilter(), g2 = ctx.createGain();
+    hp.type = 'highpass'; hp.frequency.value = 1500;
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(o.top || 6000, t);
+    lp.frequency.exponentialRampToValueAtTime(1800, t + dec);
+    env(g2, o.peak || 0.05, 0.05, dec);
+    s.connect(hp); hp.connect(lp); lp.connect(g2);
     route(g2, { pan: o.pan || 0, send: 0.4 });
     s.start(); s.stop(t + 0.6); reg(s, 0.6);
   };
   A.pad = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, dur = o.dur || 3;
+    var t = now(), dur = o.dur || 3;
     (o.freqs || [73.42, 110, 146.83]).forEach(function (f, i) {
       var osc = ctx.createOscillator(), g2 = ctx.createGain(), lp = ctx.createBiquadFilter();
       osc.type = 'sine'; osc.frequency.value = f;
@@ -323,7 +376,7 @@
   A.rumble = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, dur = o.dur || 10;
+    var t = now(), dur = o.dur || 10;
     var g2 = ctx.createGain(), lp = ctx.createBiquadFilter();
     lp.type = 'lowpass';
     lp.frequency.setValueAtTime(o.open ? 180 : 300, t);
@@ -340,26 +393,51 @@
       beds.push(osc); reg(osc, dur + 0.2);
     });
   };
+  /* Lit d'ambiance. Règle absolue : on ne doit jamais l'entendre comme un
+     son. Dès qu'un souffle devient identifiable, l'oreille l'entend comme
+     de la friture, pas comme de l'ambiance. D'où : tout passe sous 260 Hz,
+     loin de la bande 2-4 kHz où l'oreille est la plus sensible, et la
+     boucle est fondue enchaînée sur elle-même (voir bedBuffer). */
   A.roomTone = function (o) {
     if (!ok()) return;
     o = o || {};
-    var t = ctx.currentTime, dur = o.dur || 12;
-    var s = noise(); s.loop = true;
-    var bp = ctx.createBiquadFilter(), g2 = ctx.createGain();
-    bp.type = 'bandpass'; bp.frequency.value = o.freq || 2400; bp.Q.value = 0.6;
+    var t = now(), dur = o.dur || 12, peak = o.peak || 0.018;
+    var s = ctx.createBufferSource();
+    s.buffer = bedBuffer(); s.loop = true;
+    s.playbackRate.value = o.rate || 0.8;
+    var hp = ctx.createBiquadFilter(), lp = ctx.createBiquadFilter(), g2 = ctx.createGain();
+    hp.type = 'highpass'; hp.frequency.value = 30;
+    lp.type = 'lowpass'; lp.Q.value = 0.7;
+    lp.frequency.value = Math.min(o.freq || 240, 300);
     g2.gain.setValueAtTime(0.0001, t);
-    g2.gain.exponentialRampToValueAtTime(o.peak || 0.012, t + 0.8);
-    g2.gain.setValueAtTime(o.peak || 0.012, t + dur - 0.6);
+    g2.gain.exponentialRampToValueAtTime(peak, t + 1.2);
+    g2.gain.setValueAtTime(peak, t + dur - 0.8);
     g2.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    s.connect(bp); bp.connect(g2);
-    route(g2, { pan: 0, send: 0.3 });
+    s.connect(hp); hp.connect(lp); lp.connect(g2);
+    route(g2, { pan: 0, send: 0 });
     s.start(); s.stop(t + dur + 0.2);
     beds.push(s); reg(s, dur + 0.2);
   };
   A.stopBeds = function () {
-    beds.forEach(function (n) { try { n.stop(); } catch (e) {} });
+    beds.forEach(stopNode);
     beds = [];
   };
 
+
+  /* ---------------- RENDU HORS LIGNE ----------------
+     L'outil d'export monte le moteur sur un OfflineAudioContext et
+     ordonnance chaque repère à son temps absolu. Le rendu est donc
+     identique à la page, au sample près, et reproductible : on peut
+     regénérer le MP4 après n'importe quelle retouche de la copie.
+     N'a aucun effet sur la lecture normale. */
+  A.offline = function (oc) {
+    ctx = oc; bedBuf = null; noiseBuf = null;
+    live = []; beds = [];
+    muted = false; enabled = true;
+    buildGraph();
+    schedAt = 0;
+    return A;
+  };
+  A.seek = function (sec) { schedAt = sec; };
   g.SFX = A;
 })(window);

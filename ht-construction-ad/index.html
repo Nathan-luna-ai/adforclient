@@ -538,13 +538,16 @@ body{
        anticipation (avant)  ->  impact (sur la coupe)  ->  queue (réverbe)
      C'est l'anticipation qui manque à la plupart des montages : sans elle,
      un son sur une coupe s'entend comme un bip, pas comme une transition. */
+  var fxLog=[], fxRec=false;
   function punch(big){
+    if(fxRec) fxLog.push({at:t,kind:big?'big':'hit',dur:big?0.3:0.17});
     if(reduce) return;
     reel.classList.remove('hit','big'); void reel.offsetWidth;
     reel.classList.add('hit'); if(big) reel.classList.add('big');
     setTimeout(function(){ reel.classList.remove('hit','big'); }, big?310:180);
   }
   function doFlash(){
+    if(fxRec) fxLog.push({at:t,kind:'flash',dur:0.3});
     if(reduce) return;
     flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
     setTimeout(function(){ flash.classList.remove('go'); },320);
@@ -568,7 +571,7 @@ body{
     {t:10.40,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.8,f0:160,f1:32,dec:0.75,body:2200,send:0.42}); doFlash(); punch(true); }},
 
     /* ACTE 2 — matières nettes, accordées, en montée */
-    {t:10.90,f:function(){ SFX.mallet({freq:110,peak:0.10,dec:1.7}); SFX.roomTone({dur:14.4,peak:0.011,freq:2600}); }},
+    {t:10.90,f:function(){ SFX.mallet({freq:110,peak:0.10,dec:1.7}); SFX.roomTone({dur:14.4,peak:0.018}); }},
     {t:14.85,f:function(){ SFX.air({peak:0.045,pan:-0.3}); }},
     {t:15.05,f:function(){ SFX.mallet({freq:146.83,peak:0.10,dec:1.4,pan:0.10}); punch(); }},
     {t:15.30,f:function(){ SFX.mallet({freq:220,peak:0.045,dec:0.7,pan:-0.2}); }},
@@ -728,6 +731,118 @@ body{
     if(!sfxtog.checked){ sfxtog.checked=true; SFX.enable(true); badge(); }
     SFX.test(); setTimeout(audioState,300);
   });
+
+  /* ---------- crochet d'export ----------
+     Le rendu MP4 avance la ligne de temps image par image. Deux choses ne
+     survivent pas au pas-à-pas : le punch et le flash, qui sont des
+     animations CSS pilotées par l'horloge du navigateur, pas par t. On les
+     rejoue donc analytiquement, avec les mêmes courbes que la feuille de
+     style — sinon les accents disparaissent de la vidéo livrée.
+     Rien ici ne s'exécute pendant la lecture normale. */
+  function bezier(p1x,p1y,p2x,p2y){
+    function ca(a1,a2){ return 1-3*a2+3*a1; }
+    function cb(a1,a2){ return 3*a2-6*a1; }
+    function cc(a1){ return 3*a1; }
+    function calc(u,a1,a2){ return ((ca(a1,a2)*u+cb(a1,a2))*u+cc(a1))*u; }
+    function slope(u,a1,a2){ return 3*ca(a1,a2)*u*u+2*cb(a1,a2)*u+cc(a1); }
+    return function(x){
+      var u=x;
+      for(var i=0;i<8;i++){ var s=slope(u,p1x,p2x); if(!s) break; u-=(calc(u,p1x,p2x)-x)/s; }
+      return calc(u,p1y,p2y);
+    };
+  }
+  var easePunch=bezier(.2,.9,.3,1), easeOut=bezier(0,0,.58,1);
+
+  function wav(buf,gain){
+    var ch=buf.numberOfChannels, n=buf.length, sr=buf.sampleRate, bytes=n*ch*2;
+    var d=new DataView(new ArrayBuffer(44+bytes));
+    function s(o,str){ for(var i=0;i<str.length;i++) d.setUint8(o+i,str.charCodeAt(i)); }
+    s(0,'RIFF'); d.setUint32(4,36+bytes,true); s(8,'WAVEfmt ');
+    d.setUint32(16,16,true); d.setUint16(20,1,true); d.setUint16(22,ch,true);
+    d.setUint32(24,sr,true); d.setUint32(28,sr*ch*2,true);
+    d.setUint16(32,ch*2,true); d.setUint16(34,16,true);
+    s(36,'data'); d.setUint32(40,bytes,true);
+    var cd=[],c; for(c=0;c<ch;c++) cd.push(buf.getChannelData(c));
+    var o=44;
+    for(var i=0;i<n;i++) for(c=0;c<ch;c++){
+      var v=Math.max(-1,Math.min(1,cd[c][i]*gain));
+      d.setInt16(o,v<0?v*0x8000:v*0x7fff,true); o+=2;
+    }
+    var u8=new Uint8Array(d.buffer), out='';
+    for(var k=0;k<u8.length;k+=0x8000) out+=String.fromCharCode.apply(null,u8.subarray(k,k+0x8000));
+    return btoa(out);
+  }
+
+  window.AD={
+    DUR:DUR, stage:stage, cueCount:CUES.length,
+
+    /* Relève les punchs et les flashs en parcourant les repères à vide. */
+    scanFx:function(){
+      fxLog=[]; fxRec=true;
+      var keepT=t, keepC=cursor;
+      SFX.enable(false);
+      for(var i=0;i<CUES.length;i++){ t=CUES[i].t; CUES[i].f(); }
+      SFX.enable(true);
+      fxRec=false; t=keepT; cursor=keepC;
+      return fxLog.length;
+    },
+
+    /* La bande son entière, rendue hors ligne.
+       Le mixage de la page vise l'impact, pas un niveau de livraison :
+       sommé d'un bout à l'autre il dépasse le 0 dBFS. On mesure donc la
+       crête réelle et on redescend le tout sous -1 dBFS AVANT de
+       quantifier en 16 bits, sinon l'écrêtage est gravé dans le fichier
+       livré. La cible de loudness est posée ensuite, par ffmpeg. */
+    renderAudio:async function(SR){
+      var oc=new OfflineAudioContext(2,Math.ceil(SR*(DUR+1.5)),SR);
+      SFX.offline(oc);
+      for(var i=0;i<CUES.length;i++){ SFX.seek(CUES[i].t); CUES[i].f(); }
+      var buf=await oc.startRendering(), peak=0, c, k;
+      for(c=0;c<buf.numberOfChannels;c++){
+        var d=buf.getChannelData(c);
+        for(k=0;k<d.length;k++){ var a=Math.abs(d[k]); if(a>peak) peak=a; }
+      }
+      var ceil=Math.pow(10,-1/20), gain=peak>ceil?ceil/peak:1;
+      return { b64:wav(buf,gain), peak:peak, gain:gain };
+    },
+
+    /* Positionne la page sur un temps donné, effets compris. */
+    seekExport:function(sec){
+      t=sec; syncCursor(); render();
+      reel.classList.remove('hit','big'); flash.classList.remove('go');
+      var sc=1, br=1, ct=1, fo=0;
+      for(var i=0;i<fxLog.length;i++){
+        var e=fxLog[i], el=sec-e.at;
+        if(el<0||el>=e.dur) continue;
+        if(e.kind==='flash'){ fo=Math.max(fo,0.9*(1-easeOut(el/e.dur))); continue; }
+        var q=easePunch(el/e.dur), big=e.kind==='big';
+        var s0=big?1.05:1.02, b0=big?1.7:1.34, c0=big?1.08:1;
+        sc=s0+(1-s0)*q; br=b0+(1-b0)*q; ct=c0+(1-c0)*q;
+      }
+      reel.style.animation='none';
+      reel.style.transform='scale('+sc.toFixed(4)+')';
+      reel.style.filter='brightness('+br.toFixed(3)+') contrast('+ct.toFixed(3)+')';
+      flash.style.animation='none';
+      flash.style.opacity=fo.toFixed(3);
+    },
+
+    /* Isole le cadre 9:16 et le fixe à la taille de livraison.
+       Le fichier livré ne doit contenir que la publicité : on retire
+       l'habillage du lecteur — bouton de lecture (qui pose en plus un
+       voile sombre sur toute l'image), badge de son, repères de zone
+       sûre. Ils n'ont de sens que sur la page. */
+    framePage:function(w,h){
+      var b=document.body;
+      [].slice.call(stage.children).forEach(function(el){ if(el!==reel) el.remove(); });
+      b.appendChild(stage);
+      [].slice.call(b.children).forEach(function(el){ if(el!==stage) el.style.display='none'; });
+      document.documentElement.style.cssText='margin:0;padding:0;background:#000';
+      b.style.cssText='margin:0;padding:0;background:#000;overflow:hidden';
+      stage.style.cssText+=';position:fixed;left:0;top:0;margin:0;width:'+w+'px;height:'+h+
+        'px;max-width:none;aspect-ratio:auto;border-radius:0;box-shadow:none';
+    }
+  };
+
   badge(); render();
 })();
 </script>
