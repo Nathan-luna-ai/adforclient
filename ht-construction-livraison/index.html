@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Livraison HT Construction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#121a15; --sage:#93b07f; --sage3:#587a4a; --sage-light:#e4ecdb;
+  --paper:#f6f7f2; --paper2:#e9eee3; --white:#fcfcf9;
+  --bg:var(--paper); --surface:var(--white); --surface2:var(--paper2);
+  --text:#1c241f; --muted:#55605a; --line:rgba(31,43,38,.14);
+  --accent:var(--sage3); --accent-soft:var(--sage-light);
+  --warn:#8a5a2b; --warn-soft:#f6ecdd; --rough:#a8552f; --rough-soft:#f7e9e1;
+  --sans:"Manrope",ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1411; --surface:#161f1a; --surface2:#1c2721;
+    --text:#e8ede8; --muted:#97a69d; --line:rgba(232,237,232,.14);
+    --accent:var(--sage); --accent-soft:#26342a;
+    --warn:#d6a866; --warn-soft:#2b2318; --rough:#d98f62; --rough-soft:#2e2019;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1411; --surface:#161f1a; --surface2:#1c2721;
+  --text:#e8ede8; --muted:#97a69d; --line:rgba(232,237,232,.14);
+  --accent:var(--sage); --accent-soft:#26342a;
+  --warn:#d6a866; --warn-soft:#2b2318; --rough:#d98f62; --rough-soft:#2e2019;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
+     font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px; margin:0 auto; padding-inline:20px; padding-block:34px 72px}
+
+.mast{display:flex; flex-wrap:wrap; gap:16px 28px; align-items:baseline; margin-bottom:8px}
+.mast h1{font-size:clamp(25px,3.4vw,36px); font-weight:800; letter-spacing:-.022em; margin:0}
+.mast .sub{color:var(--muted); font-size:14px; margin:4px 0 0}
+.specs{display:flex; flex-wrap:wrap; gap:7px; margin-left:auto}
+.spec{font-family:var(--mono); font-size:11px; padding:5px 9px; border:1px solid var(--line);
+      border-radius:999px; color:var(--muted); white-space:nowrap}
+.spec.on{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+.intro{color:var(--muted); font-size:14.5px; max-width:74ch; margin:14px 0 30px}
+
+h2{font-size:19px; font-weight:800; letter-spacing:-.015em; margin:38px 0 6px}
+h2:first-of-type{margin-top:26px}
+.lede{color:var(--muted); font-size:14px; margin:0 0 16px; max-width:74ch}
+
+table{width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:8px}
+th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+   color:var(--muted); font-weight:500}
+td code{font-family:var(--mono); font-size:12px; word-break:break-all}
+td.num{font-family:var(--mono); color:var(--muted); white-space:nowrap}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:13px;
+      padding:18px 19px; margin-bottom:16px}
+.card > h3{margin:0; font-size:17px; font-weight:800; letter-spacing:-.015em}
+.tagrow{display:flex; flex-wrap:wrap; gap:6px; margin:9px 0 12px}
+.tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+     padding:4px 8px; border-radius:6px; background:var(--accent-soft); color:var(--accent)}
+.tag.file{background:var(--surface2); color:var(--muted)}
+.why{color:var(--muted); font-size:13.5px; margin:0 0 14px; max-width:74ch}
+
+.fields{margin:0; display:grid; gap:1px; background:var(--line);
+        border:1px solid var(--line); border-radius:10px; overflow:hidden}
+.fld{background:var(--surface); display:grid; grid-template-columns:132px minmax(0,1fr) auto;
+     gap:12px; align-items:start; padding:11px 13px}
+@media (max-width:620px){ .fld{grid-template-columns:1fr; gap:5px} }
+.fld dt{font-family:var(--mono); font-size:11px; letter-spacing:.07em; text-transform:uppercase;
+        color:var(--muted); padding-top:2px}
+.fld dd{margin:0; font-size:14px; white-space:pre-wrap}
+.fld dd.mono{font-family:var(--mono); font-size:12.5px}
+.cnt{font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-left:8px; white-space:nowrap}
+.cnt.over{color:var(--rough)}
+.cp{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
+    border:1px solid var(--line); background:var(--surface2); color:var(--muted);
+    border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap}
+.cp:hover{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+.cp.done{color:var(--accent)}
+
+.note{margin-top:34px; padding:18px 20px; border-radius:12px;
+      background:var(--surface); border:1px solid var(--line)}
+.note h3{margin:0 0 9px; font-size:13.5px; font-weight:800}
+.note ul{margin:0; padding-left:18px}
+.note li{margin-bottom:8px; font-size:13.5px; color:var(--muted)}
+.note li b{color:var(--text)}
+.note.warn{background:var(--warn-soft); border-color:color-mix(in srgb,var(--warn) 34%,transparent)}
+.note.warn li b{color:var(--warn)}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <h1>Livraison — HT Construction</h1>
+      <p class="sub">Six créatifs · Meta (Facebook &amp; Instagram) · Montréal et Rive-Sud</p>
+    </div>
+    <div class="specs">
+      <span class="spec on">Prêt à téléverser</span>
+      <span class="spec">FR-QC</span>
+      <span class="spec on">Faits vérifiés seulement</span>
+    </div>
+  </header>
+
+  <p class="intro">Tout ce qu'il faut pour lancer les annonces : les fichiers à envoyer, le texte
+  exact à coller dans le gestionnaire de publicités, et le placement qui convient à chaque format.
+  Rien dans cette page n'est inventé — licences, zone desservie, services et citations viennent du
+  site de HT Construction. Les champs se copient en un clic.</p>
+
+  <h2>1. Les fichiers</h2>
+  <p class="lede">Les douze créatifs sont dans le même dossier que cette page. Environ 36 Mo au
+  total, donc un dossier partagé ou un transfert de fichiers plutôt qu'une pièce jointe.</p>
+  <table>
+    <tr><th>Fichier</th><th>Format</th><th>Poids</th><th>Placement</th></tr>
+    <tr><td><code>ht-construction-ad_1080x1920_30fps.mp4</code></td><td>Vidéo 30 s · 9:16</td><td class="num">9,1 Mo</td><td>Reels · Stories</td></tr>
+    <tr><td><code>ht-construction-ad-petit_1080x1920_30fps.mp4</code></td><td>Vidéo 21 s · 9:16</td><td class="num">6,1 Mo</td><td>Reels · Stories</td></tr>
+    <tr><td><code>ht-construction-ad-long_1080x1920_30fps.mp4</code></td><td>Vidéo 54 s · 9:16</td><td class="num">12,0 Mo</td><td>Reels · Stories</td></tr>
+    <tr><td><code>ht-construction-static_c1_*.png</code></td><td>Affiche · 4:5 · 1:1 · 9:16</td><td class="num">3,7 Mo</td><td>Fil · Stories</td></tr>
+    <tr><td><code>ht-construction-static_c2_*.png</code></td><td>Affiche · 4:5 · 1:1 · 9:16</td><td class="num">2,2 Mo</td><td>Fil · Stories</td></tr>
+    <tr><td><code>ht-construction-static_c3_*.png</code></td><td>Affiche · 4:5 · 1:1 · 9:16</td><td class="num">3,0 Mo</td><td>Fil · Stories</td></tr>
+  </table>
+  <p class="lede">Les trois vidéos portent leur bande sonore. Les fichiers <code>.wav</code> séparés
+  restent du côté de la production : ils ne servent qu'à un monteur qui voudrait remonter les vidéos.</p>
+
+  <h2>2. Le placement, avant tout le reste</h2>
+  <p class="lede">C'est le point où une bonne création se gaspille. Les trois vidéos sont en 9:16,
+  c'est-à-dire le format natif des Reels et des Stories — pas celui du fil.</p>
+  <div class="note warn">
+    <ul>
+      <li><b>Décochez « placements Advantage+ » et choisissez les placements à la main.</b> Laissé
+      automatique, Meta recadre la vidéo verticale pour le fil et coupe le texte incrusté en haut et
+      en bas — exactement là où se trouvent les accroches et le numéro de téléphone.</li>
+      <li><b>Vidéos → Reels, Stories, et Reels Instagram seulement.</b> Le texte a été composé pour
+      les zones sûres de ce format : 14 % en haut, 35 % en bas.</li>
+      <li><b>Fil → les affiches en 4:5.</b> C'est le format que le fil privilégie et il occupe le plus
+      de hauteur d'écran. Le 1:1 sert de secours, le 9:16 sert aux Stories.</li>
+      <li><b>Pas de vidéo 4:5 pour l'instant.</b> Un recadrage centré du 9:16 couperait les accroches.
+      Si le fil doit recevoir de la vidéo, il faut un remontage au format — c'est une production à
+      part, pas un export.</li>
+    </ul>
+  </div>
+
+  <h2>3. Le texte à coller — vidéos</h2>
+  <p class="lede">Trois angles distincts, pas trois reformulations : c'est ce qui rend le test
+  lisible. Une seule variable change entre deux annonces d'un même angle.</p>
+
+  <div class="card">
+    <h3>V1 · Le risque, c'est l'entrepreneur</h3>
+    <div class="tagrow">
+      <span class="tag">Angle : confiance</span>
+      <span class="tag">Public froid</span>
+      <span class="tag file">ht-construction-ad_1080x1920_30fps.mp4</span>
+    </div>
+    <p class="why">Déplace le débat du prix vers le risque. Si cet angle gagne, ce qui bloque le
+    marché est la confiance, pas le budget — et toute la suite des créatifs doit viser la preuve.</p>
+    <dl class="fields">
+      <div class="fld"><dt>Texte principal</dt><dd>Le plus grand risque d'une rénovation, ce n'est pas le budget.
+
+C'est de ne pas savoir qui va entrer chez vous, combien de temps ça va durer, et dans quel état vous allez retrouver la maison chaque soir.
+
+Chez HT Construction : une soumission détaillée avant que ça commence, un chantier tenu propre, et les licences pour le prouver.
+
+RBQ 5823-1101-01 · CCQ er937209 · Membre APCHQ
+Montréal et Rive-Sud · Soumission gratuite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Titre</dt><dd data-max="40">Le risque, c'est l'entrepreneur</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Description</dt><dd data-max="30">Soumission gratuite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Bouton</dt><dd class="mono">Obtenir un devis</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Destination</dt><dd class="mono">constructionht.com — section soumission</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Public</dt><dd>Propriétaires 30-65 ans · Montréal + Rive-Sud, rayon 25 km</dd><button class="cp" type="button">Copier</button></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>V2 · Aucun projet n'est trop petit</h3>
+    <div class="tagrow">
+      <span class="tag">Angle : objection du petit travail</span>
+      <span class="tag">Public froid · le plus large</span>
+      <span class="tag file">ht-construction-ad-petit_1080x1920_30fps.mp4</span>
+    </div>
+    <p class="why">L'engagement demandé est minime, donc c'est l'angle le moins cher à convertir et
+    celui par lequel commencer. Le texte principal est <b>volontairement identique à celui de
+    l'affiche 1</b> : le test compare alors la création — vidéo contre image — et non la copie.</p>
+    <dl class="fields">
+      <div class="fld"><dt>Texte principal</dt><dd>Un trou dans le gypse depuis deux ans. Un plancher qui craque dans une seule pièce. Un balcon qu'il faudrait refaire avant l'hiver.
+
+Vous vous dites que c'est trop petit pour appeler quelqu'un.
+
+Chez HT Construction, aucun projet n'est trop petit. On se déplace, on regarde, et on vous remet une soumission détaillée sans frais.
+
+Montréal et Rive-Sud · RBQ 5823-1101-01 · Membre APCHQ</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Titre</dt><dd data-max="40">Aucun projet n'est trop petit</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Description</dt><dd data-max="30">Soumission gratuite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Bouton</dt><dd class="mono">Obtenir un devis</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Destination</dt><dd class="mono">constructionht.com — section soumission</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Public</dt><dd>Propriétaires 30-65 ans · Montréal + Rive-Sud, rayon 25 km</dd><button class="cp" type="button">Copier</button></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>V3 · On travaille autrement — format long</h3>
+    <div class="tagrow">
+      <span class="tag">Angle : mécanisme et preuve</span>
+      <span class="tag">Reciblage</span>
+      <span class="tag file">ht-construction-ad-long_1080x1920_30fps.mp4</span>
+    </div>
+    <p class="why">Cinquante-quatre secondes, c'est long pour un public froid. Cette annonce est faite
+    pour le reciblage : elle s'adresse à quelqu'un qui connaît déjà le nom et veut savoir comment ça
+    se passe. Si elle gagne là, c'est le mécanisme — la visite avant le prix — qui conclut.</p>
+    <dl class="fields">
+      <div class="fld"><dt>Texte principal</dt><dd>« Combien ça va coûter? »
+
+On ne donne pas de chiffre au téléphone. On se déplace, on mesure, et on vous remet un prix précis après la visite — pas une estimation vague.
+
+Cuisine, salle de bain, plancher, gypse, balcon : cinq spécialités, une seule équipe, un seul interlocuteur. Douze villes desservies, de Montréal à Châteauguay.
+
+RBQ 5823-1101-01 · CCQ er937209 · Membre APCHQ
+Soumission détaillée sans frais · 514 674-8697</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Titre</dt><dd data-max="40">Un prix précis après la visite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Description</dt><dd data-max="30">Soumission gratuite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Bouton</dt><dd class="mono">Obtenir un devis</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Destination</dt><dd class="mono">constructionht.com — section soumission</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Public</dt><dd>Reciblage — visiteurs du site 30 jours + engagement Facebook et Instagram 90 jours</dd><button class="cp" type="button">Copier</button></div>
+    </dl>
+  </div>
+
+  <h2>4. Le texte à coller — affiches</h2>
+  <p class="lede">Chaque affiche existe en trois formats ; le texte ne change pas d'un format à
+  l'autre. A1 partage volontairement son texte avec la vidéo V2.</p>
+
+  <div class="card">
+    <h3>A1 · Aucun projet n'est trop petit</h3>
+    <div class="tagrow">
+      <span class="tag">Angle : objection du petit travail</span>
+      <span class="tag">Public froid</span>
+      <span class="tag file">ht-construction-static_c1_*.png</span>
+    </div>
+    <p class="why">Beaucoup de gens repoussent un petit travail en supposant qu'un entrepreneur ne se
+    déplacera pas pour si peu. L'affiche lève l'objection avec la réponse du site, mot pour mot.</p>
+    <dl class="fields">
+      <div class="fld"><dt>Texte principal</dt><dd>Un trou dans le gypse depuis deux ans. Un plancher qui craque dans une seule pièce. Un balcon qu'il faudrait refaire avant l'hiver.
+
+Vous vous dites que c'est trop petit pour appeler quelqu'un.
+
+Chez HT Construction, aucun projet n'est trop petit. On se déplace, on regarde, et on vous remet une soumission détaillée sans frais.
+
+Montréal et Rive-Sud · RBQ 5823-1101-01 · Membre APCHQ</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Titre</dt><dd data-max="40">Aucun projet n'est trop petit</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Description</dt><dd data-max="30">Soumission gratuite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Bouton</dt><dd class="mono">Obtenir un devis</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Destination</dt><dd class="mono">constructionht.com — section soumission</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Public</dt><dd>Propriétaires 30-65 ans · Montréal + Rive-Sud, rayon 25 km</dd><button class="cp" type="button">Copier</button></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>A2 · Un prix précis, pas une estimation vague</h3>
+    <div class="tagrow">
+      <span class="tag">Angle : transparence du prix</span>
+      <span class="tag">Reciblage</span>
+      <span class="tag file">ht-construction-static_c2_*.png</span>
+    </div>
+    <p class="why">Répond à la question qui bloque tout — « combien ça coûte » — en expliquant
+    pourquoi la réponse exige une visite. Même angle que la vidéo V3, en version courte.</p>
+    <dl class="fields">
+      <div class="fld"><dt>Texte principal</dt><dd>« Combien ça va coûter? »
+
+La vraie réponse dépend de la pièce, des matériaux et de l'état de l'existant. C'est pour ça qu'on ne donne pas de chiffre au téléphone.
+
+On se déplace, on évalue, et on vous remet un prix précis après la visite — pas une estimation vague. Vous savez ce qui est inclus, ce que ça coûte et combien de temps ça prend, avant que quoi que ce soit commence.
+
+Soumission détaillée sans frais · Montréal et Rive-Sud</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Titre</dt><dd data-max="40">Un prix précis après la visite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Description</dt><dd data-max="30">Soumission détaillée gratuite</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Bouton</dt><dd class="mono">Obtenir un devis</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Destination</dt><dd class="mono">constructionht.com — section soumission</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Public</dt><dd>Reciblage 30 jours + propriétaires ayant consulté des pages rénovation</dd><button class="cp" type="button">Copier</button></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>A3 · Cinq spécialités, une seule équipe</h3>
+    <div class="tagrow">
+      <span class="tag">Angle : coordination</span>
+      <span class="tag">Public froid</span>
+      <span class="tag file">ht-construction-static_c3_*.png</span>
+    </div>
+    <p class="why">Vise le cauchemar de la coordination : un seul interlocuteur pour tous les corps de
+    métier. Seul angle sans vidéo — c'est celui à produire en vidéo si l'affiche fonctionne.</p>
+    <dl class="fields">
+      <div class="fld"><dt>Texte principal</dt><dd>Une rénovation, c'est rarement un seul métier. C'est un plombier, un électricien, un céramiste, un poseur de gypse — et quelqu'un pour que tout ça arrive dans le bon ordre.
+
+Chez HT Construction, c'est nous qui coordonnons. Cuisine, salle de bain, plancher, gypse, balcon : cinq spécialités, une seule équipe, un seul interlocuteur.
+
+Soumission gratuite · RBQ 5823-1101-01 · Membre APCHQ</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Titre</dt><dd data-max="40">Cinq spécialités, une seule équipe</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Description</dt><dd data-max="30">Montréal et Rive-Sud</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Bouton</dt><dd class="mono">En savoir plus</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Destination</dt><dd class="mono">constructionht.com — section services</dd><button class="cp" type="button">Copier</button></div>
+      <div class="fld"><dt>Public</dt><dd>Propriétaires · intérêts rénovation, design d'intérieur, immobilier</dd><button class="cp" type="button">Copier</button></div>
+    </dl>
+  </div>
+
+  <h2>5. Par où commencer</h2>
+  <p class="lede">Six créatifs lancés ensemble sur un petit budget ne donnent aucun résultat lisible.
+  Ordre proposé.</p>
+  <table>
+    <tr><th>Étape</th><th>Ce qu'on lance</th><th>Ce qu'on apprend</th></tr>
+    <tr><td class="num">1</td><td>V2 (vidéo) contre A1 (affiche), même texte</td><td>Si la vidéo vaut son coût de production sur cet angle</td></tr>
+    <tr><td class="num">2</td><td>Le gagnant contre V1 · angle confiance</td><td>Si le blocage du marché est la confiance ou le petit format</td></tr>
+    <tr><td class="num">3</td><td>V3 en reciblage sur les 30 derniers jours</td><td>Si le mécanisme conclut ceux qui ont déjà vu la marque</td></tr>
+  </table>
+
+  <div class="note warn">
+    <h3>À confirmer avec le client avant de lancer</h3>
+    <ul>
+      <li><b>Les licences sont-elles toujours actives?</b> RBQ 5823-1101-01 et CCQ er937209 sont
+      incrustés dans la vidéo et dans les affiches. Un numéro échu dans une annonce en diffusion est
+      un problème réglementaire.</li>
+      <li><b>Le témoignage de Marie-Ève T.</b> apparaît dans la vidéo de 30 s (V1) à 22 s.
+      Son autorisation écrite doit être au dossier avant diffusion. <b>V2, V3 et les trois affiches
+      n'en contiennent pas</b> et peuvent partir sans attendre.</li>
+      <li><b>La soumission gratuite s'applique-t-elle à toute la zone?</b> L'offre est répétée dans
+      les six créatifs.</li>
+      <li><b>Les douze villes.</b> La vidéo de 54 s affiche le chiffre à l'écran. Si la zone desservie
+      change, le chiffre change avec elle et la vidéo doit être régénérée.</li>
+      <li><b>La page de destination doit tenir la promesse.</b> Les six annonces mènent à une
+      soumission gratuite : si la page ne propose pas un formulaire de soumission visible sans
+      défilement, le taux de clic sera bon et la conversion mauvaise.</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <h3>Notes</h3>
+    <ul>
+      <li><b>Aucun chiffre de performance n'apparaît dans les textes.</b> Pas de « 200 clients
+      satisfaits », pas de délai promis, pas de rabais : rien qui ne soit pas vérifiable sur le site.
+      Une affirmation inventée dans une annonce peut faire restreindre le compte publicitaire.</li>
+      <li><b>Les textes sont lisibles avant la troncature.</b> Meta coupe autour de 125 caractères sur
+      mobile ; dans les trois cas la bascule arrive avant le « Voir plus ».</li>
+      <li><b>Pour regénérer les fichiers :</b> <code>npm run render</code> produit les trois vidéos et
+      les neuf affiches dans <code>export/</code>.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* Compteurs de caractères : un titre tronqué au milieu d'un mot est un
+     test gaspillé, autant le voir ici plutôt que dans le gestionnaire. */
+  document.querySelectorAll('.fld dd[data-max]').forEach(function(dd){
+    var max=+dd.dataset.max, n=dd.textContent.trim().length;
+    var s=document.createElement('span');
+    s.className='cnt'+(n>max?' over':'');
+    s.textContent=n+'/'+max;
+    dd.appendChild(s);
+  });
+
+  document.querySelectorAll('.cp').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var dd=btn.parentNode.querySelector('dd');
+      var cnt=dd.querySelector('.cnt');
+      var txt=(cnt? dd.textContent.slice(0, dd.textContent.length-cnt.textContent.length) : dd.textContent).trim();
+      navigator.clipboard.writeText(txt).then(function(){
+        var old=btn.textContent;
+        btn.textContent='Copié'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent=old; btn.classList.remove('done'); },1400);
+      });
+    });
+  });
+})();
+</script>
