@@ -1,7 +1,7 @@
 <title>Pub Rénovation HT Construction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap">
 <style>
 :root{
   --ink:#121a15; --ink2:#1f2b26; --slate:#2f4a3f;
@@ -14,7 +14,7 @@
   --rough:#a8552f; --rough-soft:#f7e9e1;
   --stage:#070a08; --warn:#8a5a2b; --warn-soft:#f6ecdd;
   --sans:"Manrope",ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --mono:var(--sans);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -45,7 +45,7 @@ body{
 .mast .sub{color:var(--muted); font-size:14px; margin:4px 0 0}
 .specs{display:flex; flex-wrap:wrap; gap:7px; margin-left:auto}
 .spec{
-  font-family:var(--mono); font-size:11px; letter-spacing:.02em;
+  font-family:var(--sans); font-size:11px; letter-spacing:.02em; font-weight:600;
   padding:5px 9px; border:1px solid var(--line); border-radius:999px;
   color:var(--muted); white-space:nowrap;
 }
@@ -62,43 +62,27 @@ body{
   box-shadow:0 2px 4px rgba(0,0,0,.18), 0 30px 60px -22px rgba(18,26,21,.55);
   isolation:isolate; user-select:none; container-type:inline-size;
 }
-.reel{position:absolute; inset:0; transform-origin:center; will-change:transform,filter}
-.reel.hit{animation:hit .17s cubic-bezier(.2,.9,.3,1)}
-.reel.hit.big{animation:hitbig .3s cubic-bezier(.2,.9,.3,1)}
-@keyframes hit{0%{transform:scale(1.02); filter:brightness(1.34)} 100%{transform:scale(1); filter:brightness(1)}}
-@keyframes hitbig{0%{transform:scale(1.05); filter:brightness(1.7) contrast(1.08)} 100%{transform:scale(1); filter:none}}
-.flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:3}
-.flash.go{animation:fl .3s ease-out}
-@keyframes fl{0%{opacity:.9} 100%{opacity:0}}
+.reel{position:absolute; inset:0; transform-origin:center}
 
 .shot{position:absolute; inset:0; opacity:0; will-change:opacity}
 .shot .ph{position:absolute; inset:0; background-size:cover; background-position:center; transform-origin:center; will-change:transform}
 .shot .veil{position:absolute; inset:0}
 
 .cap{position:absolute; left:7.5%; right:7.5%; opacity:0; will-change:opacity,transform; z-index:2}
-.cap.mid{top:50%}
+.cap.mid{top:50%; transform:translateY(-50%)}
 .cap.low{bottom:17%}
 .cap.hi{top:15%}
 
-.kicker{font-family:var(--mono); font-size:min(11px,2.9cqw); letter-spacing:.16em; text-transform:uppercase; color:var(--sage); margin-bottom:9px}
-.hed{font-weight:800; letter-spacing:-.025em; line-height:1.08; font-size:7.6cqw; color:#fff; text-wrap:balance; text-shadow:0 2px 26px rgba(0,0,0,.42)}
-.hed.sm{font-size:6.1cqw}
+.kicker{font-family:var(--sans); font-weight:700; font-size:min(11px,2.9cqw); letter-spacing:.14em; text-transform:uppercase; color:var(--sage); margin-bottom:9px}
+.hed{font-weight:800; letter-spacing:-.025em; line-height:1.1; font-size:8.2cqw; color:#fff; text-wrap:balance; text-shadow:0 2px 22px rgba(0,0,0,.4)}
+.hed.sm{font-size:6.4cqw}
 .hed em{font-style:normal; color:var(--sage)}
-.dek{font-size:4.1cqw; font-weight:600; color:rgba(255,255,255,.88); line-height:1.34; margin-top:10px; text-shadow:0 2px 18px rgba(0,0,0,.4)}
-.label{display:inline-block; padding:2.6cqw 5.4cqw; border-radius:999px; background:var(--sage); color:var(--ink); font-weight:800; font-size:4.3cqw; letter-spacing:-.01em; box-shadow:0 10px 26px -10px rgba(0,0,0,.5)}
-.chips{display:flex; flex-direction:column; gap:2.2cqw}
-.chip{
-  display:flex; align-items:center; justify-content:space-between; gap:3cqw;
-  padding:3cqw 4cqw; border-radius:2.6cqw; opacity:0;
-  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
-  backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
-}
-.chip b{font-family:var(--sans); font-weight:800; font-size:4.3cqw; color:#fff; letter-spacing:-.01em}
-.chip span{font-family:var(--mono); font-size:3.5cqw; color:var(--sage); letter-spacing:.02em}
-.offer{display:inline-block; padding:3cqw 6cqw; border-radius:999px; background:var(--sage); color:var(--ink); font-weight:800; font-size:4.4cqw; letter-spacing:-.01em}
-.tel{font-family:var(--mono); font-size:7.6cqw; color:#fff; font-weight:500; margin-top:4.2cqw; letter-spacing:.01em; text-shadow:0 2px 20px rgba(0,0,0,.5)}
-.site{font-family:var(--mono); font-size:3.6cqw; color:rgba(255,255,255,.7); margin-top:1.6cqw; letter-spacing:.05em}
-.wordmark{font-family:var(--mono); font-size:3.6cqw; letter-spacing:.14em; text-transform:uppercase; color:var(--sage); margin-bottom:2.4cqw}
+.dek{font-size:4.1cqw; font-weight:600; color:rgba(255,255,255,.9); line-height:1.34; margin-top:10px; text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.svcline{font-weight:800; font-size:4.8cqw; color:#fff; line-height:1.4; text-wrap:balance; letter-spacing:-.005em; text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.label{display:inline-block; padding:2.6cqw 5.4cqw; border-radius:999px; background:var(--sage); color:var(--ink); font-weight:800; font-size:4.6cqw; letter-spacing:-.01em; box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}
+.wordmark{font-family:var(--sans); font-weight:800; font-size:3.9cqw; letter-spacing:.1em; text-transform:uppercase; color:var(--sage); margin-bottom:2.6cqw}
+.tel{font-family:var(--sans); font-variant-numeric:tabular-nums; font-size:7.6cqw; color:#fff; font-weight:800; margin-top:4.4cqw; letter-spacing:.005em; text-shadow:0 2px 18px rgba(0,0,0,.5)}
+.site{font-family:var(--sans); font-weight:600; font-size:3.7cqw; color:rgba(255,255,255,.72); margin-top:1.6cqw; letter-spacing:.02em}
 
 .safe{position:absolute; inset:0; display:none; pointer-events:none; z-index:4}
 .safe.on{display:block}
@@ -106,11 +90,11 @@ body{
 .safe .band.t{top:0; height:14%; border-bottom:1px dashed rgba(255,255,255,.55)}
 .safe .band.b{bottom:0; height:35%; border-top:1px dashed rgba(255,255,255,.55)}
 .safe .band.r{top:14%; bottom:35%; left:auto; right:0; width:16%; border-left:1px dashed rgba(255,255,255,.55); background:rgba(226,86,64,.12)}
-.safe s{position:absolute; right:7px; font-family:var(--mono); font-size:9px; color:#fff; letter-spacing:.09em; text-decoration:none; text-transform:uppercase}
+.safe s{position:absolute; right:7px; font-family:var(--sans); font-size:9px; color:#fff; letter-spacing:.09em; text-decoration:none; text-transform:uppercase}
 
 .sndbadge{
   position:absolute; top:12px; right:12px; z-index:5; display:flex; align-items:center; gap:6px;
-  font-family:var(--mono); font-size:9.5px; letter-spacing:.09em;
+  font-family:var(--sans); font-weight:600; font-size:9.5px; letter-spacing:.06em;
   color:rgba(255,255,255,.92); background:rgba(0,0,0,.45);
   border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:4px 9px;
   backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
@@ -127,7 +111,7 @@ body{
 .bigplay[hidden]{display:none}
 .bigplay span.k{width:66px; height:66px; border-radius:50%; background:rgba(252,252,249,.95); display:grid; place-items:center; box-shadow:0 10px 30px -8px rgba(0,0,0,.6)}
 .bigplay svg{margin-left:4px}
-.bigplay small{position:absolute; bottom:10%; left:0; right:0; text-align:center; font-family:var(--mono); font-size:10px; letter-spacing:.1em; color:rgba(255,255,255,.8); text-transform:uppercase}
+.bigplay small{position:absolute; bottom:10%; left:0; right:0; text-align:center; font-family:var(--sans); font-weight:600; font-size:10px; letter-spacing:.1em; color:rgba(255,255,255,.8); text-transform:uppercase}
 
 .transport{margin-top:12px}
 .scrub{position:relative; height:26px; cursor:pointer; touch-action:none; display:flex; align-items:center}
@@ -144,23 +128,22 @@ body{
 .btn.pri:hover{filter:brightness(1.08); color:var(--white)}
 .btn.snd[aria-pressed="false"]{color:var(--muted)}
 .btn.snd[aria-pressed="true"]{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 48%,transparent)}
-.tc{font-family:var(--mono); font-size:12px; color:var(--muted); margin-left:auto; font-variant-numeric:tabular-nums}
-.tc b{color:var(--text); font-weight:500}
+.tc{font-family:var(--sans); font-size:12px; color:var(--muted); margin-left:auto; font-variant-numeric:tabular-nums}
+.tc b{color:var(--text); font-weight:600}
 .toggles{display:flex; gap:14px; margin-top:11px; flex-wrap:wrap}
 .tog{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--muted); cursor:pointer}
 .tog input{accent-color:var(--accent); margin:0; width:14px; height:14px}
 .audiowarn{display:none; margin-top:10px; padding:9px 11px; border-radius:9px; background:var(--warn-soft); color:var(--warn); font-size:12px; line-height:1.45; border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
 .audiowarn.on{display:block}
 
-.sheet h2, .col h2, .doc h2{font-size:12px; font-family:var(--mono); font-weight:500; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin:0 0 3px}
+.sheet h2, .col h2, .doc h2{font-size:12px; font-family:var(--sans); font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin:0 0 3px}
 .sheet .lede, .doc .lede{color:var(--muted); font-size:13.5px; margin:0 0 18px; max-width:66ch}
-.acts{display:flex; gap:3px; margin-bottom:16px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase}
+.acts{display:flex; gap:3px; margin-bottom:16px; font-family:var(--sans); font-weight:700; font-size:10px; letter-spacing:.08em; text-transform:uppercase}
 .acts div{padding:7px 8px; border-radius:7px; line-height:1.3}
-.acts .a1{flex:32; background:var(--rough-soft); color:var(--rough)}
-.acts .a2{flex:48; background:var(--warn-soft); color:var(--warn)}
-.acts .a3{flex:90; background:var(--accent-soft); color:var(--accent)}
-.acts .a4{flex:50; background:var(--surface2); color:var(--text)}
-.acts .a5{flex:60; background:var(--ink); color:var(--sage)}
+.acts .a1{flex:60; background:var(--rough-soft); color:var(--rough)}
+.acts .a2{flex:120; background:var(--accent-soft); color:var(--accent)}
+.acts .a3{flex:50; background:var(--warn-soft); color:var(--warn)}
+.acts .a4{flex:50; background:var(--ink); color:var(--sage)}
 .rows{display:flex; flex-direction:column; border-top:1px solid var(--line)}
 .row{
   display:grid; grid-template-columns:76px minmax(0,1fr); gap:0 18px;
@@ -171,12 +154,12 @@ body{
 .row:hover{background:var(--surface2)}
 .row:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
 .row[aria-current="true"]{background:var(--accent-soft)}
-.rtc{font-family:var(--mono); font-size:11.5px; color:var(--text); font-variant-numeric:tabular-nums; padding-top:2px; letter-spacing:.01em}
+.rtc{font-family:var(--sans); font-size:11.5px; color:var(--text); font-variant-numeric:tabular-nums; padding-top:2px; letter-spacing:.01em}
 .rtc span{color:var(--muted); font-size:10.5px}
-.rbeat{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.rbeat{font-family:var(--sans); font-weight:700; font-size:10px; letter-spacing:.11em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
 .rfr{font-weight:700; font-size:15.5px; letter-spacing:-.012em; margin-bottom:6px; text-wrap:balance}
 .rson{font-size:13px; color:var(--text); line-height:1.45; margin-bottom:5px; padding-left:10px; border-left:2px solid var(--accent)}
-.rson em{font-style:normal; font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:2px}
+.rson em{font-style:normal; font-family:var(--sans); font-weight:700; font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:2px}
 .rvis{color:var(--muted); font-size:12.5px; line-height:1.5}
 .rvis b{color:var(--text); font-weight:600}
 
@@ -185,7 +168,7 @@ body{
 .col > p.lede{color:var(--muted); font-size:13px; margin:0 0 16px}
 .alt{padding:13px 0; border-bottom:1px solid var(--line)}
 .alt:last-child{border-bottom:0}
-.alt .tag{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px}
+.alt .tag{font-family:var(--sans); font-weight:700; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px}
 .alt .fr{font-weight:700; font-size:14.5px; letter-spacing:-.01em; line-height:1.32}
 .alt .why{color:var(--muted); font-size:12.5px; margin-top:4px; line-height:1.5}
 .note{margin-top:40px; padding:18px 20px; border-radius:12px; background:var(--surface); border:1px solid var(--line)}
@@ -198,24 +181,22 @@ body{
 .doc + .doc{margin-top:44px}
 table.tbl{width:100%; border-collapse:collapse; font-size:12.8px; margin-top:14px}
 table.tbl caption{caption-side:top; text-align:left; margin-bottom:4px}
-table.tbl th{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-align:left; padding:8px 10px; border-bottom:1px solid var(--text)}
+table.tbl th{font-family:var(--sans); font-weight:700; font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); text-align:left; padding:8px 10px; border-bottom:1px solid var(--text)}
 table.tbl td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text)}
-table.tbl td.n{font-family:var(--mono); color:var(--muted); white-space:nowrap}
+table.tbl td.n{font-family:var(--sans); font-weight:700; color:var(--muted); white-space:nowrap}
 table.tbl tr:hover td{background:var(--surface2)}
 .warn-row td{background:var(--warn-soft)!important}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:28px}
 @media (max-width:760px){ .grid2{grid-template-columns:1fr} }
 .steps{margin:12px 0 0; padding-left:20px; color:var(--text); font-size:13.5px; line-height:1.65}
 .steps li{margin-bottom:6px}
-pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; border-radius:10px; font-family:var(--mono); font-size:12px; line-height:1.6; overflow-x:auto; margin-top:12px}
+pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; border-radius:10px; font-family:var(--sans); font-size:12px; line-height:1.6; overflow-x:auto; margin-top:12px}
 .vo{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-top:14px}
 .vo p{margin:0 0 10px; font-size:15px; line-height:1.6}
-.vo .wc{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.05em; text-transform:uppercase}
-.cctbl td:first-child{font-family:var(--mono); white-space:nowrap; color:var(--muted)}
+.vo .wc{font-family:var(--sans); font-weight:700; font-size:11px; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
 
 @media (prefers-reduced-motion:reduce){
   .shot .ph{transform:none!important}
-  .reel.hit,.reel.hit.big,.flash.go{animation:none}
 }
 </style>
 
@@ -223,13 +204,14 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
 
   <header class="mast">
     <div>
-      <h1>« Planifiez votre rénovation » — 28 s</h1>
-      <p class="sub">HT Construction · Meta Reels, Stories &amp; TikTok · Montréal et Rive-Sud · angle génération de leads</p>
+      <h1>« Votre maison mérite mieux » — 28 s</h1>
+      <p class="sub">HT Construction · Meta Reels &amp; Stories · Montréal · révision — crédibilité et génération de leads</p>
     </div>
     <div class="specs">
       <span class="spec">9:16 · 1080×1920</span>
-      <span class="spec">28 s · 8 plans</span>
-      <span class="spec on">Effets sonores synthétisés</span>
+      <span class="spec">28 s · 6 plans</span>
+      <span class="spec on">Une seule police (Manrope)</span>
+      <span class="spec on">Transitions en fondu, sans effet</span>
       <span class="spec">Aucune musique</span>
       <span class="spec on">Lisible en sourdine</span>
     </div>
@@ -241,93 +223,72 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
       <div class="stage" id="stage">
         <div class="reel" id="reel">
 
-          <!-- 1 · ACCROCHE 0.00–3.15 -->
-          <div class="shot" data-in="0" data-out="3.15" data-f="0.05" data-z0="1.03" data-z1="1.11">
+          <!-- 1 · ACCROCHE + ENTREPRISE + SERVICES 0.00–6.00 (un seul plan continu, mouvement de caméra très subtil) -->
+          <div class="shot" data-in="0" data-out="6.0" data-f="0.5" data-z0="1.02" data-z1="1.08">
             <div class="ph" style="background-image:url('img/cuisine.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.62) 0%,rgba(7,10,8,.16) 38%,rgba(7,10,8,.68) 100%)"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.7) 0%,rgba(7,10,8,.28) 32%,rgba(7,10,8,.14) 58%,rgba(7,10,8,.4) 100%)"></div>
           </div>
-          <div class="cap hi" data-in="0.2" data-out="3.05">
-            <div class="kicker">Rénovation · Montréal et Rive-Sud</div>
-            <div class="hed">Votre maison pourrait<br>ressembler à <em>ça</em>.</div>
+          <div class="cap hi" data-in="0.15" data-out="2.85">
+            <div class="hed">Votre maison<br>mérite mieux.</div>
           </div>
-
-          <!-- 2 · LA RÉALITÉ DU CHANTIER 3.15–5.15 -->
-          <div class="shot" data-in="3.15" data-out="5.15" data-f="0.05" data-z0="1.14" data-z1="1.26">
-            <div class="ph" style="background-image:url('img/reno.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.3) 0%,rgba(7,10,8,.2) 40%,rgba(7,10,8,.86) 100%)"></div>
+          <div class="cap hi" data-in="3.0" data-out="4.35">
+            <div class="hed sm">Rénovation résidentielle<br>à Montréal.</div>
           </div>
-          <div class="cap low" data-in="3.35" data-out="5.05">
-            <div class="hed sm">Chaque rénovation<br>commence par un chantier.</div>
+          <div class="cap hi" data-in="4.5" data-out="5.85">
+            <div class="svcline">Cuisine • Salle de bain<br>Sous-sol • Rénovation complète</div>
           </div>
 
-          <!-- 3 · LE STANDARD QU'ON LIVRE 5.15–8.00 -->
-          <div class="shot" data-in="5.15" data-out="8.0" data-f="0.05" data-z0="1.05" data-z1="1.13">
-            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:50% 70%"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.06) 40%,rgba(7,10,8,.78) 100%)"></div>
+          <!-- 2 · VITRINE — CUISINE 6.00–9.50 -->
+          <div class="shot" data-in="6.0" data-out="9.5" data-f="0.5" data-z0="1.09" data-z1="1.02">
+            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:68% 55%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.14) 0%,rgba(7,10,8,.06) 45%,rgba(7,10,8,.56) 100%)"></div>
           </div>
-          <div class="cap low" data-in="5.35" data-out="7.9">
-            <div class="hed sm">Voici le standard<br>qu'on livre.</div>
-          </div>
+          <div class="cap low" data-in="6.25" data-out="9.4"><span class="label">Cuisine</span></div>
 
-          <!-- 4 · SERVICES — CUISINE 8.00–11.20 -->
-          <div class="shot" data-in="8.0" data-out="11.2" data-f="0.05" data-z0="1.1" data-z1="1.02">
-            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:64% 46%"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.16) 0%,rgba(7,10,8,.08) 45%,rgba(7,10,8,.6) 100%)"></div>
-          </div>
-          <div class="cap low" data-in="8.2" data-out="11.1"><span class="label">Rénovation de cuisine</span></div>
-
-          <!-- 5 · SERVICES — SALLE DE BAIN 11.20–14.20 -->
-          <div class="shot" data-in="11.2" data-out="14.2" data-f="0.05" data-z0="1.03" data-z1="1.12">
+          <!-- 3 · VITRINE — SALLE DE BAIN 9.50–13.50 -->
+          <div class="shot" data-in="9.5" data-out="13.5" data-f="0.5" data-z0="1.02" data-z1="1.08">
             <div class="ph" style="background-image:url('img/sdb.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.14) 0%,rgba(7,10,8,.06) 45%,rgba(7,10,8,.6) 100%)"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.13) 0%,rgba(7,10,8,.06) 45%,rgba(7,10,8,.56) 100%)"></div>
           </div>
-          <div class="cap low" data-in="11.4" data-out="14.1"><span class="label">Rénovation de salle de bain</span></div>
+          <div class="cap low" data-in="9.75" data-out="13.4"><span class="label">Salle de bain</span></div>
 
-          <!-- 6 · SERVICES — BALCON / EXTÉRIEUR 14.20–17.00 -->
-          <div class="shot" data-in="14.2" data-out="17.0" data-f="0.05" data-z0="1.06" data-z1="1.14">
-            <div class="ph" style="background-image:url('img/balcon.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.2) 0%,rgba(7,10,8,.08) 42%,rgba(7,10,8,.62) 100%)"></div>
+          <!-- 4 · VITRINE — RÉNOVATION COMPLÈTE 13.50–18.00 -->
+          <div class="shot" data-in="13.5" data-out="18.0" data-f="0.5" data-z0="1.05" data-z1="1.11">
+            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:50% 68%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.13) 0%,rgba(7,10,8,.06) 45%,rgba(7,10,8,.56) 100%)"></div>
           </div>
-          <div class="cap low" data-in="14.4" data-out="16.9"><span class="label">Balcons &amp; extérieur</span></div>
+          <div class="cap low" data-in="13.75" data-out="17.9"><span class="label">Rénovation complète</span></div>
 
-          <!-- 7 · CONFIANCE / LOCAL 17.00–22.00 -->
-          <div class="shot" data-in="17.0" data-out="22.0" data-f="0.06" data-z0="1.12" data-z1="1.02">
-            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:45% 40%"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.66) 0%,rgba(7,10,8,.28) 40%,rgba(7,10,8,.72) 100%)"></div>
+          <!-- 5 · CONFIANCE 18.00–23.00 -->
+          <div class="shot" data-in="18.0" data-out="23.0" data-f="0.55" data-z0="1.08" data-z1="1.02">
+            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:42% 38%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.42) 0%,rgba(7,10,8,.3) 40%,rgba(7,10,8,.5) 100%)"></div>
           </div>
-          <div class="cap hi" data-in="17.2" data-out="21.9">
-            <div class="kicker">HT Construction</div>
-            <div class="hed sm">Montréal &amp; Rive-Sud.</div>
-          </div>
-          <div class="cap low" data-in="19.0" data-out="21.9">
-            <div class="chips">
-              <div class="chip" data-in="19.0" data-out="21.9" data-f="0.14"><b>RBQ</b><span>5823-1101-01</span></div>
-            </div>
+          <div class="cap mid" data-in="18.3" data-out="22.9">
+            <div class="hed sm">Des travaux soignés.<br>Un résultat à la hauteur.</div>
           </div>
 
-          <!-- 8 · APPEL À L'ACTION 22.00–28.00 -->
-          <div class="shot" data-in="22.0" data-out="28.0" data-f="0.1" data-z0="1.08" data-z1="1.01">
-            <div class="ph" style="background-image:url('img/cuisine.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.3) 0%,rgba(7,10,8,.2) 32%,rgba(7,10,8,.92) 100%)"></div>
+          <!-- 6 · APPEL À L'ACTION 23.00–28.00 -->
+          <div class="shot" data-in="23.0" data-out="28.0" data-f="0.5" data-z0="1.06" data-z1="1.01">
+            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:40% 60%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.2) 0%,rgba(7,10,8,.14) 30%,rgba(7,10,8,.88) 100%)"></div>
           </div>
-          <div class="cap low" data-in="22.2" data-out="28.0" style="bottom:9%">
-            <div class="wordmark" data-in="22.2" data-out="28.0">HT Construction</div>
-            <div class="hed sm" data-in="22.4" data-out="28.0">Planifiez votre<br>rénovation.</div>
-            <div style="margin-top:4.2cqw" data-in="23.4" data-out="28.0"><span class="offer">Soumission gratuite</span></div>
-            <div class="tel" data-in="24.2" data-out="28.0">514 674-8697</div>
-            <div class="site" data-in="24.8" data-out="28.0">constructionht.com</div>
+          <div class="cap low" data-in="23.2" data-out="28.0" style="bottom:9%">
+            <div class="wordmark" data-in="23.2" data-out="28.0">HT Construction</div>
+            <div class="hed sm" data-in="23.4" data-out="28.0">Projet de<br>rénovation?</div>
+            <div class="dek" data-in="24.1" data-out="28.0">Demandez votre soumission.</div>
+            <div class="tel" data-in="24.7" data-out="28.0">514 674-8697</div>
+            <div class="site" data-in="25.2" data-out="28.0">constructionht.com</div>
           </div>
 
           <!-- sous-titres — version voix off (masqués par défaut, activables) -->
-          <div class="cc" data-in="0.3" data-out="3.0" id="ccOn">Vous pensez rénover votre maison?</div>
-          <div class="cc" data-in="3.3" data-out="5.0">Cuisine, salle de bain, planchers, extérieur.</div>
-          <div class="cc" data-in="5.3" data-out="7.9">HT Construction vous accompagne du début à la fin.</div>
-          <div class="cc" data-in="8.1" data-out="11.1">Voyez ce qu'on peut réaliser chez vous.</div>
-          <div class="cc" data-in="11.3" data-out="14.1">Montréal et la Rive-Sud.</div>
-          <div class="cc" data-in="17.2" data-out="21.9">Demandez votre soumission gratuite dès aujourd'hui.</div>
-          <div class="cc" data-in="22.2" data-out="27.9">514 674-8697 — constructionht.com</div>
+          <div class="cc" data-in="0.3" data-out="2.8">Votre maison mérite mieux.</div>
+          <div class="cc" data-in="3.0" data-out="5.8">HT Construction réalise vos projets de rénovation résidentielle à Montréal.</div>
+          <div class="cc" data-in="6.2" data-out="9.4">Cuisine, salle de bain, sous-sol, rénovation complète.</div>
+          <div class="cc" data-in="9.75" data-out="13.4">Voyez la qualité du travail.</div>
+          <div class="cc" data-in="18.3" data-out="22.9">Des travaux soignés. Un résultat à la hauteur.</div>
+          <div class="cc" data-in="23.4" data-out="27.9">Un projet de rénovation? Demandez votre soumission au 514 674-8697.</div>
 
-          <div class="flash" id="flash"></div>
         </div>
 
         <div class="sndbadge" id="sndbadge">
@@ -369,14 +330,13 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
     </div>
 
     <section class="sheet">
-      <h2>Découpage technique</h2>
-      <p class="lede">Structure de vente directe : accroche → réalité du chantier → standard livré → trois preuves de service → confiance locale → appel à l'action tenu 6 secondes. Aucune voix ni musique dans le prototype ci-contre — le texte incrusté porte seul le message. Cliquez une ligne pour sauter au plan.</p>
+      <h2>Découpage technique — révision</h2>
+      <p class="lede">Structure resserrée sur la crédibilité : accroche directe → nom de l'entreprise et zone desservie → liste des services → trois preuves visuelles (cuisine, salle de bain, rénovation complète), chacune tenue 3,5 à 4,5 s → confiance sobre → appel à l'action tenu 5 s. Une seule police (Manrope), aucun flash ni zoom brusque — uniquement des fondus lents. Cliquez une ligne pour sauter au plan.</p>
       <div class="acts">
-        <div class="a1">Accroche<br>0 – 3,15</div>
-        <div class="a2">Contraste<br>3,15 – 8</div>
-        <div class="a3">Services<br>8 – 17</div>
-        <div class="a4">Confiance<br>17 – 22</div>
-        <div class="a5">CTA<br>22 – 28</div>
+        <div class="a1">Accroche &amp; services<br>0 – 6</div>
+        <div class="a2">Vitrine du travail<br>6 – 18</div>
+        <div class="a3">Confiance<br>18 – 23</div>
+        <div class="a4">CTA<br>23 – 28</div>
       </div>
       <div class="rows" id="rows"></div>
     </section>
@@ -385,61 +345,61 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
   <div class="lower">
     <div class="col">
       <h2>Accroches à tester</h2>
-      <p class="lede">Même montage à partir de 3,15 s ; on ne change que les 3 premières secondes et le premier visuel.</p>
+      <p class="lede">Même montage à partir de 3 s ; on ne change que les 3 premières secondes.</p>
       <div class="alt">
         <span class="tag">A1 · retenue ci-contre</span>
-        <div class="fr">« Votre maison pourrait ressembler à ça. » — sur cuisine.jpg</div>
-        <div class="why">Paiement visuel immédiat : la photo la plus forte fait le travail, le texte ne fait qu'ajouter le cap « rénovation ».</div>
+        <div class="fr">« Votre maison mérite mieux. »</div>
+        <div class="why">Directe, spécifique, aucune formule marketing générique — communique immédiatement qu'il s'agit d'une entreprise de rénovation.</div>
       </div>
       <div class="alt">
-        <span class="tag">A2 · identification</span>
-        <div class="fr">« Vous pensez rénover votre maison? » — sur reno.jpg (chantier)</div>
-        <div class="why">Ouvre sur la réalité plutôt que le rêve ; à tester auprès d'une audience en phase de recherche plutôt que d'inspiration.</div>
+        <span class="tag">A2 · question directe</span>
+        <div class="fr">« Un projet de rénovation en tête? »</div>
+        <div class="why">Interpelle directement le prospect en phase de recherche.</div>
       </div>
       <div class="alt">
-        <span class="tag">A3 · invitation directe</span>
-        <div class="fr">« Prêt à transformer votre maison? » — sur plancher.jpg</div>
-        <div class="why">Ton plus impératif ; fonctionne mieux en reciblage qu'en première exposition.</div>
+        <span class="tag">A3 · simplicité</span>
+        <div class="fr">« De vrais travaux. De vrais résultats. »</div>
+        <div class="why">Insiste sur l'authenticité — utile si l'audience associe la rénovation à des publicités exagérées.</div>
       </div>
     </div>
 
     <div class="col">
       <h2>Appels à l'action à tester</h2>
-      <p class="lede">Même carte finale ; seule la phrase au-dessus du numéro change.</p>
+      <p class="lede">Même carte finale (HT Construction, contact réel) ; seule la phrase au-dessus du numéro change.</p>
       <div class="alt">
         <span class="tag">C1 · retenue ci-contre</span>
-        <div class="fr">« Planifiez votre rénovation. »</div>
+        <div class="fr">« Projet de rénovation? Demandez votre soumission. »</div>
       </div>
       <div class="alt">
-        <span class="tag">C2 · bénéfice direct</span>
-        <div class="fr">« Obtenez votre soumission GRATUITE. »</div>
-        <div class="why">Met l'offre avant le verbe ; à tester si le clic sous-performe sur la version C1.</div>
+        <span class="tag">C2 · conversation</span>
+        <div class="fr">« Parlons de votre projet. »</div>
       </div>
       <div class="alt">
-        <span class="tag">C3 · faible friction</span>
-        <div class="fr">« Un appel, une visite, un prix clair. »</div>
-        <div class="why">Répond à l'objection « je ne sais pas à quoi m'attendre » plutôt qu'à pousser l'action.</div>
+        <span class="tag">C3 · simple</span>
+        <div class="fr">« Une question? Un projet? Contactez-nous. »</div>
       </div>
     </div>
 
     <div class="col">
       <h2>Version 15 s — mêmes actifs</h2>
-      <p class="lede">Pour Stories et emplacements courts. Compresse à 3 plans + carte finale ; retire l'acte « confiance » séparé et fusionne le RBQ dans la carte finale.</p>
-      <div class="alt"><span class="tag">0,0–2,5 s</span><div class="fr">cuisine.jpg — même accroche, poussée plus rapide</div></div>
-      <div class="alt"><span class="tag">2,5–6,5 s</span><div class="fr">reno.jpg (1,5 s) → sdb.jpg (2,5 s) — « chantier » puis « résultat », étiquette « Salle de bain »</div></div>
-      <div class="alt"><span class="tag">6,5–9,5 s</span><div class="fr">plancher.jpg — étiquette « Planchers &amp; finition »</div></div>
-      <div class="alt"><span class="tag">9,5–15 s</span><div class="fr">Carte finale cuisine.jpg : HT Construction · Montréal &amp; Rive-Sud · RBQ · Soumission gratuite · 514 674-8697 · constructionht.com — tenue 5,5 s pleines</div></div>
+      <p class="lede">Pour Stories et emplacements courts. Compresse l'accroche/services à 4 s et la vitrine à une seule photo.</p>
+      <div class="alt"><span class="tag">0–4 s</span><div class="fr">cuisine.jpg — « Votre maison mérite mieux. » puis « Rénovation résidentielle à Montréal »</div></div>
+      <div class="alt"><span class="tag">4–9 s</span><div class="fr">sdb.jpg — étiquette « Salle de bain », tenue pleinement pour qu'on voie le travail</div></div>
+      <div class="alt"><span class="tag">9–15 s</span><div class="fr">Carte finale cuisine.jpg : HT Construction · Projet de rénovation? · Demandez votre soumission · 514 674-8697 · constructionht.com — tenue 4,5 s pleines</div></div>
     </div>
   </div>
 
   <div class="note">
-    <h3>Notes de production</h3>
+    <h3>Notes de production — ce qui a changé dans cette révision</h3>
     <ul>
-      <li><b>Aucun véritable avant/après dans les actifs actuels.</b> <code>reno.jpg</code> montre une cuisine différente en pleine démolition (armoires, dosseret et plancher distincts de <code>cuisine.jpg</code>). Le montage ne les présente donc jamais comme le même lieu : le plan 2 dit « chaque rénovation commence par un chantier » (vérité générale) et le plan 3 dit « voici le standard qu'on livre » (une preuve distincte) — jamais « avant » suivi d'un « après » du même mur.</li>
-      <li><b>À valider avant diffusion : l'origine de balcon.jpg.</b> Le garde-corps rouge, la tour à condos et la vue donnent un style qui ressemble peu aux résidences typiques de Montréal/Rive-Sud. Confirmez qu'il s'agit bien d'un chantier HT Construction avant de l'utiliser comme preuve de réalisation — sinon, retirez le plan « Balcons &amp; extérieur » et redistribuez ses 2,8 s à l'acte cuisine ou salle de bain.</li>
-      <li><b>Deux photos seulement portent un vrai avant/après potentiel</b> si un jour un chantier est retourné avec le même cadrage au début et à la fin : c'est le format à privilégier en priorité pour la prochaine séance photo (voir « Actifs manquants » ci-dessous).</li>
-      <li><b>Aucune personne à l'écran</b> et aucune voix ni musique dans ce prototype : le son n'est que des effets synthétisés (marteau, perceuse, maillets, souffles) générés dans la page — rien à faire enregistrer, rien à libérer de droits.</li>
-      <li><b>Lisible en sourdine :</b> chaque information clé (service, ville, numéro, offre) est incrustée à l'écran ; le son n'ajoute que le rythme.</li>
+      <li><b>Une seule police partout.</b> IBM Plex Mono a été retiré ; tout le texte (accroche, étiquettes, numéro de téléphone, interface du lecteur) utilise maintenant Manrope, du même poids visuel du début à la fin.</li>
+      <li><b>Effets « flashy » retirés.</b> Le flash blanc et le pulse d'impact (zoom-brightness) sur chaque coupe ont été supprimés. Toutes les transitions sont maintenant de simples fondus enchaînés de 0,5 s — aucun effet de style TikTok.</li>
+      <li><b>Mouvements de caméra adoucis.</b> Les zooms sont maintenant tous dans une fourchette de 2 à 9 %, et chaque photo reste à l'écran 3,5 à 6 s pleines pour qu'on ait le temps de voir le travail.</li>
+      <li><b>Deux photos retirées de ce montage principal :</b> <code>reno.jpg</code> (chantier en démolition — ne montre pas un résultat fini, ce qui allait à l'encontre du ton « entreprise professionnelle établie » demandé) et <code>balcon.jpg</code> (style visuel qui ne ressemble pas typiquement à une résidence de Montréal — son authenticité comme projet HT Construction reste à confirmer). Les deux fichiers restent dans le dossier <code>img/</code> et sont documentés plus bas si vous voulez les réintégrer une fois validés.</li>
+      <li><b>« Sous-sol » apparaît uniquement dans la liste de services (3 s), jamais superposé sur une photo</b> — aucune des 5 photos fournies ne montre un sous-sol, donc aucune image n'est présentée comme un exemple de ce service. Confirmez que la rénovation de sous-sol est bien un service actif avant diffusion : elle ne figurait pas dans la liste de services vérifiée sur le site (cuisine, salle de bain, plancher, gypse/finition, balcons et extérieur).</li>
+      <li><b>RBQ retiré de l'incrustation visuelle</b> pour garder la carte finale et l'acte confiance non chargés, comme demandé. Le numéro (5823-1101-01) reste vérifié et peut être réintégré en petit caractère si vous le souhaitez.</li>
+      <li><b>Aucune mention inventée :</b> pas de « gratuit », pas de statistique, pas d'avis client, pas d'urgence artificielle. Seules les informations fournies (nom, ville desservie, téléphone, site) apparaissent à l'écran.</li>
+      <li><b>Aucune personne à l'écran</b>, aucune voix ni musique dans la version A : les effets sonores sont synthétisés dans la page (aucun marteau/perceuse dans cette révision — seulement des souffles de transition et des maillets discrets, pour un ton plus posé).</li>
       <li><b>Pour exporter en MP4 :</b> enregistrer l'écran sur le cadre 9:16 en 1080×1920, 30 ips, avec capture du son du système — ou utiliser le montage manuel décrit plus bas.</li>
     </ul>
   </div>
@@ -448,107 +408,87 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
 
   <div class="doc" id="photos">
     <h2>Analyse des photos fournies</h2>
-    <p class="lede">Les 5 photos de chantier et le logo sont les seuls actifs disponibles ; les mêmes fichiers sont réutilisés dans les trois autres livrables du dossier. Aucune paire avant/après légitime n'a été trouvée — voir la ligne surlignée.</p>
+    <p class="lede">3 des 5 photos de chantier sont utilisées dans ce montage principal ; 2 sont mises de côté pour les raisons indiquées. Aucune paire avant/après légitime n'existe dans les actifs fournis.</p>
     <table class="tbl">
-      <thead><tr><th>Fichier</th><th>Ce que ça montre</th><th>Service probable</th><th>Qualité /10</th><th>Avant/après?</th><th>Meilleur usage</th><th>Attention</th></tr></thead>
+      <thead><tr><th>Fichier</th><th>Ce que ça montre</th><th>Qualité /10</th><th>Utilisée dans ce montage?</th><th>Rôle / attention</th></tr></thead>
       <tbody>
-        <tr class="warn-row">
-          <td class="n">reno.jpg</td>
-          <td>Cuisine différente en pleine démolition — armoires ouvertes, gypse à nu, échelle, aucune personne. Format portrait natif (675×900).</td>
-          <td>Cuisine (chantier) / gypse</td>
-          <td>6</td>
-          <td><b>Non</b> — aucune photo « après » du même lieu fournie</td>
-          <td>Plan « réalité du chantier » (3,15–5,15 s) ou accroche alternative A2</td>
-          <td>Ne jamais monter juste avant cuisine.jpg en laissant croire que c'est la même pièce</td>
-        </tr>
         <tr>
           <td class="n">cuisine.jpg</td>
           <td>Cuisine blanche haut de gamme terminée — îlot quartz, hotte habillée, dosseret marbre, éclairage suspendu.</td>
-          <td>Cuisine</td>
           <td>9</td>
-          <td>Non applicable seule</td>
-          <td>Accroche (0–3,15 s) + étiquette « Cuisine » (8–11,2 s) + carte finale</td>
-          <td>Photo paysage 1600×1060 — recadrage centré sur l'îlot pour le 9:16</td>
+          <td><b>Oui</b> — 3 plans</td>
+          <td>Accroche/services (0–6 s), étiquette « Cuisine » (6–9,5 s), carte finale (23–28 s). Photo paysage 1600×1060 — recadrage centré sur l'îlot.</td>
         </tr>
         <tr>
           <td class="n">sdb.jpg</td>
           <td>Salle de bain terminée — douche vitrée, double vasque, robinetterie noire mate, miroir bois.</td>
-          <td>Salle de bain</td>
           <td>8</td>
-          <td>Non</td>
-          <td>Étiquette « Salle de bain » (11,2–14,2 s)</td>
-          <td>Recadrage paysage→portrait : garder vasque + douche, couper le bain si besoin</td>
+          <td><b>Oui</b> — 1 plan</td>
+          <td>Étiquette « Salle de bain » (9,5–13,5 s).</td>
         </tr>
         <tr>
           <td class="n">plancher.jpg</td>
           <td>Grand espace ouvert cuisine/salon, plancher de bois franc large-lame au premier plan.</td>
-          <td>Plancher / rénovation intérieure générale</td>
           <td>8</td>
-          <td>Non</td>
-          <td>Plan « standard livré » (5,15–8 s) + acte confiance (17–22 s)</td>
-          <td>Garder le bas du cadre (le plancher) visible au recadrage vertical</td>
+          <td><b>Oui</b> — 2 plans</td>
+          <td>Étiquette « Rénovation complète » (13,5–18 s) et acte confiance (18–23 s), avec un recadrage différent pour chaque.</td>
         </tr>
-        <tr>
+        <tr class="warn-row">
+          <td class="n">reno.jpg</td>
+          <td>Cuisine différente en pleine démolition — armoires ouvertes, gypse à nu, échelle, aucune personne.</td>
+          <td>6</td>
+          <td><b>Non</b> — retirée de cette révision</td>
+          <td>Montre un chantier en cours, pas un résultat livré — nuit au ton « entreprise établie » demandé dans cette révision. Disponible pour une version qui voudrait montrer le processus.</td>
+        </tr>
+        <tr class="warn-row">
           <td class="n">balcon.jpg</td>
           <td>Balcon meublé — mobilier en osier, garde-corps rouge, vue ville/eau, dalles mouillées.</td>
-          <td>Balcons et extérieur</td>
           <td>6,5</td>
-          <td>Non</td>
-          <td>Étiquette « Balcons &amp; extérieur » (14,2–17 s)</td>
-          <td>Style visuel atypique pour Montréal/Rive-Sud — confirmer que c'est un vrai chantier HT Construction avant diffusion</td>
+          <td><b>Non</b> — retirée de cette révision</td>
+          <td>Style visuel atypique pour Montréal/Rive-Sud — à confirmer comme véritable projet HT Construction avant toute réintégration.</td>
         </tr>
         <tr>
           <td class="n">logo.png</td>
           <td>Mot-symbole HT Construction, maison stylisée, fond transparent, camaïeu sauge/blanc.</td>
           <td>—</td>
-          <td>—</td>
-          <td>—</td>
-          <td>Petit format sur carte finale uniquement</td>
-          <td>Ne pas surexposer — le travail doit rester le héros visuel</td>
+          <td>Non utilisé visuellement</td>
+          <td>Le nom « HT Construction » est rendu en texte (Manrope) sur la carte finale plutôt qu'en image, pour rester cohérent avec la police unique de cette révision.</td>
         </tr>
       </tbody>
     </table>
-    <h3 style="font-size:13.5px;font-weight:800;margin:22px 0 6px">Actifs manquants pour aller plus loin</h3>
-    <ul style="color:var(--muted);font-size:13px;line-height:1.7;padding-left:19px;margin:0">
-      <li>Une vraie paire avant/après : même cadrage, même chantier, deux dates. C'est l'actif le plus rentable à produire ensuite — il permettrait un vrai « wipe » de transformation plutôt que la juxtaposition contrastée utilisée ici.</li>
-      <li>Un exemple visuel de gypse/finition terminé (le seul plan gypse actuel, reno.jpg, montre le chantier en cours, pas le résultat).</li>
-      <li>Une photo extérieure/de balcon dont l'origine locale (Montréal/Rive-Sud) est confirmée, pour remplacer balcon.jpg si son authenticité ne peut pas être validée.</li>
-      <li>3 à 5 secondes de vidéo brute (drone ou téléphone) d'un chantier réel : même sans montage, un seul plan vidéo au milieu des photos casserait l'effet « diaporama » que ce prototype compense par le mouvement de caméra simulé.</li>
-    </ul>
   </div>
 
   <div class="doc" id="vo">
     <h2>Version B — avec voix off française</h2>
-    <p class="lede">Le prototype ci-contre joue la version A (sans voix). La version B reprend exactement le même montage image ; seuls le son et les sous-titres changent. Activez « Sous-titres voix off » dans le lecteur pour voir leur calage sur le montage — la voix elle-même doit être enregistrée par une comédienne ou un comédien professionnel (ou une synthèse vocale de qualité), aucun outil de ce prototype ne peut générer un vrai fichier audio parlé.</p>
+    <p class="lede">Le prototype ci-contre joue la version A (sans voix). La version B reprend exactement le même montage image ; seuls le son et les sous-titres changent. Activez « Sous-titres voix off » dans le lecteur pour voir leur calage — la voix elle-même doit être enregistrée par une comédienne ou un comédien professionnel, aucun outil de ce prototype ne peut générer un vrai fichier audio parlé.</p>
     <div class="vo">
-      <p>« Vous pensez rénover votre maison? Cuisine, salle de bain, planchers, extérieur — HT Construction vous accompagne du début à la fin. Voyez ce qu'on peut réaliser chez vous, à Montréal et sur la Rive-Sud. Demandez votre soumission gratuite dès aujourd'hui. »</p>
-      <span class="wc">≈ 48 mots · environ 22–24 secondes à un débit naturel, posé</span>
+      <p>« Votre maison mérite mieux. HT Construction réalise vos projets de rénovation résidentielle à Montréal : cuisine, salle de bain, sous-sol, rénovation complète. Des travaux soignés, un résultat à la hauteur. Un projet de rénovation? Demandez votre soumission au 514 674-8697, ou visitez constructionht.com. »</p>
+      <span class="wc">≈ 49 mots · environ 22–24 secondes à un débit naturel, posé</span>
     </div>
     <table class="tbl">
       <thead><tr><th>Temps</th><th>Sous-titre (calé sur l'image)</th></tr></thead>
       <tbody>
-        <tr><td class="n">0,3–3,0 s</td><td>Vous pensez rénover votre maison?</td></tr>
-        <tr><td class="n">3,3–5,0 s</td><td>Cuisine, salle de bain, planchers, extérieur.</td></tr>
-        <tr><td class="n">5,3–7,9 s</td><td>HT Construction vous accompagne du début à la fin.</td></tr>
-        <tr><td class="n">8,1–11,1 s</td><td>Voyez ce qu'on peut réaliser chez vous.</td></tr>
-        <tr><td class="n">11,3–14,1 s</td><td>Montréal et la Rive-Sud.</td></tr>
-        <tr><td class="n">17,2–21,9 s</td><td>Demandez votre soumission gratuite dès aujourd'hui.</td></tr>
-        <tr><td class="n">22,2–27,9 s</td><td>514 674-8697 — constructionht.com</td></tr>
+        <tr><td class="n">0,3–2,8 s</td><td>Votre maison mérite mieux.</td></tr>
+        <tr><td class="n">3,0–5,8 s</td><td>HT Construction réalise vos projets de rénovation résidentielle à Montréal.</td></tr>
+        <tr><td class="n">6,2–9,4 s</td><td>Cuisine, salle de bain, sous-sol, rénovation complète.</td></tr>
+        <tr><td class="n">9,75–13,4 s</td><td>Voyez la qualité du travail.</td></tr>
+        <tr><td class="n">18,3–22,9 s</td><td>Des travaux soignés. Un résultat à la hauteur.</td></tr>
+        <tr><td class="n">23,4–27,9 s</td><td>Un projet de rénovation? Demandez votre soumission au 514 674-8697.</td></tr>
       </tbody>
     </table>
-    <p class="lede" style="margin-top:14px">Sous-titres au format .srt : générer un fichier à partir du tableau ci-dessus une fois la voix enregistrée, en ajustant chaque repère de ±0,2–0,4 s sur les mots réellement prononcés. Ne pas répéter mot pour mot le texte déjà incrusté à l'écran (services, ville, numéro) — les sous-titres de la voix off doivent rester synchronisés avec elle, pas avec les cartons.</p>
+    <p class="lede" style="margin-top:14px">Sous-titres au format .srt : générer un fichier à partir du tableau ci-dessus une fois la voix enregistrée, en ajustant chaque repère de ±0,2–0,4 s sur les mots réellement prononcés.</p>
   </div>
 
   <div class="doc grid2" id="assets">
     <div>
       <h2>Liste des actifs à préparer</h2>
       <ul class="steps">
-        <li>5 photos sources en haute résolution (idéalement ≥ 2000 px sur le petit côté) — les fichiers actuels (900×600 à 1600×1060) suffisent pour du web mais sont à la limite pour un plein cadre 1080×1920 sans perte de netteté au zoom.</li>
-        <li>Logo HT Construction en PNG transparent (fourni, <code>logo.png</code>, 755×266) — prévoir aussi une version blanche pleine (sans dégradé sauge) si un futur fond très sombre en réduit le contraste.</li>
-        <li>Police Manrope (Google Fonts, gratuite) pour tous les titres et étiquettes ; IBM Plex Mono pour le numéro de téléphone et les mentions légales (RBQ/CCQ) — cohérent avec les 3 autres livrables du dossier.</li>
-        <li>7 effets sonores synthétisés déjà inclus dans <code>sfx.js</code> (marteau, perceuse, maillets accordés, souffles de transition) — aucun bruitage à acheter pour la version A.</li>
-        <li>Voix off française professionnelle (~24 s de script, ton naturel et local, pas publicitaire ou robotique) — à commander pour la version B.</li>
-        <li>Fichier de sous-titres .srt calé sur la voix off une fois enregistrée (tableau fourni ci-dessus comme base de calage).</li>
+        <li>3 photos utilisées dans ce montage (cuisine.jpg, sdb.jpg, plancher.jpg) en haute résolution si possible (≥ 2000 px sur le petit côté) — les fichiers actuels suffisent pour le web mais sont à la limite pour un plein cadre 1080×1920 au zoom.</li>
+        <li>Une seule police, Manrope (Google Fonts, gratuite), pour tout le montage — accroche, étiquettes, numéro de téléphone.</li>
+        <li>Effets sonores synthétisés déjà inclus dans <code>sfx.js</code> (souffles de transition, maillets discrets) — aucun bruitage à acheter pour la version A.</li>
+        <li>Voix off française professionnelle (~24 s de script, ton naturel et local) — à commander pour la version B.</li>
+        <li>Fichier de sous-titres .srt calé sur la voix off une fois enregistrée (tableau fourni ci-dessus).</li>
+        <li>Confirmation écrite que la rénovation de sous-sol est un service actif, avant diffusion.</li>
       </ul>
     </div>
     <div>
@@ -557,12 +497,12 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
 ├── index.html            # ce prototype (version A, sans voix)
 ├── sfx.js                # moteur d'effets sonores Web Audio
 ├── img/
-│   ├── cuisine.jpg
-│   ├── sdb.jpg
-│   ├── plancher.jpg
-│   ├── balcon.jpg
-│   ├── reno.jpg
-│   └── logo.png
+│   ├── cuisine.jpg       # utilisée
+│   ├── sdb.jpg           # utilisée
+│   ├── plancher.jpg      # utilisée
+│   ├── balcon.jpg        # en réserve — authenticité à confirmer
+│   ├── reno.jpg          # en réserve — chantier, pas un résultat
+│   └── logo.png          # non utilisé visuellement dans cette révision
 └── export/
     ├── version-a-sans-voix.mp4     # 1080×1920, 30 ips
     ├── version-b-voix-off.mp4      # même montage + voix + sous-titres
@@ -579,25 +519,26 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
         <h3 style="font-size:13.5px;font-weight:800;margin:0 0 8px">CapCut (mobile ou desktop)</h3>
         <ol class="steps">
           <li>Nouveau projet, format 9:16 (1080×1920), 30 ips.</li>
-          <li>Importer les 5 photos ; poser sur la timeline dans l'ordre du tableau « Découpage technique » avec les durées indiquées (colonne « Durée »).</li>
-          <li>Sur chaque clip photo : activer Keyframes sur l'échelle (Scale) — poser une valeur au premier repère et une valeur légèrement plus grande (zoom avant) ou plus petite (zoom arrière) au dernier repère, selon <code>data-z0</code>/<code>data-z1</code> indiqués dans le code source de ce prototype.</li>
-          <li>Ajouter un dégradé noir en bas (calque uni + masque en dégradé, opacité 40–70 %) sous chaque zone de texte, pour la lisibilité — reproduit le <code>.veil</code> de ce prototype.</li>
-          <li>Texte : police sans-serif grasse (Montserrat ou Poppins Bold en alternative si Manrope indisponible), blanc, avec ombre portée légère. Un carton de texte par plan, jamais deux idées superposées.</li>
-          <li>Effets sonores : bibliothèque CapCut → « Construction »/« Impact »/« Whoosh ». Caler chaque effet sur la coupe, pas après.</li>
-          <li>Voix off (version B) : enregistrer ou importer le clip audio, l'aligner sur le début de la timeline, puis générer les sous-titres automatiques et corriger le calage à la main selon le tableau fourni.</li>
-          <li>Exporter en 1080×1920, H.264, 30 ips, bitrate élevé (Meta recompresse — partir haut en qualité).</li>
+          <li>Importer cuisine.jpg, sdb.jpg et plancher.jpg ; poser sur la timeline dans l'ordre et aux durées du tableau « Découpage technique » (3,5 à 6 s chacune — ne pas les couper plus courtes).</li>
+          <li>Sur chaque clip : Keyframes sur l'échelle (Scale) avec un écart faible (2 à 9 %) entre le premier et le dernier repère — un mouvement à peine perceptible, jamais un zoom rapide.</li>
+          <li>Transitions : fondu enchaîné (Cross Dissolve) de 0,5 s entre chaque plan. Ne pas utiliser de transitions animées, de glitch, de zoom-punch ou de flash.</li>
+          <li>Texte : une seule police grasse sans-serif (Montserrat ou Poppins Bold si Manrope indisponible) du début à la fin, blanc, avec un léger dégradé noir en bas de l'image pour la lisibilité. Un message par plan, jamais deux superposés.</li>
+          <li>Effets sonores : souffles de transition discrets uniquement (bibliothèque CapCut → « Whoosh » ou « Air »). Éviter les bruitages « Impact » lourds.</li>
+          <li>Voix off (version B) : enregistrer ou importer le clip audio, l'aligner sur le début de la timeline, puis générer les sous-titres automatiques et corriger le calage selon le tableau fourni.</li>
+          <li>Exporter en 1080×1920, H.264, 30 ips, bitrate élevé.</li>
         </ol>
       </div>
       <div>
         <h3 style="font-size:13.5px;font-weight:800;margin:0 0 8px">DaVinci Resolve</h3>
         <ol class="steps">
           <li>Nouveau projet, réglages de livraison 1080×1920, 30 ips, dans l'onglet Deliver.</li>
-          <li>Onglet Edit : importer les photos, les poser sur la timeline aux durées exactes du tableau ci-contre (clic droit → Change Clip Duration).</li>
-          <li>Onglet Fusion ou Inspector → Transform : animer <code>Zoom</code> avec deux images-clés (une par borne <code>data-in</code>/<code>data-out</code>) pour le mouvement de poussée/recul.</li>
-          <li>Onglet Color : appliquer une correction discrète et identique sur tous les plans (exposition/contraste légers) — ne pas étalonner fortement, garder les couleurs réalistes comme demandé.</li>
-          <li>Onglet Fairlight : construire les effets sonores avec les bruitages de la bibliothèque intégrée (Impacts, Tools, Whoosh) calés sur les mêmes repères temporels que la colonne « Son » du découpage.</li>
-          <li>Texte : Fusion Text+ ou Titre standard, police grasse sans-serif, sécurité de 10 % sur les bords et le bas (zone UI Reels/Stories).</li>
-          <li>Rendre en H.264 ou H.265, 1080×1920, bitrate ≥ 12 Mbps pour préserver le détail au zoom.</li>
+          <li>Onglet Edit : importer les 3 photos retenues, les poser sur la timeline aux durées exactes du tableau ci-contre (clic droit → Change Clip Duration).</li>
+          <li>Onglet Fusion ou Inspector → Transform : animer <code>Zoom</code> avec deux images-clés discrètes (2 à 9 % d'écart) pour un mouvement subtil, jamais un zoom rapide.</li>
+          <li>Transitions : Cross Dissolve de 0,5 s entre les plans, dans l'onglet Edit. Pas de wipe, pas de flash, pas de transition « stylée ».</li>
+          <li>Onglet Color : correction discrète et identique sur les 3 plans — garder les couleurs réalistes, ne pas étalonner fortement.</li>
+          <li>Onglet Fairlight : souffles de transition discrets uniquement, calés sur les mêmes repères temporels que la colonne « Son » du découpage.</li>
+          <li>Texte : une seule police grasse sans-serif, sécurité de 10 % sur les bords et le bas (zone UI Reels/Stories).</li>
+          <li>Rendre en H.264 ou H.265, 1080×1920, bitrate ≥ 12 Mbps.</li>
         </ol>
       </div>
     </div>
@@ -612,7 +553,6 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
   var shots=[].slice.call(reel.querySelectorAll('.shot'));
   var timed=[].slice.call(reel.querySelectorAll('[data-in]'));
   var ccEls=[].slice.call(reel.querySelectorAll('.cc'));
-  var flash=document.getElementById('flash');
   var fill=document.getElementById('fill'), cur=document.getElementById('cur');
   var play=document.getElementById('play'), scrub=document.getElementById('scrub');
   var bigplay=document.getElementById('bigplay');
@@ -624,38 +564,38 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
   var muted=false;
 
   var SHEET=[
-    {t:'00:00',dur:'3,15 s',beat:'Accroche',
-     fr:'« Votre maison pourrait ressembler à ça. »',
-     son:'Souffle d\'arrivée qui balaie la stéréo, nappe d\'ambiance qui s\'installe. Aucun bruitage de chantier ici : le plan est aspirationnel.',
-     vis:'<b>Plan :</b> cuisine terminée, cadrage large. Poussée avant lente.',at:0},
-    {t:'00:03',dur:'2,0 s',beat:'Réalité',
-     fr:'« Chaque rénovation commence par un chantier. »',
-     son:'Marteau, puis deux coups de perceuse à hauteur montante. Zoom rapide qui crée une légère nervosité.',
-     vis:'<b>Plan :</b> chantier en démolition (pièce distincte de la cuisine finie — jamais présenté comme la même).',at:3.15},
-    {t:'00:05',dur:'2,85 s',beat:'Contraste',
-     fr:'« Voici le standard qu\'on livre. »',
-     son:'Souffle de transition, puis un maillet accordé et chaud — le bruit «se calme» en même temps que l\'image.',
-     vis:'<b>Plan :</b> grand espace ouvert, plancher de bois franc. Poussée avant douce.',at:5.15},
-    {t:'00:08',dur:'3,2 s',beat:'Service · Cuisine',
-     fr:'Étiquette : « Rénovation de cuisine »',
-     son:'Petit repère d\'air, puis un maillet ponctuant l\'arrivée de l\'étiquette.',
-     vis:'<b>Plan :</b> cuisine, second cadrage (îlot), léger recul.',at:8.0},
-    {t:'00:11',dur:'3,0 s',beat:'Service · Salle de bain',
-     fr:'Étiquette : « Rénovation de salle de bain »',
-     son:'Même traitement, une note plus haute — impression de progression.',
-     vis:'<b>Plan :</b> salle de bain, poussée avant.',at:11.2},
-    {t:'00:14',dur:'2,8 s',beat:'Service · Extérieur',
-     fr:'Étiquette : « Balcons &amp; extérieur »',
-     son:'Même traitement, note plus haute encore.',
-     vis:'<b>Plan :</b> balcon meublé, poussée avant — à confirmer avant diffusion (voir notes de production).',at:14.2},
-    {t:'00:17',dur:'5,0 s',beat:'Confiance / local',
-     fr:'« HT Construction. Montréal &amp; Rive-Sud. » + RBQ',
-     son:'Souffle de transition, maillet grave et tenu, puis un accent discret sur l\'arrivée du numéro RBQ.',
-     vis:'<b>Plan :</b> espace ouvert (recadrage large), recul lent.',at:17.0},
-    {t:'00:22',dur:'6,0 s',beat:'Appel à l\'action',
-     fr:'« Planifiez votre rénovation. » · Soumission gratuite · 514 674-8697 · constructionht.com',
-     son:'Impact final, nappe chaude tenue, deux notes claires accompagnant le numéro puis le site. Cadre tenu jusqu\'à la fin — rien ne s\'estompe avant 28 s.',
-     vis:'<b>Plan :</b> cuisine (recadrage large), quasi statique pour laisser lire le texte.',at:22.0}
+    {t:'00:00',dur:'2,85 s',beat:'Accroche',
+     fr:'« Votre maison mérite mieux. »',
+     son:'Nappe d\'ambiance très douce qui s\'installe, souffle d\'arrivée discret. Rien de spectaculaire — le texte porte le message.',
+     vis:'<b>Plan :</b> cuisine terminée, cadrage large, zoom quasi imperceptible (2–8 % sur 6 s).',at:0},
+    {t:'00:03',dur:'1,35 s',beat:'Entreprise',
+     fr:'« Rénovation résidentielle à Montréal. »',
+     son:'Souffle de transition très bref entre les deux cartes de texte — même plan, aucune coupe.',
+     vis:'<b>Plan :</b> même image, aucune coupe.',at:3.0},
+    {t:'00:04',dur:'1,35 s',beat:'Services',
+     fr:'« Cuisine • Salle de bain • Sous-sol • Rénovation complète »',
+     son:'Souffle de transition vers la vitrine.',
+     vis:'<b>Plan :</b> même image, aucune coupe.',at:4.5},
+    {t:'00:06',dur:'3,5 s',beat:'Vitrine · Cuisine',
+     fr:'Étiquette : « Cuisine »',
+     son:'Fondu enchaîné de 0,5 s, un maillet discret ponctue l\'arrivée de l\'étiquette.',
+     vis:'<b>Plan :</b> cuisine, second cadrage (îlot). Zoom arrière très lent.',at:6.0},
+    {t:'00:09',dur:'4,0 s',beat:'Vitrine · Salle de bain',
+     fr:'Étiquette : « Salle de bain »',
+     son:'Même traitement, une note plus haute.',
+     vis:'<b>Plan :</b> salle de bain, poussée avant très lente.',at:9.5},
+    {t:'00:13',dur:'4,5 s',beat:'Vitrine · Rénovation complète',
+     fr:'Étiquette : « Rénovation complète »',
+     son:'Même traitement, une note plus haute encore.',
+     vis:'<b>Plan :</b> grand espace ouvert, plancher de bois franc. Poussée avant très lente.',at:13.5},
+    {t:'00:18',dur:'5,0 s',beat:'Confiance',
+     fr:'« Des travaux soignés. Un résultat à la hauteur. »',
+     son:'Souffle de transition, un accord grave et tenu — calme, sans emphase.',
+     vis:'<b>Plan :</b> même espace ouvert, recadrage différent, zoom arrière lent. Texte centré, sobre.',at:18.0},
+    {t:'00:23',dur:'5,0 s',beat:'Appel à l\'action',
+     fr:'HT Construction · Projet de rénovation? · Demandez votre soumission · 514 674-8697 · constructionht.com',
+     son:'Souffle final, nappe chaude et discrète tenue jusqu\'à la fin. Cadre presque figé pour laisser lire le texte.',
+     vis:'<b>Plan :</b> cuisine (troisième apparition, recadrage large), quasi statique.',at:23.0}
   ];
 
   var rows=document.getElementById('rows'), ticks=document.getElementById('ticks');
@@ -672,40 +612,22 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
   });
   var rowEls=[].slice.call(rows.children);
 
-  function punch(big){
-    if(reduce) return;
-    reel.classList.remove('hit','big'); void reel.offsetWidth;
-    reel.classList.add('hit'); if(big) reel.classList.add('big');
-    setTimeout(function(){ reel.classList.remove('hit','big'); }, big?310:180);
-  }
-  function doFlash(){
-    if(reduce) return;
-    flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
-    setTimeout(function(){ flash.classList.remove('go'); },320);
-  }
-
   var CUES=[
-    {t:0    ,f:function(){ SFX.roomTone({dur:8,peak:0.01,freq:2200}); SFX.whoosh({dur:0.3,peak:0.08,from:300,to:3000,pan:-0.4,panTo:0.4}); punch(); }},
-    {t:3.00 ,f:function(){ SFX.whoosh({dur:0.18,peak:0.07,from:500,to:3200,pan:0.4,panTo:-0.3}); }},
-    {t:3.15 ,f:function(){ SFX.hammer({peak:0.5}); punch(); }},
-    {t:3.55 ,f:function(){ SFX.drill({freq:150,dur:0.22,peak:0.18,pan:0.3}); }},
-    {t:4.35 ,f:function(){ SFX.drill({freq:170,dur:0.2,peak:0.2,pan:-0.2}); }},
-    {t:4.95 ,f:function(){ SFX.whoosh({dur:0.3,peak:0.09,from:500,to:4000,pan:0.5,panTo:-0.5}); }},
-    {t:5.15 ,f:function(){ SFX.mallet({freq:196,peak:0.09,dec:1.2}); punch(); }},
-    {t:7.85 ,f:function(){ SFX.air({peak:0.04,pan:-0.2}); }},
-    {t:8.00 ,f:function(){ SFX.mallet({freq:220,peak:0.085,dec:0.8}); punch(); }},
-    {t:11.05,f:function(){ SFX.air({peak:0.04,pan:0.3}); }},
-    {t:11.20,f:function(){ SFX.mallet({freq:246.94,peak:0.085,dec:0.9}); punch(); }},
-    {t:14.05,f:function(){ SFX.air({peak:0.04,pan:-0.3}); }},
-    {t:14.20,f:function(){ SFX.mallet({freq:164.81,peak:0.08,dec:0.9}); punch(); }},
-    {t:16.85,f:function(){ SFX.whoosh({dur:0.3,peak:0.08,from:400,to:3000,pan:-0.5,panTo:0.5}); }},
-    {t:17.00,f:function(){ SFX.mallet({freq:130.81,peak:0.09,dec:1.6}); punch(); }},
-    {t:19.00,f:function(){ SFX.mallet({freq:196,peak:0.06,dec:0.6,pan:0.2}); }},
-    {t:21.85,f:function(){ SFX.whoosh({dur:0.25,peak:0.09,from:400,to:5000,pan:0.4,panTo:-0.4}); }},
-    {t:22.00,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.65,f0:150,f1:34,dec:0.65,send:0.4}); SFX.pad({dur:5.5}); doFlash(); punch(true); }},
-    {t:23.40,f:function(){ SFX.mallet({freq:523.25,peak:0.08,dec:1,pan:0.15}); }},
-    {t:24.20,f:function(){ SFX.mallet({freq:659.25,peak:0.07,dec:0.9,pan:-0.1}); }},
-    {t:24.80,f:function(){ SFX.air({peak:0.04}); }}
+    {t:0    ,f:function(){ SFX.roomTone({dur:6,peak:0.008,freq:2000}); SFX.whoosh({dur:0.45,peak:0.045,from:300,to:1800,pan:-0.25,panTo:0.25}); }},
+    {t:3.00 ,f:function(){ SFX.air({peak:0.028}); }},
+    {t:4.50 ,f:function(){ SFX.air({peak:0.028}); }},
+    {t:5.70 ,f:function(){ SFX.whoosh({dur:0.4,peak:0.045,from:350,to:1900,pan:0.25,panTo:-0.25}); }},
+    {t:6.10 ,f:function(){ SFX.mallet({freq:220,peak:0.055,dec:0.7}); }},
+    {t:9.15 ,f:function(){ SFX.whoosh({dur:0.35,peak:0.04,from:350,to:1800,pan:-0.25,panTo:0.25}); }},
+    {t:9.55 ,f:function(){ SFX.mallet({freq:246.94,peak:0.055,dec:0.7}); }},
+    {t:13.15,f:function(){ SFX.whoosh({dur:0.4,peak:0.045,from:350,to:1900,pan:0.25,panTo:-0.25}); }},
+    {t:13.55,f:function(){ SFX.mallet({freq:196,peak:0.055,dec:0.8}); }},
+    {t:17.65,f:function(){ SFX.whoosh({dur:0.45,peak:0.045,from:300,to:1700,pan:-0.2,panTo:0.2}); }},
+    {t:18.05,f:function(){ SFX.mallet({freq:130.81,peak:0.05,dec:1.4}); }},
+    {t:22.65,f:function(){ SFX.whoosh({dur:0.4,peak:0.045,from:350,to:1900,pan:0.2,panTo:-0.2}); }},
+    {t:23.05,f:function(){ SFX.stopBeds(); SFX.mallet({freq:261.63,peak:0.055,dec:1.0}); SFX.pad({dur:5.0,peak:0.04}); }},
+    {t:24.70,f:function(){ SFX.mallet({freq:392,peak:0.045,dec:0.9}); }},
+    {t:25.20,f:function(){ SFX.air({peak:0.028}); }}
   ];
   CUES.sort(function(a,b){ return a.t-b.t; });
   CUES.forEach(function(c){
@@ -743,9 +665,6 @@ pre.tree{background:var(--ink); color:var(--sage-light); padding:16px 18px; bord
       if(el.classList.contains('shot')||el.classList.contains('cc')) return;
       var o=fade(el,t);
       el.style.opacity=o;
-      if(!el.classList.contains('cap')&&!reduce){
-        el.style.transform='translateY('+((1-o)*9).toFixed(2)+'px)';
-      }
     });
     var showCC=cctog.checked;
     ccEls.forEach(function(el){ el.style.opacity= showCC ? fade(el,t) : 0; });
