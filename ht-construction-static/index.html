@@ -63,6 +63,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
 
 /* ---------- le créatif lui-même ---------- */
 .ad{
+  --s:1;
   position:relative; width:100%; overflow:hidden; container-type:inline-size;
   border-radius:10px; background:var(--ink); color:#fff;
   box-shadow:0 1px 3px rgba(0,0,0,.14), 0 22px 44px -20px rgba(18,26,21,.5);
@@ -72,47 +73,47 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
 [data-fmt="916"] .ad{aspect-ratio:9/16}
 .ad .bg{position:absolute; inset:0; background-size:cover; background-position:center}
 .ad .scrim{position:absolute; inset:0}
-.ad .in{position:absolute; inset:0; display:flex; flex-direction:column; padding:7.5cqw}
+.ad .in{position:absolute; inset:0; display:flex; flex-direction:column; padding:calc(7.5cqw * var(--s))}
 
-.eyebrow{font-family:var(--mono); font-size:2.9cqw; letter-spacing:.15em; text-transform:uppercase; color:var(--sage)}
-.big{font-weight:800; letter-spacing:-.03em; line-height:1.03; font-size:10.4cqw; text-wrap:balance}
-.big.sm{font-size:8.4cqw}
+.eyebrow{font-family:var(--mono); font-size:calc(2.9cqw * var(--s)); letter-spacing:.15em; text-transform:uppercase; color:var(--sage)}
+.big{font-weight:800; letter-spacing:-.03em; line-height:1.03; font-size:calc(10.4cqw * var(--s)); text-wrap:balance}
+.big.sm{font-size:calc(8.4cqw * var(--s))}
 .big em{font-style:normal; color:var(--sage)}
-.support{font-size:3.9cqw; font-weight:600; line-height:1.36; color:rgba(255,255,255,.9)}
+.support{font-size:calc(3.9cqw * var(--s)); font-weight:600; line-height:1.36; color:rgba(255,255,255,.9)}
 .support.dk{color:rgba(255,255,255,.82)}
 
-.lic{display:flex; flex-wrap:wrap; gap:1.6cqw 2.4cqw; align-items:center}
+.lic{display:flex; flex-wrap:wrap; gap:calc(1.6cqw * var(--s)) calc(2.4cqw * var(--s)); align-items:center}
 .lic span{
-  font-family:var(--mono); font-size:2.55cqw; letter-spacing:.05em;
+  font-family:var(--mono); font-size:calc(2.55cqw * var(--s)); letter-spacing:.05em;
   color:rgba(255,255,255,.9); border:1px solid rgba(255,255,255,.3);
-  border-radius:99px; padding:1.1cqw 2.3cqw; white-space:nowrap;
+  border-radius:99px; padding:calc(1.1cqw * var(--s)) calc(2.3cqw * var(--s)); white-space:nowrap;
 }
-.foot{display:flex; align-items:flex-end; justify-content:space-between; gap:3cqw}
-.foot img{width:26cqw; height:auto}
+.foot{display:flex; align-items:flex-end; justify-content:space-between; gap:calc(3cqw * var(--s))}
+.foot img{width:calc(26cqw * var(--s)); height:auto}
 .tel{text-align:right}
-.tel b{display:block; font-family:var(--mono); font-size:4.3cqw; font-weight:500; letter-spacing:.01em}
-.tel span{display:block; font-family:var(--mono); font-size:2.5cqw; color:var(--sage); letter-spacing:.06em; margin-top:.5cqw}
+.tel b{display:block; font-family:var(--mono); font-size:calc(4.3cqw * var(--s)); font-weight:500; letter-spacing:.01em}
+.tel span{display:block; font-family:var(--mono); font-size:calc(2.5cqw * var(--s)); color:var(--sage); letter-spacing:.06em; margin-top:calc(.5cqw * var(--s))}
 .pill{
   display:inline-block; background:var(--sage); color:var(--ink);
-  font-weight:800; font-size:3.6cqw; letter-spacing:-.01em;
-  padding:2.2cqw 4.4cqw; border-radius:99px; align-self:flex-start;
+  font-weight:800; font-size:calc(3.6cqw * var(--s)); letter-spacing:-.01em;
+  padding:calc(2.2cqw * var(--s)) calc(4.4cqw * var(--s)); border-radius:99px; align-self:flex-start;
 }
-.spacer{flex:1; min-height:2cqw}
+.spacer{flex:1; min-height:calc(2cqw * var(--s))}
 
 /* concept 2 : panneau */
 .ad.split .bg{inset:0 0 44% 0}
 .ad.split .scrim{inset:0 0 44% 0}
-.ad.split .panel{position:absolute; inset:56% 0 0 0; background:var(--ink); display:flex; flex-direction:column; padding:6.5cqw 7.5cqw}
+.ad.split .panel{position:absolute; inset:56% 0 0 0; background:var(--ink); display:flex; flex-direction:column; padding:calc(6.5cqw * var(--s)) calc(7.5cqw * var(--s))}
 .ad.split .in{inset:0 0 44% 0}
-.recv{display:flex; flex-direction:column; gap:1.5cqw; margin-top:3.4cqw}
-.recv div{display:flex; gap:2.4cqw; align-items:baseline; font-size:3.3cqw; font-weight:600; color:rgba(255,255,255,.88)}
-.recv i{flex:none; width:1.7cqw; height:1.7cqw; border-radius:50%; background:var(--sage); transform:translateY(-.3em)}
+.recv{display:flex; flex-direction:column; gap:calc(1.5cqw * var(--s)); margin-top:calc(3.4cqw * var(--s))}
+.recv div{display:flex; gap:calc(2.4cqw * var(--s)); align-items:baseline; font-size:calc(3.3cqw * var(--s)); font-weight:600; color:rgba(255,255,255,.88)}
+.recv i{flex:none; width:calc(1.7cqw * var(--s)); height:calc(1.7cqw * var(--s)); border-radius:50%; background:var(--sage); transform:translateY(-.3em)}
 
 /* concept 3 : liste typographique */
-.svcs{display:flex; flex-direction:column; gap:.4cqw; margin-top:auto}
-.svc{display:flex; gap:3cqw; align-items:baseline; border-top:1px solid rgba(255,255,255,.22); padding:1.9cqw 0}
-.svc u{font-family:var(--mono); font-size:2.6cqw; color:var(--sage); text-decoration:none; letter-spacing:.05em}
-.svc b{font-weight:700; font-size:5.1cqw; letter-spacing:-.02em}
+.svcs{display:flex; flex-direction:column; gap:calc(.4cqw * var(--s)); margin-top:auto}
+.svc{display:flex; gap:calc(3cqw * var(--s)); align-items:baseline; border-top:1px solid rgba(255,255,255,.22); padding:calc(1.9cqw * var(--s)) 0}
+.svc u{font-family:var(--mono); font-size:calc(2.6cqw * var(--s)); color:var(--sage); text-decoration:none; letter-spacing:.05em}
+.svc b{font-weight:700; font-size:calc(5.1cqw * var(--s)); letter-spacing:-.02em}
 
 /* zones sûres */
 .zone{position:absolute; inset:0; display:none; pointer-events:none; z-index:6}
@@ -121,7 +122,28 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
 .zone i.t{top:0; height:14%}
 .zone i.b{bottom:0; height:20%}
 [data-fmt="916"] .zone i.b{height:35%}
-.zone s{position:absolute; right:2%; font-family:var(--mono); font-size:2.2cqw; color:#fff; letter-spacing:.08em; text-decoration:none; text-transform:uppercase}
+
+/* Facteurs d'échelle par format. Mesurés, pas devinés : voir le balayage
+   dans tools/render-static.js, qui refuse l'export si un pied est coupé.
+   En 4:5 et 1:1 le panneau plein de l'affiche 2 reçoit aussi une part
+   plus grande du cadre, sinon le facteur deviendrait illisible. */
+[data-fmt="45"] #c1{--s:1}
+[data-fmt="45"] #c2{--s:.88}
+[data-fmt="45"] #c3{--s:.92}
+[data-fmt="11"] #c1{--s:.96}
+[data-fmt="11"] #c2{--s:.72}
+[data-fmt="11"] #c3{--s:.73}
+
+[data-fmt="45"] .ad.split .bg,
+[data-fmt="45"] .ad.split .scrim,
+[data-fmt="45"] .ad.split .in{inset:0 0 56% 0}
+[data-fmt="45"] .ad.split .panel{inset:44% 0 0 0}
+
+[data-fmt="11"] .ad.split .bg,
+[data-fmt="11"] .ad.split .scrim,
+[data-fmt="11"] .ad.split .in{inset:0 0 58% 0}
+[data-fmt="11"] .ad.split .panel{inset:42% 0 0 0}
+.zone s{position:absolute; right:2%; font-family:var(--mono); font-size:calc(2.2cqw * var(--s)); color:#fff; letter-spacing:.08em; text-decoration:none; text-transform:uppercase}
 
 /* ---------- fiche copie ---------- */
 .meta h3{margin:0 0 3px; font-size:17px; font-weight:800; letter-spacing:-.015em}
@@ -244,7 +266,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
         <dl class="fields">
           <div class="fld"><dt>Texte principal</dt><dd class="wide">« Combien ça va coûter? »<br><br>La vraie réponse dépend de la pièce, des matériaux et de l'état de l'existant. C'est pour ça qu'on ne donne pas de chiffre au téléphone.<br><br>On se déplace, on évalue, et on vous remet un prix précis après la visite — pas une estimation vague. Vous savez ce qui est inclus, ce que ça coûte et combien de temps ça prend, avant que quoi que ce soit commence.<br><br>Soumission détaillée sans frais · Montréal et Rive-Sud</dd></div>
           <div class="fld"><dt>Titre</dt><dd>Un prix précis après la visite<span class="cnt" data-max="40">30</span></dd></div>
-          <div class="fld"><dt>Description</dt><dd>Soumission détaillée sans frais<span class="cnt" data-max="30">30</span></dd></div>
+          <div class="fld"><dt>Description</dt><dd>Soumission détaillée gratuite<span class="cnt" data-max="30">29</span></dd></div>
           <div class="fld"><dt>Bouton</dt><dd class="btn-val">Obtenir un devis</dd></div>
           <div class="fld"><dt>Destination</dt><dd>constructionht.com — section soumission</dd></div>
           <div class="fld"><dt>Public</dt><dd>Reciblage 30 jours + propriétaires ayant consulté des pages rénovation</dd></div>
