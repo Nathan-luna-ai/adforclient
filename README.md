@@ -2,36 +2,57 @@
 
 Publicités pour clients — création, découpage et livrables.
 
-## Projets
+## HT Construction
 
-### `ht-construction-ad/` — HT Construction
-Publicité vidéo verticale de 30 secondes pour [HT Construction](https://constructionht.com/),
-entrepreneur en rénovation à Montréal et sur la Rive-Sud.
+Entrepreneur en rénovation, [constructionht.com](https://constructionht.com/) —
+Montréal et Rive-Sud. Trois livrables, trois angles distincts.
+
+| Dossier | Type | Durée / format | Angle |
+|---|---|---|---|
+| `ht-construction-ad/` | Vidéo | 30 s · 9:16 · 14 plans | Le risque, c'est l'entrepreneur |
+| `ht-construction-ad-petit/` | Vidéo | 21 s · 9:16 · 11 plans | Aucun projet n'est trop petit |
+| `ht-construction-static/` | Affiches | 4:5 · 1:1 · 9:16 | Trois concepts statiques |
+
+Ouvrir le `index.html` de chaque dossier dans un navigateur. Chaque page contient le
+découpage technique complet, les repères sonores et les angles à tester.
+
+### Contraintes communes
+
+- **Français québécois** — « soumission », « chantier », pas d'espace avant `?`
+- **Aucune voix, aucune musique** — effets sonores synthétisés via Web Audio,
+  rien à libérer de droits
+- **Aucune personne à l'écran** — les deux photos du site montrant des travailleurs
+  (`cuisine1`, `gypse-900`) ont été écartées
+- **Lisible en sourdine** — le texte incrusté porte seul le message ; le son n'ajoute
+  que le rythme
+
+### Information client — vérifiée sur le site
 
 | | |
 |---|---|
-| **Format** | 9:16 · 1080×1920 · 30 s · 14 plans |
-| **Plateformes** | Meta Reels &amp; Instagram, TikTok |
-| **Langue** | Français québécois |
-| **Son** | Effets sonores synthétisés seulement — aucune voix, aucune musique |
-| **Contrainte** | Aucune personne à l'écran |
+| RBQ | 5823-1101-01 |
+| CCQ | er937209 |
+| APCHQ | Membre |
+| Téléphone | 514 674-8697 |
+| Courriel | info@constructionht.com |
+| Services | Cuisine · Salle de bain · Plancher · Gypse et finition · Balcons et extérieur |
+| Zone | Montréal, Longueuil, Brossard, Saint-Lambert, Boucherville, Saint-Hubert, La Prairie, Candiac, Chambly, Sainte-Julie, Varennes, Châteauguay |
+| Paiement | Visa/Mastercard, chèque, virement Interac — aucun comptant |
 
-**Angle retenu :** le prospect sait déjà qu'il veut rénover ; ce qui le bloque, c'est de
-savoir à qui confier sa maison. L'annonce attaque cette objection plutôt que de vendre
-la cuisine.
+Citations reprises mot pour mot de la FAQ du site : « aucun projet n'est trop petit »,
+« un prix précis après la visite, pas une estimation vague », « soumission détaillée
+sans frais », « nous détenons les assurances requises ».
 
-**Structure sonore :** rugueuse et accélérée pendant le chantier qui dérape (marteau,
-perceuse, raclement, nappe grave montante), puis nette et ascendante dès que le travail
-fini apparaît (maillets accordés en montée). La bascule à 10,4 s est un impact suivi d'un
-quasi-silence.
+### À valider avant diffusion
 
-Ouvrir `ht-construction-ad/index.html` dans un navigateur. Le découpage technique complet,
-les repères sonores et les angles à tester sont dans la page.
+- Les numéros RBQ et CCQ sont toujours actifs
+- La soumission gratuite s'applique à toute la zone desservie
+- L'autorisation d'utiliser le témoignage de Marie-Ève T. en publicité
 
-**À valider avant diffusion :** numéros RBQ et CCQ, gratuité de la soumission, et
-autorisation d'utiliser le témoignage client en publicité.
+### Export
 
-## Notes
-
-Les visuels proviennent du site du client. Deux photos montrant des travailleurs ont été
-écartées pour respecter la contrainte « aucune personne à l'écran ».
+Les publicités sont des pages HTML animées, pas des fichiers MP4. Pour livrer :
+enregistrer l'écran sur le cadre 9:16 en 1080×1920, 30 ips, avec capture du son du
+système — ou remettre le découpage au monteur, qui contient tous les repères et
+leurs temps. Pour les affiches : capture de chaque cadre aux cibles 1080×1350 (4:5),
+1080×1080 (1:1), 1080×1920 (9:16).
