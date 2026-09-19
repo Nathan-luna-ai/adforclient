@@ -197,7 +197,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     <div class="specs">
       <span class="spec">9:16 · 1080×1920</span>
       <span class="spec">21 s · 11 plans</span>
-      <span class="spec on">Effets sonores seulement</span>
+      <span class="spec on">Effets sonores · réverbe · stéréo</span>
       <span class="spec">Aucune voix · aucune musique</span>
       <span class="spec on">Aucune personne à l'écran</span>
     </div>
@@ -330,7 +330,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
 
     <section class="sheet">
       <h2>Découpage technique</h2>
-      <p class="lede">Deuxième angle, volontairement différent du premier : plus court, plus léger, construit comme une liste. Là où « Chantier propre » joue la tension et la peur de se tromper, celui-ci lève une objection pratique — « mon travail est trop petit pour déranger un entrepreneur ». Le son est une horloge de bois qui s'accélère, pas un chantier rugueux.</p>
+      <p class="lede">Deuxième angle, volontairement différent du premier : plus court, plus léger, construit comme une liste. Là où « Chantier propre » joue la tension et la peur de se tromper, celui-ci lève une objection pratique — « mon travail est trop petit pour déranger un entrepreneur ». Le son est une horloge de bois qui s'accélère, pas un chantier rugueux. Comme sur la première annonce, chaque coupe est traitée comme une transition complète : souffle d'anticipation, impact superposé, queue de réverbe.</p>
       <div class="rows" id="rows"></div>
     </section>
   </div>
@@ -401,6 +401,8 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     <h3>Notes de production</h3>
     <ul>
       <li><b>Information vérifiée sur le site.</b> « Aucun projet n'est trop petit » et « réparation de gypse, remplacement d'un plancher dans une pièce, réparation de balcon » viennent de la FAQ. « Soumission détaillée sans frais » et « nous détenons les assurances requises » également. RBQ 5823-1101-01, CCQ er937209, membre APCHQ, 514 674-8697.</li>
+      <li><b>Conçu comme des transitions, pas comme des bips.</b> Chaque coupe importante reçoit trois temps : une anticipation qui commence avant la coupe et culmine dessus, un impact superposé en trois couches (grave, corps, transitoire), et une queue de réverbe qui déborde sur le plan suivant et relie les deux. C'est cette anticipation qui fait qu'une coupe s'entend comme voulue plutôt qu'accidentelle.</li>
+      <li><b>Réverbe et stéréo.</b> La réverbération est une vraie convolution, avec une réponse impulsionnelle générée dans la page. Les souffles traversent l'image d'une oreille à l'autre dans le sens du mouvement. Rien n'est en mono, rien n'est à sec.</li>
       <li><b>Aucune voix, aucune musique.</b> Tous les sons sont synthétisés dans la page : rien à libérer de droits. Un monteur peut remplacer chaque repère par un vrai bruitage aux mêmes temps.</li>
       <li><b>Lisible en sourdine.</b> Le son donne le rythme, jamais l'information.</li>
       <li><b>Aucune personne à l'écran.</b> Les deux photos du site montrant des travailleurs ont été écartées.</li>
@@ -409,6 +411,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   </div>
 </div>
 
+<script src="sfx.js"></script>
 <script>
 (function(){
   var DUR=21, stage=document.getElementById('stage'), reel=document.getElementById('reel');
@@ -423,13 +426,14 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   var audiowarn=document.getElementById('audiowarn'), sfxtog=document.getElementById('sfxtog');
   var eqBars=[].slice.call(document.querySelectorAll('.eq i'));
   var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var muted=false;
 
   var SHEET=[
     {t:'00:00',dur:'2,3 s',beat:'Liste · 1',fr:'« Un plancher qui craque dans une seule pièce. »',
      son:'Bloc de bois sec, net. C\'est le premier battement d\'une horloge qui va s\'accélérer.',
      vis:'<b>Plan :</b> plancher de bois franc, zoom avant léger. Coupe franche.',at:0},
     {t:'00:02',dur:'2,3 s',beat:'Liste · 2',fr:'« Un trou dans le gypse depuis deux ans. »',
-     son:'Même bloc, un demi-ton plus haut, très légèrement plus rapproché.',
+     son:'Un souffle de 0,17 s annonce la coupe, puis le même bloc un demi-ton plus haut, renvoyé à droite. La cadence se resserre.',
      vis:'<b>Plan :</b> mur de gypse à nu, cadrage serré. Coupe franche.',at:2.35},
     {t:'00:04',dur:'2,3 s',beat:'Liste · 3',fr:'« Un balcon à refaire avant l\'hiver. »',
      son:'Troisième bloc, encore plus haut. La cadence est maintenant perceptible.',
@@ -438,7 +442,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
      son:'La cadence s\'arrête. Un seul bloc mat, plus grave, puis un trait sec quand la barre raye « trop petit ».',
      vis:'<b>Plan :</b> chantier, cadrage très serré, image la plus sombre de l\'annonce. Une barre verte vient rayer « trop petit ».',at:6.95},
     {t:'00:10',dur:'3,8 s',beat:'Bascule',fr:'« Aucun projet n\'est trop petit. »',
-     son:'<b>Le moment clé :</b> impact clair, flash blanc, puis un maillet accordé qui résonne. Tout s\'ouvre.',
+     son:'<b>Le moment clé :</b> souffle inversé, balayage stéréo, impact en trois couches sur la coupe, flash blanc — puis un maillet avec une longue queue de réverbe. Tout s\'ouvre.',
      vis:'<b>Plan :</b> coupe sur la cuisine terminée, lumineuse, zoom arrière. Le plus gros typographique de l\'annonce.',at:10.25},
     {t:'00:14',dur:'3,2 s',beat:'L\'offre',fr:'« On se déplace. On vous donne un prix. »',
      son:'Maillet doux, plus haut. Un souffle court à l\'arrivée du sous-titre.',
@@ -464,116 +468,11 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   });
   var rowEls=[].slice.call(rows.children);
 
-  /* ---------- audio : bois, sec et régulier ---------- */
-  var ctx=null, master=null, comp=null, noiseBuf=null, muted=false, live=[], lastPeak=0;
-  function audio(){
-    if(ctx) return ctx;
-    var AC=window.AudioContext||window.webkitAudioContext;
-    if(!AC){ audiowarn.textContent='Ce navigateur ne permet pas la synthèse audio : la publicité joue en silence. Tout le message reste dans le texte incrusté.'; audiowarn.classList.add('on'); return null; }
-    ctx=new AC();
-    comp=ctx.createDynamicsCompressor();
-    comp.threshold.value=-14; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.15;
-    master=ctx.createGain(); master.gain.value=muted?0:0.85;
-    comp.connect(master); master.connect(ctx.destination);
-    var n=Math.floor(ctx.sampleRate*0.6); noiseBuf=ctx.createBuffer(1,n,ctx.sampleRate);
-    var d=noiseBuf.getChannelData(0);
-    for(var i=0;i<n;i++) d[i]=Math.random()*2-1;
-    return ctx;
-  }
-  function ok(){ return audio() && !muted && sfxtog.checked; }
-  function reg(n,s){ live.push(n); setTimeout(function(){ var i=live.indexOf(n); if(i>-1) live.splice(i,1); }, s*1000+120); }
-  function killAll(){ live.forEach(function(n){ try{ n.stop(); }catch(e){} }); live=[]; }
-  function ramp(g,peak,att,dec){
-    var t=ctx.currentTime;
-    g.gain.setValueAtTime(0.0001,t);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.0002,peak),t+att);
-    g.gain.exponentialRampToValueAtTime(0.0001,t+att+dec);
-  }
-  function peakHit(v){ lastPeak=Math.max(lastPeak,Math.min(1,v*1.6)); }
-
-  /* bloc de bois : corps court + claquement filtré */
-  function woodblock(freq,peak){
-    if(!ok()) return; peakHit(peak);
-    var t=ctx.currentTime;
-    var o=ctx.createOscillator(), g=ctx.createGain();
-    o.type='triangle'; o.frequency.setValueAtTime(freq,t);
-    o.frequency.exponentialRampToValueAtTime(freq*0.72,t+0.06);
-    ramp(g,peak,0.003,0.085); o.connect(g); g.connect(comp);
-    o.start(); o.stop(t+0.2); reg(o,0.2);
-    var s=ctx.createBufferSource(), bp=ctx.createBiquadFilter(), ng=ctx.createGain();
-    s.buffer=noiseBuf; bp.type='bandpass'; bp.frequency.value=freq*2.6; bp.Q.value=2.2;
-    ramp(ng,peak*0.34,0.001,0.035);
-    s.connect(bp); bp.connect(ng); ng.connect(comp);
-    s.start(); s.stop(t+0.12); reg(s,0.12);
-  }
-  function dull(peak){
-    if(!ok()) return; peakHit(peak);
-    var t=ctx.currentTime;
-    var o=ctx.createOscillator(), g=ctx.createGain(), lp=ctx.createBiquadFilter();
-    o.type='sine'; o.frequency.setValueAtTime(96,t); o.frequency.exponentialRampToValueAtTime(52,t+0.2);
-    lp.type='lowpass'; lp.frequency.value=420;
-    ramp(g,peak,0.005,0.26); o.connect(lp); lp.connect(g); g.connect(comp);
-    o.start(); o.stop(t+0.45); reg(o,0.45);
-  }
-  /* trait sec de la barre qui raye */
-  function swipe(peak){
-    if(!ok()) return; peakHit(peak);
-    var t=ctx.currentTime;
-    var s=ctx.createBufferSource(), bp=ctx.createBiquadFilter(), g=ctx.createGain();
-    s.buffer=noiseBuf; bp.type='bandpass'; bp.Q.value=1.4;
-    bp.frequency.setValueAtTime(900,t); bp.frequency.exponentialRampToValueAtTime(4800,t+0.3);
-    ramp(g,peak,0.02,0.3);
-    s.connect(bp); bp.connect(g); g.connect(comp);
-    s.start(); s.stop(t+0.5); reg(s,0.5);
-  }
-  function impact(peak){
-    if(!ok()) return; peakHit(peak);
-    var t=ctx.currentTime;
-    var o=ctx.createOscillator(), g=ctx.createGain();
-    o.type='sine'; o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(38,t+0.5);
-    ramp(g,peak,0.005,0.55); o.connect(g); g.connect(comp);
-    o.start(); o.stop(t+0.8); reg(o,0.8);
-    var s=ctx.createBufferSource(), lp=ctx.createBiquadFilter(), ng=ctx.createGain();
-    s.buffer=noiseBuf; lp.type='lowpass';
-    lp.frequency.setValueAtTime(1700,t); lp.frequency.exponentialRampToValueAtTime(240,t+0.28);
-    ramp(ng,peak*0.36,0.003,0.28);
-    s.connect(lp); lp.connect(ng); ng.connect(comp);
-    s.start(); s.stop(t+0.45); reg(s,0.45);
-  }
-  function mallet(freq,peak,dec){
-    if(!ok()) return; peakHit(peak*1.4);
-    var t=ctx.currentTime;
-    [1,2.01,3.02].forEach(function(m,i){
-      var o=ctx.createOscillator(), g=ctx.createGain();
-      o.type='sine'; o.frequency.value=freq*m;
-      ramp(g,peak/(i*2.2+1),0.006,dec/(i*0.7+1));
-      o.connect(g); g.connect(comp);
-      o.start(); o.stop(t+dec+0.3); reg(o,dec+0.3);
-    });
-  }
-  function air(peak){
-    if(!ok()) return;
-    var t=ctx.currentTime;
-    var s=ctx.createBufferSource(), hp=ctx.createBiquadFilter(), g=ctx.createGain();
-    s.buffer=noiseBuf; hp.type='highpass'; hp.frequency.value=4200;
-    ramp(g,peak,0.02,0.3);
-    s.connect(hp); hp.connect(g); g.connect(comp);
-    s.start(); s.stop(t+0.5); reg(s,0.5);
-  }
-  function pad(){
-    if(!ok()) return;
-    var t=ctx.currentTime;
-    [73.42,110,146.83].forEach(function(f,i){
-      var o=ctx.createOscillator(), g=ctx.createGain(), lp=ctx.createBiquadFilter();
-      o.type='sine'; o.frequency.value=f; lp.type='lowpass'; lp.frequency.value=800;
-      g.gain.setValueAtTime(0.0001,t);
-      g.gain.exponentialRampToValueAtTime(0.058/(i*0.8+1),t+0.4);
-      g.gain.exponentialRampToValueAtTime(0.0001,t+2.2);
-      o.connect(lp); lp.connect(g); g.connect(comp);
-      o.start(); o.stop(t+2.4); reg(o,2.4);
-    });
-  }
-
+  /* ---------- repères sonores ----------
+     Même principe que la première annonce : anticipation avant la coupe,
+     impact dessus, queue de réverbe qui déborde sur le plan suivant.
+     Mais l'identité est différente — bois sec et régulier, comme une
+     horloge qui s'accélère, au lieu du marteau et de la perceuse. */
   function punch(big){
     if(reduce) return;
     reel.classList.remove('hit','big'); void reel.offsetWidth;
@@ -589,24 +488,47 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   function unStrike(){ strike.classList.remove('go'); }
 
   var CUES=[
-    {t:0    ,f:function(){ woodblock(780,0.3); punch(); }},
-    {t:2.35 ,f:function(){ woodblock(840,0.32); punch(); }},
-    {t:4.65 ,f:function(){ woodblock(910,0.34); punch(); }},
-    {t:6.95 ,f:function(){ dull(0.42); punch(); }},
-    {t:8.15 ,f:function(){ doStrike(); swipe(0.24); }},
-    {t:10.25,f:function(){ impact(0.72); doFlash(); punch(true); }},
-    {t:10.7 ,f:function(){ mallet(130.81,0.1,1.6); }},
-    {t:14.05,f:function(){ mallet(174.61,0.095,1.2); air(0.05); punch(); }},
-    {t:14.35,f:function(){ mallet(261.63,0.04,0.6); }},
-    {t:17.25,f:function(){ mallet(196,0.09,1.0); punch(); }},
-    {t:17.4 ,f:function(){ mallet(261.63,0.07,0.55); }},
-    {t:17.85,f:function(){ mallet(329.63,0.07,0.55); }},
-    {t:18.3 ,f:function(){ mallet(392,0.08,0.7); }},
-    {t:19.45,f:function(){ impact(0.6); pad(); doFlash(); punch(true); }},
-    {t:20.1 ,f:function(){ mallet(523.25,0.08,0.9); air(0.04); }}
+    /* LA LISTE — cadence de bois, pan alterné, resserrement progressif */
+    {t:0    ,f:function(){ SFX.wood({freq:780,peak:0.32,pan:-0.3}); SFX.roomTone({dur:10.2,peak:0.010,freq:1800}); punch(); }},
+    {t:2.18 ,f:function(){ SFX.whoosh({dur:0.17,peak:0.05,from:600,to:3400,pan:0.4,panTo:-0.35}); }},
+    {t:2.35 ,f:function(){ SFX.wood({freq:840,peak:0.34,pan:0.3}); punch(); }},
+    {t:4.48 ,f:function(){ SFX.whoosh({dur:0.17,peak:0.055,from:640,to:3800,pan:-0.4,panTo:0.35}); }},
+    {t:4.65 ,f:function(){ SFX.wood({freq:910,peak:0.36,pan:-0.22}); punch(); }},
+
+    /* L'OBJECTION — la cadence s'arrête net */
+    {t:6.78 ,f:function(){ SFX.whoosh({dur:0.17,peak:0.06,from:520,to:2400,pan:0.35,panTo:0}); }},
+    {t:6.95 ,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.46,f0:96,f1:44,dec:0.32,body:900,topF:1400,send:0.34}); punch(); }},
+    {t:8.15 ,f:function(){ doStrike(); SFX.whoosh({dur:0.3,peak:0.13,from:900,to:5200,q:2.1,pan:-0.6,panTo:0.6,send:0.4}); }},
+
+    /* LA BASCULE — anticipation, impact, ouverture */
+    {t:9.55 ,f:function(){ SFX.reverseSwell({dur:0.7,peak:0.13}); }},
+    {t:9.98 ,f:function(){ SFX.whoosh({dur:0.27,peak:0.10,from:340,to:6200,pan:0.65,panTo:-0.65}); }},
+    {t:10.25,f:function(){ SFX.hit({peak:0.76,f0:152,f1:34,dec:0.7,body:2100,send:0.44}); doFlash(); punch(true); }},
+    {t:10.70,f:function(){ SFX.mallet({freq:130.81,peak:0.10,dec:1.8}); SFX.roomTone({dur:8.5,peak:0.010,freq:2800}); }},
+
+    /* L'OFFRE */
+    {t:13.85,f:function(){ SFX.air({peak:0.045,pan:-0.3}); }},
+    {t:14.05,f:function(){ SFX.mallet({freq:174.61,peak:0.095,dec:1.3,pan:0.12}); punch(); }},
+    {t:14.35,f:function(){ SFX.mallet({freq:261.63,peak:0.042,dec:0.65,pan:-0.22}); }},
+
+    /* PREUVE — trois notes montantes, pan étagé */
+    {t:17.08,f:function(){ SFX.air({peak:0.04,pan:0.3}); }},
+    {t:17.25,f:function(){ SFX.mallet({freq:196,peak:0.09,dec:1.1,pan:-0.1}); punch(); }},
+    {t:17.40,f:function(){ SFX.mallet({freq:261.63,peak:0.07,dec:0.58,pan:-0.32}); }},
+    {t:17.85,f:function(){ SFX.mallet({freq:329.63,peak:0.07,dec:0.58,pan:0}); }},
+    {t:18.30,f:function(){ SFX.mallet({freq:392,peak:0.08,dec:0.75,pan:0.32}); }},
+
+    /* CARTE DE FIN — plus serrée que sur la première annonce */
+    {t:19.22,f:function(){ SFX.whoosh({dur:0.22,peak:0.09,from:520,to:6000,pan:-0.55,panTo:0.55}); }},
+    {t:19.45,f:function(){ SFX.hit({peak:0.62,f0:144,f1:34,dec:0.62,send:0.45}); SFX.pad({dur:2.3}); doFlash(); punch(true); }},
+    {t:20.10,f:function(){ SFX.mallet({freq:523.25,peak:0.08,dec:0.95,pan:0.15}); SFX.air({peak:0.04}); }}
   ];
   CUES.sort(function(a,b){ return a.t-b.t; });
   CUES.forEach(function(c){ var u=document.createElement('u'); u.style.left=(c.t/DUR*100)+'%'; ticks.appendChild(u); });
+  if(!SFX.ready()){
+    audiowarn.textContent='Ce navigateur ne permet pas la synthèse audio : la publicité joue en silence. Tout le message reste dans le texte incrusté.';
+    audiowarn.classList.add('on');
+  }
   var cursor=0;
 
   function fade(el,t){
@@ -645,9 +567,9 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     var ai=0;
     for(var i=0;i<SHEET.length;i++){ if(t>=SHEET[i].at-0.1) ai=i; }
     rowEls.forEach(function(r,i){ r.setAttribute('aria-current', i===ai?'true':'false'); });
-    lastPeak*=0.82;
+    var lvl=SFX.peak();
     var on=playing&&!muted&&sfxtog.checked;
-    eqBars.forEach(function(b,i){ b.style.height=(on?Math.max(3,3+lastPeak*6*(i===1?1:0.72)):3).toFixed(1)+'px'; });
+    eqBars.forEach(function(b,i){ b.style.height=(on?Math.max(3,3+lvl*6*(i===1?1:0.72)):3).toFixed(1)+'px'; });
   }
 
   function frame(ts){
@@ -655,7 +577,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     if(last===null) last=ts;
     t+=(ts-last)/1000; last=ts;
     if(t>=DUR){
-      if(document.getElementById('looptog').checked){ t=0; cursor=0; killAll(); unStrike(); }
+      if(document.getElementById('looptog').checked){ t=0; cursor=0; SFX.kill(); unStrike(); }
       else { t=DUR; toggle(false); render(); return; }
     }
     while(cursor<CUES.length && CUES[cursor].t<=t){ CUES[cursor].f(); cursor++; }
@@ -670,12 +592,12 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     bigplay.hidden=playing;
     if(playing){
       if(t>=DUR){ t=0; syncCursor(); }
-      audio(); if(ctx&&ctx.state==='suspended') ctx.resume();
+      SFX.ready(); SFX.resume();
       requestAnimationFrame(frame);
-    } else killAll();
+    } else SFX.kill();
     badge();
   }
-  function seek(v){ t=Math.min(DUR,Math.max(0,v)); last=null; killAll(); unStrike(); syncCursor(); render(); }
+  function seek(v){ t=Math.min(DUR,Math.max(0,v)); last=null; SFX.kill(); unStrike(); syncCursor(); render(); }
   function badge(){ sndlabel.textContent=(muted||!sfxtog.checked)?'SANS SON — TEXTE INCRUSTÉ':'SON ACTIF'; }
 
   play.addEventListener('click',function(){ toggle(); });
@@ -685,11 +607,10 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     muted=!muted;
     this.setAttribute('aria-pressed',String(!muted));
     this.textContent=muted?'Son coupé':'Son activé';
-    if(master) master.gain.value=muted?0:0.85;
-    if(muted) killAll();
+    SFX.mute(muted);
     badge();
   });
-  sfxtog.addEventListener('change',function(){ if(!this.checked) killAll(); badge(); });
+  sfxtog.addEventListener('change',function(){ SFX.enable(this.checked); badge(); });
   document.getElementById('safetog').addEventListener('change',function(){
     document.getElementById('safe').classList.toggle('on',this.checked);
   });
@@ -710,7 +631,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   });
   stage.addEventListener('click',function(e){ if(e.target===stage) toggle(); });
   document.addEventListener('visibilitychange',function(){ if(document.hidden) toggle(false); });
-  window.addEventListener('pagehide',function(){ killAll(); });
+  window.addEventListener('pagehide',function(){ SFX.kill(); });
 
   badge(); render();
 })();
