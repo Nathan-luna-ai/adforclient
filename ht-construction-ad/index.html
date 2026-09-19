@@ -1,0 +1,849 @@
+<title>Chantier Propre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#121a15; --ink2:#1f2b26; --slate:#2f4a3f;
+  --sage:#93b07f; --sage2:#7fa06a; --sage3:#587a4a; --sage-light:#e4ecdb;
+  --paper:#f6f7f2; --paper2:#e9eee3; --white:#fcfcf9;
+
+  --bg:var(--paper); --surface:var(--white); --surface2:var(--paper2);
+  --text:#1c241f; --muted:#55605a; --line:rgba(31,43,38,.14);
+  --accent:var(--sage3); --accent-soft:var(--sage-light);
+  --rough:#a8552f; --rough-soft:#f7e9e1;
+  --stage:#070a08; --warn:#8a5a2b; --warn-soft:#f6ecdd;
+  --sans:"Manrope",ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1411; --surface:#161f1a; --surface2:#1c2721;
+    --text:#e8ede8; --muted:#97a69d; --line:rgba(232,237,232,.14);
+    --accent:var(--sage); --accent-soft:#26342a;
+    --rough:#d98f62; --rough-soft:#2e2019;
+    --warn:#d6a866; --warn-soft:#2b2318;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1411; --surface:#161f1a; --surface2:#1c2721;
+  --text:#e8ede8; --muted:#97a69d; --line:rgba(232,237,232,.14);
+  --accent:var(--sage); --accent-soft:#26342a;
+  --rough:#d98f62; --rough-soft:#2e2019;
+  --warn:#d6a866; --warn-soft:#2b2318;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--sans); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:34px 72px}
+
+.mast{display:flex; flex-wrap:wrap; gap:16px 28px; align-items:baseline; margin-bottom:26px}
+.mast h1{font-size:clamp(25px,3.4vw,36px); font-weight:800; letter-spacing:-.022em; margin:0; text-wrap:balance}
+.mast .sub{color:var(--muted); font-size:14px; margin:4px 0 0}
+.specs{display:flex; flex-wrap:wrap; gap:7px; margin-left:auto}
+.spec{
+  font-family:var(--mono); font-size:11px; letter-spacing:.02em;
+  padding:5px 9px; border:1px solid var(--line); border-radius:999px;
+  color:var(--muted); white-space:nowrap;
+}
+.spec.on{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 42%,transparent)}
+
+.studio{display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:34px; align-items:start}
+@media (max-width:860px){ .studio{grid-template-columns:minmax(0,1fr)} }
+.player{position:sticky; top:calc(env(safe-area-inset-top,0px) + 18px)}
+@media (max-width:860px){ .player{position:static} }
+
+.stage{
+  position:relative; width:100%; aspect-ratio:9/16; max-width:100%;
+  background:var(--stage); border-radius:16px; overflow:hidden;
+  box-shadow:0 2px 4px rgba(0,0,0,.18), 0 30px 60px -22px rgba(18,26,21,.55);
+  isolation:isolate; user-select:none; container-type:inline-size;
+}
+.reel{position:absolute; inset:0; transform-origin:center; will-change:transform,filter}
+.reel.hit{animation:hit .17s cubic-bezier(.2,.9,.3,1)}
+.reel.hit.big{animation:hitbig .3s cubic-bezier(.2,.9,.3,1)}
+@keyframes hit{0%{transform:scale(1.02); filter:brightness(1.34)} 100%{transform:scale(1); filter:brightness(1)}}
+@keyframes hitbig{0%{transform:scale(1.05); filter:brightness(1.7) contrast(1.08)} 100%{transform:scale(1); filter:none}}
+.flash{position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:3}
+.flash.go{animation:fl .3s ease-out}
+@keyframes fl{0%{opacity:.9} 100%{opacity:0}}
+
+.shot{position:absolute; inset:0; opacity:0; will-change:opacity}
+.shot .ph{position:absolute; inset:0; background-size:cover; background-position:center; transform-origin:center; will-change:transform}
+.shot .veil{position:absolute; inset:0}
+
+.cap{position:absolute; left:7.5%; right:7.5%; opacity:0; will-change:opacity,transform; z-index:2}
+.cap.mid{top:50%}
+.cap.low{bottom:17%}
+.cap.hi{top:15%}
+
+.kicker{font-family:var(--mono); font-size:min(11px,2.9cqw); letter-spacing:.16em; text-transform:uppercase; color:var(--sage); margin-bottom:9px}
+.hed{font-weight:800; letter-spacing:-.025em; line-height:1.08; font-size:7.6cqw; color:#fff; text-wrap:balance; text-shadow:0 2px 26px rgba(0,0,0,.42)}
+.hed.sm{font-size:6.1cqw}
+.hed em{font-style:normal; color:var(--sage)}
+.dek{font-size:4.1cqw; font-weight:600; color:rgba(255,255,255,.88); line-height:1.34; margin-top:10px; text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.bullets{display:flex; flex-direction:column; gap:2.6cqw}
+.bul{display:flex; gap:2.6cqw; align-items:baseline; font-size:5.1cqw; font-weight:700; color:#fff; letter-spacing:-.012em; opacity:0; text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.bul i{flex:none; width:2.1cqw; height:2.1cqw; border-radius:50%; background:#d98f62; transform:translateY(-.35em)}
+.chips{display:flex; flex-direction:column; gap:2.2cqw}
+.chip{
+  display:flex; align-items:center; justify-content:space-between; gap:3cqw;
+  padding:3cqw 4cqw; border-radius:2.6cqw; opacity:0;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+}
+.chip b{font-family:var(--sans); font-weight:800; font-size:4.3cqw; color:#fff; letter-spacing:-.01em}
+.chip span{font-family:var(--mono); font-size:3.5cqw; color:var(--sage); letter-spacing:.02em}
+.quote{font-size:5.3cqw; font-weight:700; color:#fff; line-height:1.28; letter-spacing:-.015em; text-shadow:0 2px 20px rgba(0,0,0,.45)}
+.attrib{font-family:var(--mono); font-size:3.4cqw; color:var(--sage); letter-spacing:.06em; text-transform:uppercase; margin-top:3.4cqw}
+
+.endcard{position:absolute; inset:0; background:var(--ink); opacity:0; z-index:2}
+.endcard .inner{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:9%}
+.endcard img{width:44%; height:auto; opacity:0}
+.ec{opacity:0}
+.svc{font-family:var(--mono); font-size:3.15cqw; letter-spacing:.055em; color:var(--sage); margin-top:6.5cqw; line-height:1.9}
+.zone{font-size:4.5cqw; font-weight:700; color:#fff; margin-top:2.4cqw; letter-spacing:-.01em}
+.offer{margin-top:6cqw; padding:3.2cqw 6cqw; border-radius:999px; background:var(--sage); color:var(--ink); font-weight:800; font-size:4.6cqw; letter-spacing:-.01em}
+.tel{font-family:var(--mono); font-size:5.4cqw; color:#fff; font-weight:500; margin-top:5cqw; letter-spacing:.01em}
+.site{font-family:var(--mono); font-size:3.3cqw; color:rgba(255,255,255,.62); margin-top:1.8cqw; letter-spacing:.05em}
+
+.safe{position:absolute; inset:0; display:none; pointer-events:none; z-index:4}
+.safe.on{display:block}
+.safe .band{position:absolute; left:0; right:0; background:rgba(226,86,64,.17)}
+.safe .band.t{top:0; height:14%; border-bottom:1px dashed rgba(255,255,255,.55)}
+.safe .band.b{bottom:0; height:35%; border-top:1px dashed rgba(255,255,255,.55)}
+.safe .band.r{top:14%; bottom:35%; left:auto; right:0; width:16%; border-left:1px dashed rgba(255,255,255,.55); background:rgba(226,86,64,.12)}
+.safe s{position:absolute; right:7px; font-family:var(--mono); font-size:9px; color:#fff; letter-spacing:.09em; text-decoration:none; text-transform:uppercase}
+
+.sndbadge{
+  position:absolute; top:12px; right:12px; z-index:5; display:flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.09em;
+  color:rgba(255,255,255,.92); background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:4px 9px;
+  backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+}
+.eq{display:flex; align-items:flex-end; gap:1.5px; height:9px}
+.eq i{width:2px; background:var(--sage); height:3px; border-radius:1px; transition:height .08s linear}
+
+.bigplay{position:absolute; inset:0; z-index:6; display:grid; place-items:center; background:rgba(7,10,8,.42); border:0; cursor:pointer; padding:0}
+.bigplay[hidden]{display:none}
+.bigplay span.k{width:66px; height:66px; border-radius:50%; background:rgba(252,252,249,.95); display:grid; place-items:center; box-shadow:0 10px 30px -8px rgba(0,0,0,.6)}
+.bigplay svg{margin-left:4px}
+.bigplay small{position:absolute; bottom:10%; left:0; right:0; text-align:center; font-family:var(--mono); font-size:10px; letter-spacing:.1em; color:rgba(255,255,255,.8); text-transform:uppercase}
+
+.transport{margin-top:12px}
+.scrub{position:relative; height:26px; cursor:pointer; touch-action:none; display:flex; align-items:center}
+.track{position:relative; height:4px; width:100%; border-radius:99px; background:var(--line); overflow:hidden}
+.fill{position:absolute; inset:0 auto 0 0; width:0; background:var(--accent); border-radius:99px}
+.ticks{position:absolute; inset:0; pointer-events:none}
+.ticks b{position:absolute; top:0; bottom:0; width:1px; background:var(--bg); opacity:.85}
+.ticks u{position:absolute; top:50%; width:3px; height:3px; margin:-1.5px 0 0 -1.5px; border-radius:50%; background:var(--accent); opacity:.55; text-decoration:none}
+.ticks u.rough{background:var(--rough)}
+.tbar{display:flex; align-items:center; gap:8px; margin-top:2px; flex-wrap:wrap}
+.btn{font-family:var(--sans); font-weight:700; font-size:13px; border:1px solid var(--line); background:var(--surface); color:var(--text); border-radius:9px; padding:7px 13px; cursor:pointer; line-height:1}
+.btn:hover{border-color:var(--accent); color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.btn.pri{background:var(--accent); border-color:var(--accent); color:var(--white)}
+.btn.pri:hover{filter:brightness(1.08); color:var(--white)}
+.btn.snd[aria-pressed="false"]{color:var(--muted)}
+.btn.snd[aria-pressed="true"]{color:var(--accent); border-color:color-mix(in srgb,var(--accent) 48%,transparent)}
+.tc{font-family:var(--mono); font-size:12px; color:var(--muted); margin-left:auto; font-variant-numeric:tabular-nums}
+.tc b{color:var(--text); font-weight:500}
+.toggles{display:flex; gap:14px; margin-top:11px; flex-wrap:wrap}
+.tog{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--muted); cursor:pointer}
+.tog input{accent-color:var(--accent); margin:0; width:14px; height:14px}
+.audiowarn{display:none; margin-top:10px; padding:9px 11px; border-radius:9px; background:var(--warn-soft); color:var(--warn); font-size:12px; line-height:1.45; border:1px solid color-mix(in srgb,var(--warn) 30%,transparent)}
+.audiowarn.on{display:block}
+
+.sheet h2, .col h2{font-size:12px; font-family:var(--mono); font-weight:500; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin:0 0 3px}
+.sheet .lede{color:var(--muted); font-size:13.5px; margin:0 0 18px; max-width:62ch}
+.acts{display:flex; gap:3px; margin-bottom:16px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase}
+.acts div{padding:7px 10px; border-radius:7px; line-height:1.3}
+.acts .a1{flex:104; background:var(--rough-soft); color:var(--rough)}
+.acts .a2{flex:162; background:var(--accent-soft); color:var(--accent)}
+.acts .a3{flex:34; background:var(--ink); color:var(--sage)}
+.rows{display:flex; flex-direction:column; border-top:1px solid var(--line)}
+.row{
+  display:grid; grid-template-columns:76px minmax(0,1fr); gap:0 18px;
+  padding:15px 12px 15px 0; border-bottom:1px solid var(--line);
+  cursor:pointer; background:none; border-left:0; border-right:0; border-top:0;
+  text-align:left; font:inherit; color:inherit; width:100%; transition:background .14s ease;
+}
+.row:hover{background:var(--surface2)}
+.row:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+.row[aria-current="true"]{background:var(--accent-soft)}
+.row[aria-current="true"].rough{background:var(--rough-soft)}
+.row[aria-current="true"] .rtc{color:var(--accent)}
+.row[aria-current="true"].rough .rtc{color:var(--rough)}
+.rtc{font-family:var(--mono); font-size:11.5px; color:var(--text); font-variant-numeric:tabular-nums; padding-top:2px; letter-spacing:.01em}
+.rtc span{color:var(--muted); font-size:10.5px}
+.rbeat{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.row.rough .rbeat{color:var(--rough)}
+.rfr{font-weight:700; font-size:15.5px; letter-spacing:-.012em; margin-bottom:6px; text-wrap:balance}
+.rson{font-size:13px; color:var(--text); line-height:1.45; margin-bottom:5px; padding-left:10px; border-left:2px solid var(--accent)}
+.row.rough .rson{border-left-color:var(--rough)}
+.rson em{font-style:normal; font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:2px}
+.row.rough .rson em{color:var(--rough)}
+.rvis{color:var(--muted); font-size:12.5px; line-height:1.5}
+.rvis b{color:var(--text); font-weight:600}
+
+.lower{margin-top:56px; display:grid; grid-template-columns:repeat(auto-fit,minmax(275px,1fr)); gap:30px}
+.col{border-top:2px solid var(--text); padding-top:14px}
+.col > p.lede{color:var(--muted); font-size:13px; margin:0 0 16px}
+.alt{padding:13px 0; border-bottom:1px solid var(--line)}
+.alt:last-child{border-bottom:0}
+.alt .tag{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px}
+.alt .fr{font-weight:700; font-size:14.5px; letter-spacing:-.01em; line-height:1.32}
+.alt .why{color:var(--muted); font-size:12.5px; margin-top:4px; line-height:1.5}
+.note{margin-top:40px; padding:18px 20px; border-radius:12px; background:var(--surface); border:1px solid var(--line)}
+.note h3{margin:0 0 9px; font-size:13.5px; font-weight:800; letter-spacing:-.01em}
+.note ul{margin:0; padding-left:19px; color:var(--muted); font-size:13px; line-height:1.68}
+.note li + li{margin-top:3px}
+.note b{color:var(--text); font-weight:600}
+@media (prefers-reduced-motion:reduce){
+  .shot .ph{transform:none!important}
+  .reel.hit,.reel.hit.big,.flash.go{animation:none}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <h1>« Chantier propre » — 30 s</h1>
+      <p class="sub">HT Construction · Meta Reels &amp; TikTok · Montréal et Rive-Sud</p>
+    </div>
+    <div class="specs">
+      <span class="spec">9:16 · 1080×1920</span>
+      <span class="spec">30 s · 14 plans</span>
+      <span class="spec on">Effets sonores seulement</span>
+      <span class="spec">Aucune voix · aucune musique</span>
+      <span class="spec on">Aucune personne à l'écran</span>
+    </div>
+  </header>
+
+  <div class="studio">
+
+    <div class="player">
+      <div class="stage" id="stage">
+        <div class="reel" id="reel">
+
+          <!-- ACTE 1 · le chantier qui dérape — coupes sèches sur un même lieu -->
+          <div class="shot" data-in="0" data-out="3.4" data-f="0.05" data-z0="1.04" data-z1="1.13">
+            <div class="ph" style="background-image:url('img/reno.jpg')"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.8) 0%,rgba(7,10,8,.42) 44%,rgba(7,10,8,.88) 100%)"></div>
+          </div>
+          <div class="shot" data-in="3.4" data-out="6.4" data-f="0.05" data-z0="1.34" data-z1="1.42">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:28% 62%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.82) 0%,rgba(7,10,8,.46) 44%,rgba(7,10,8,.88) 100%)"></div>
+          </div>
+          <div class="shot" data-in="6.4" data-out="10.4" data-f="0.05" data-z0="1.12" data-z1="1.28">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:72% 38%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.7) 0%,rgba(7,10,8,.5) 44%,rgba(7,10,8,.9) 100%)"></div>
+          </div>
+
+          <div class="cap hi" data-in="0.25" data-out="3.3">
+            <div class="kicker">Rénovation · Montréal et Rive-Sud</div>
+            <div class="hed">Le plus grand risque<br>d'une rénovation?</div>
+          </div>
+          <div class="cap hi" data-in="3.5" data-out="6.3">
+            <div class="hed">Ce n'est pas<br>le <em>budget</em>.</div>
+          </div>
+          <div class="cap mid" data-in="6.5" data-out="10.3" style="transform:translateY(-50%)">
+            <div class="bullets">
+              <div class="bul" data-in="6.6" data-out="10.3" data-f="0.12"><i></i><span>Des délais qui s'étirent.</span></div>
+              <div class="bul" data-in="7.5" data-out="10.3" data-f="0.12"><i></i><span>Des extras qui apparaissent.</span></div>
+              <div class="bul" data-in="8.4" data-out="10.3" data-f="0.12"><i></i><span>Un chantier laissé sale.</span></div>
+            </div>
+          </div>
+          <div class="cap low" data-in="9.0" data-out="10.3">
+            <div class="hed sm">C'est de choisir<br>le mauvais entrepreneur.</div>
+          </div>
+
+          <!-- ACTE 2 · la bascule -->
+          <div class="shot" data-in="10.4" data-out="15.0" data-f="0.06" data-z0="1.2" data-z1="1.03">
+            <div class="ph" style="background-image:url('img/cuisine.jpg')"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.2) 0%,rgba(7,10,8,.08) 45%,rgba(7,10,8,.8) 100%)"></div>
+          </div>
+          <div class="cap low" data-in="10.8" data-out="14.9">
+            <div class="kicker">HT Construction</div>
+            <div class="hed sm">On travaille<br>autrement.</div>
+          </div>
+
+          <div class="shot" data-in="15.0" data-out="18.6" data-z0="1.03" data-z1="1.13">
+            <div class="ph" style="background-image:url('img/sdb.jpg')"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.74) 0%,rgba(7,10,8,.22) 42%,rgba(7,10,8,.76) 100%)"></div>
+          </div>
+          <div class="cap hi" data-in="15.25" data-out="18.5">
+            <div class="hed sm">Une soumission claire,<br>avant de commencer.</div>
+            <div class="dek">Ce qui est inclus. Ce que ça coûte.<br>Combien de temps ça prend.</div>
+          </div>
+
+          <div class="shot" data-in="18.6" data-out="22.0" data-z0="1.13" data-z1="1.02">
+            <div class="ph" style="background-image:url('img/plancher.jpg')"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.62) 0%,rgba(7,10,8,.56) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="18.8" data-out="21.9" style="transform:translateY(-50%)">
+            <div class="chips">
+              <div class="chip" data-in="18.9" data-out="21.9" data-f="0.14"><b>RBQ</b><span>5823-1101-01</span></div>
+              <div class="chip" data-in="19.5" data-out="21.9" data-f="0.14"><b>CCQ</b><span>er937209</span></div>
+              <div class="chip" data-in="20.1" data-out="21.9" data-f="0.14"><b>APCHQ</b><span>MEMBRE</span></div>
+            </div>
+          </div>
+
+          <div class="shot" data-in="22.0" data-out="25.2" data-z0="1.02" data-z1="1.1">
+            <div class="ph" style="background-image:url('img/balcon.jpg')"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.36) 0%,rgba(7,10,8,.86) 100%)"></div>
+          </div>
+          <div class="cap low" data-in="22.2" data-out="25.1">
+            <div class="quote">«&#8239;Le chantier était propre chaque soir et le résultat est impeccable.&#8239;»</div>
+            <div class="attrib">Marie-Ève T. · Longueuil</div>
+          </div>
+
+          <!-- ACTE 3 · rafale avant le logo -->
+          <div class="shot" data-in="25.2" data-out="25.55" data-f="0.03" data-z0="1.1" data-z1="1.16">
+            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:40% 50%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+          <div class="shot" data-in="25.55" data-out="25.9" data-f="0.03" data-z0="1.14" data-z1="1.2">
+            <div class="ph" style="background-image:url('img/sdb.jpg'); background-position:62% 50%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+          <div class="shot" data-in="25.9" data-out="26.25" data-f="0.03" data-z0="1.08" data-z1="1.14">
+            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:35% 55%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+          <div class="shot" data-in="26.25" data-out="26.6" data-f="0.03" data-z0="1.16" data-z1="1.22">
+            <div class="ph" style="background-image:url('img/balcon.jpg'); background-position:55% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
+          </div>
+
+          <!-- carte de fin -->
+          <div class="endcard" data-in="26.6" data-out="30" data-f="0.12">
+            <div class="inner">
+              <img src="img/logo.png" alt="HT Construction" data-in="26.75" data-out="30" data-f="0.2">
+              <div class="ec svc" data-in="27.05" data-out="30">CUISINE · SALLE DE BAIN · PLANCHER<br>GYPSE · BALCON</div>
+              <div class="ec zone" data-in="27.3" data-out="30">Montréal et Rive-Sud</div>
+              <div class="ec offer" data-in="27.7" data-out="30" data-f="0.16">Soumission gratuite</div>
+              <div class="ec tel" data-in="28.1" data-out="30">514 674-8697</div>
+              <div class="ec site" data-in="28.4" data-out="30">CONSTRUCTIONHT.COM</div>
+            </div>
+          </div>
+
+          <div class="flash" id="flash"></div>
+        </div>
+
+        <div class="sndbadge" id="sndbadge">
+          <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span id="sndlabel">SON ACTIF</span>
+        </div>
+
+        <div class="safe" id="safe">
+          <div class="band t"><s style="bottom:5px">UI haut</s></div>
+          <div class="band b"><s style="top:5px">UI bas · légende &amp; CTA</s></div>
+          <div class="band r"></div>
+        </div>
+
+        <button class="bigplay" id="bigplay" aria-label="Lire la publicité avec le son">
+          <span class="k"><svg width="22" height="26" viewBox="0 0 22 26" aria-hidden="true"><path d="M0 0 L22 13 L0 26 Z" fill="#121a15"/></svg></span>
+          <small>Lire avec le son</small>
+        </button>
+      </div>
+
+      <div class="transport">
+        <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="Position dans la publicité"
+             aria-valuemin="0" aria-valuemax="30" aria-valuenow="0" aria-valuetext="0,0 seconde">
+          <div class="track"><div class="fill" id="fill"></div><div class="ticks" id="ticks"></div></div>
+        </div>
+        <div class="tbar">
+          <button class="btn pri" id="play">Lire</button>
+          <button class="btn" id="restart">Reprendre</button>
+          <button class="btn snd" id="mute" aria-pressed="true">Son activé</button>
+          <div class="tc"><b id="cur">0,0</b> / 30,0 s</div>
+        </div>
+        <div class="toggles">
+          <label class="tog"><input type="checkbox" id="sfxtog" checked> Effets sonores</label>
+          <label class="tog"><input type="checkbox" id="safetog"> Zones sûres</label>
+          <label class="tog"><input type="checkbox" id="looptog" checked> Boucle</label>
+        </div>
+        <div class="audiowarn" id="audiowarn"></div>
+      </div>
+    </div>
+
+    <section class="sheet">
+      <h2>Découpage technique</h2>
+      <p class="lede">Aucune voix, aucune musique. Le son raconte l'histoire tout seul : il est sec et désordonné pendant le chantier qui dérape, puis net et ascendant dès que le travail fini apparaît. Cliquez une ligne pour sauter au plan.</p>
+      <div class="acts">
+        <div class="a1">Acte 1 · rugueux<br>0 – 10,4 s</div>
+        <div class="a2">Acte 2 · net<br>10,4 – 25,2 s</div>
+        <div class="a3">Rafale<br>25,2 – 30</div>
+      </div>
+      <div class="rows" id="rows"></div>
+    </section>
+  </div>
+
+  <div class="lower">
+    <div class="col">
+      <h2>Le son comme argument</h2>
+      <p class="lede">Sans voix ni musique, la bande sonore doit porter la démonstration. Elle est construite sur un seul contraste, le même que l'image.</p>
+      <div class="alt">
+        <span class="tag">Acte 1 · rugueux</span>
+        <div class="fr">Marteau, perceuse, raclement</div>
+        <div class="why">Des matières sèches et mal accordées, qui accélèrent à chaque irritant. Le spectateur ressent le chantier qui dérape avant de lire quoi que ce soit.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Bascule · 10,4 s</span>
+        <div class="fr">Impact, flash, puis presque rien</div>
+        <div class="why">Le contraste le plus fort de l'annonce est un silence. Tout ce qui était rugueux disparaît d'un coup.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Acte 2 · net</span>
+        <div class="fr">Maillets accordés, en montée</div>
+        <div class="why">Des sons justes et ascendants, une note plus haut à chaque preuve. L'oreille entend « ça monte, c'est sous contrôle ».</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h2>Accroches à tester</h2>
+      <p class="lede">Même montage, on ne change que les trois premières secondes. Une seule variable à la fois, sinon le résultat n'est pas attribuable.</p>
+      <div class="alt">
+        <span class="tag">A1 · retenue ci-contre</span>
+        <div class="fr">« Le plus grand risque d'une rénovation? Ce n'est pas le budget. »</div>
+      </div>
+      <div class="alt">
+        <span class="tag">A2 · propreté</span>
+        <div class="fr">« Demandez à voir le chantier un mercredi soir. »</div>
+        <div class="why">Test très concret, difficile à imiter par un concurrent.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">A3 · soumission</span>
+        <div class="fr">« Une soumission qui tient jusqu'à la fin des travaux. »</div>
+        <div class="why">Vise l'objection « extras surprises ». À garder pour le reciblage.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h2>Autres angles</h2>
+      <p class="lede">Angles distincts, pas des reformulations. À produire si A1 plafonne.</p>
+      <div class="alt">
+        <span class="tag">Mécanisme</span>
+        <div class="fr">Cinq spécialités, une seule équipe</div>
+        <div class="why">Un seul interlocuteur coordonne tous les corps de métier — répond au cauchemar de la coordination.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Proximité</span>
+        <div class="fr">Nommer la ville du prospect</div>
+        <div class="why">Une version par secteur : Longueuil, Brossard, Boucherville. Très performant en local.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Avant / après</span>
+        <div class="fr">Le même cadrage, deux états</div>
+        <div class="why">Demande de filmer un chantier du début à la fin. Le meilleur format à moyen terme.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>Notes de production</h3>
+    <ul>
+      <li><b>Aucune voix, aucune musique.</b> Tous les sons sont synthétisés dans la page : rien à libérer de droits, rien à faire enregistrer. Pour la diffusion, un monteur peut remplacer chaque repère par un vrai bruitage aux mêmes temps — ils sont listés ci-dessus.</li>
+      <li><b>Le montage reste lisible en sourdine.</b> Le son ajoute le rythme, jamais l'information. Coupez-le : le message passe quand même, entièrement par le texte incrusté.</li>
+      <li><b>14 plans en 30 secondes.</b> L'acte 1 enchaîne trois cadrages du même chantier pour créer de la nervosité sans nouvelle photo. La rafale de quatre plans à 25,2 s relance l'attention juste avant l'appel à l'action.</li>
+      <li><b>Aucune personne à l'écran.</b> Les deux photos du site montrant des travailleurs ont été écartées. Les cinq visuels utilisés sont des lieux, avant et après.</li>
+      <li><b>À valider avant diffusion :</b> les numéros RBQ et CCQ, la gratuité de la soumission, et l'autorisation d'utiliser le témoignage de Marie-Ève T. en publicité.</li>
+      <li><b>Pour exporter en MP4 :</b> enregistrer l'écran sur le cadre 9:16 en 1080×1920, 30 ips, avec capture du son du système.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function(){
+  var DUR=30, stage=document.getElementById('stage'), reel=document.getElementById('reel');
+  var shots=[].slice.call(reel.querySelectorAll('.shot'));
+  var endcard=reel.querySelector('.endcard');
+  var timed=[].slice.call(reel.querySelectorAll('[data-in]'));
+  var flash=document.getElementById('flash');
+  var fill=document.getElementById('fill'), cur=document.getElementById('cur');
+  var play=document.getElementById('play'), scrub=document.getElementById('scrub');
+  var bigplay=document.getElementById('bigplay');
+  var muteBtn=document.getElementById('mute'), sndbadge=document.getElementById('sndbadge');
+  var sndlabel=document.getElementById('sndlabel'), audiowarn=document.getElementById('audiowarn');
+  var sfxtog=document.getElementById('sfxtog');
+  var eqBars=[].slice.call(sndbadge.querySelectorAll('.eq i'));
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var SHEET=[
+    {t:'00:00',dur:'3,4 s',beat:'Accroche',rough:true,
+     fr:'« Le plus grand risque d\'une rénovation? »',
+     son:'Coup de marteau sec, puis une nappe grave qui s\'installe sous le plan. Rien de rassurant.',
+     vis:'<b>Plan :</b> cuisine en plein chantier, cadrage large. Zoom avant lent.',at:0},
+    {t:'00:03',dur:'3,0 s',beat:'Démenti',rough:true,
+     fr:'« Ce n\'est pas le budget. »',
+     son:'Deuxième coup de marteau, plus mat. La nappe grave monte d\'un cran.',
+     vis:'<b>Plan :</b> coupe sèche, on punche dans le même chantier — cadrage serré sur le gypse à nu.',at:3.45},
+    {t:'00:06',dur:'4,0 s',beat:'Les trois irritants',rough:true,
+     fr:'Délais · Extras · Chantier sale',
+     son:'Une perceuse courte par puce, chaque fois un demi-ton plus haut et plus proche. Le rythme se resserre, puis un raclement sur « mauvais entrepreneur ».',
+     vis:'<b>Plan :</b> troisième cadrage du chantier. Les puces tombent en cascade, de plus en plus vite.',at:6.45},
+    {t:'00:10',dur:'4,6 s',beat:'Bascule',
+     fr:'« On travaille autrement. »',
+     son:'<b>Le moment clé :</b> montée courte, impact grave, flash blanc — puis tout le rugueux disparaît. Presque le silence.',
+     vis:'<b>Plan :</b> coupe franche sur la cuisine terminée, lumineuse. Zoom arrière — on respire.',at:10.45},
+    {t:'00:15',dur:'3,6 s',beat:'Mécanisme',
+     fr:'« Une soumission claire, avant de commencer. »',
+     son:'Maillet accordé, doux. Un petit repère sur l\'arrivée du sous-titre.',
+     vis:'<b>Plan :</b> salle de bain terminée. Sous-titre en trois segments : inclus / coût / durée.',at:15.05},
+    {t:'00:18',dur:'3,4 s',beat:'Preuve',
+     fr:'RBQ · CCQ · APCHQ',
+     son:'Trois notes montantes, une par accréditation. Effet « case cochée » — ça monte, c\'est sous contrôle.',
+     vis:'<b>Plan :</b> plancher de bois franc. Les trois accréditations montent en cascade.',at:18.65},
+    {t:'00:22',dur:'3,2 s',beat:'Preuve sociale',
+     fr:'« Le chantier était propre chaque soir. »',
+     son:'Maillet chaud, tenu plus longtemps. On relâche la tension avant la relance.',
+     vis:'<b>Plan :</b> balcon extérieur. Témoignage client réel, attribué — reprend l\'irritant du plan 3.',at:22.05},
+    {t:'00:25',dur:'1,4 s',beat:'Rafale',
+     fr:'Quatre plans, aucun texte',
+     son:'Quatre notes qui montent en accélérant, une par coupe. Relance l\'attention juste avant le logo.',
+     vis:'<b>Plans :</b> cuisine, salle de bain, plancher, balcon — 0,35 s chacun, coupes franches.',at:25.25},
+    {t:'00:26',dur:'3,4 s',beat:'Appel à l\'action',
+     fr:'Soumission gratuite · 514 674-8697',
+     son:'Impact final, nappe basse tenue, puis un éclat clair sur « Soumission gratuite ».',
+     vis:'<b>Plan :</b> carte de fin vert forêt, logo, cinq services, zone desservie.',at:26.65}
+  ];
+
+  var rows=document.getElementById('rows'), ticks=document.getElementById('ticks');
+  SHEET.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.className='row'+(s.rough?' rough':''); b.type='button'; b.dataset.at=s.at;
+    b.innerHTML='<div class="rtc">'+s.t+'<br><span>'+s.dur+'</span></div>'+
+      '<div><div class="rbeat">'+s.beat+'</div><div class="rfr">'+s.fr+'</div>'+
+      '<div class="rson"><em>Son</em>'+s.son+'</div>'+
+      '<div class="rvis">'+s.vis+'</div></div>';
+    b.addEventListener('click',function(){ seek(parseFloat(this.dataset.at)); if(!playing) toggle(true); });
+    rows.appendChild(b);
+    if(i>0){ var k=document.createElement('b'); k.style.left=(s.at/DUR*100)+'%'; ticks.appendChild(k); }
+  });
+  var rowEls=[].slice.call(rows.children);
+
+  /* ---------- moteur audio ---------- */
+  var ctx=null, master=null, comp=null, noiseBuf=null, muted=false, live=[], lastPeak=0;
+
+  function audio(){
+    if(ctx) return ctx;
+    var AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC){ audiowarn.textContent='Ce navigateur ne permet pas la synthèse audio : la publicité joue en silence. Le montage reste lisible, tout le message est dans le texte incrusté.'; audiowarn.classList.add('on'); return null; }
+    ctx=new AC();
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-14; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.15;
+    master=ctx.createGain(); master.gain.value=muted?0:0.85;
+    comp.connect(master); master.connect(ctx.destination);
+    var n=Math.floor(ctx.sampleRate*0.7); noiseBuf=ctx.createBuffer(1,n,ctx.sampleRate);
+    var d=noiseBuf.getChannelData(0);
+    for(var i=0;i<n;i++) d[i]=Math.random()*2-1;
+    return ctx;
+  }
+  function ok(){ return audio() && !muted && sfxtog.checked; }
+  function reg(node,stopAt){ live.push(node); setTimeout(function(){ var i=live.indexOf(node); if(i>-1) live.splice(i,1); }, stopAt*1000+120); }
+  function killAll(){
+    live.forEach(function(n){ try{ n.stop(); }catch(e){} });
+    live=[];
+  }
+  function noise(dur){
+    var s=ctx.createBufferSource(); s.buffer=noiseBuf; s.loop=dur>0.7; return s;
+  }
+  function ramp(g,peak,att,dec){
+    var t=ctx.currentTime;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002,peak),t+att);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+att+dec);
+  }
+
+  /* --- acte 1 : matières rugueuses --- */
+  function hammer(peak){
+    if(!ok()) return; peakHit(peak);
+    var t=ctx.currentTime;
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(128,t); o.frequency.exponentialRampToValueAtTime(41,t+0.22);
+    ramp(g,peak,0.004,0.24); o.connect(g); g.connect(comp);
+    o.start(); o.stop(t+0.4); reg(o,0.4);
+    var s=noise(0.1), bp=ctx.createBiquadFilter(), ng=ctx.createGain();
+    bp.type='bandpass'; bp.frequency.value=2300; bp.Q.value=1.1;
+    ramp(ng,peak*0.5,0.002,0.075);
+    s.connect(bp); bp.connect(ng); ng.connect(comp);
+    s.start(); s.stop(t+0.2); reg(s,0.2);
+  }
+  function drill(freq,dur,peak){
+    if(!ok()) return; peakHit(peak);
+    var t=ctx.currentTime;
+    var o=ctx.createOscillator(), g=ctx.createGain(), lp=ctx.createBiquadFilter();
+    o.type='sawtooth'; o.frequency.value=freq;
+    lp.type='lowpass'; lp.frequency.setValueAtTime(700,t); lp.frequency.linearRampToValueAtTime(2600,t+dur*0.7); lp.Q.value=4;
+    var lfo=ctx.createOscillator(), lg=ctx.createGain();
+    lfo.type='square'; lfo.frequency.value=34; lg.gain.value=freq*0.12;
+    lfo.connect(lg); lg.connect(o.frequency);
+    ramp(g,peak,0.01,dur);
+    o.connect(lp); lp.connect(g); g.connect(comp);
+    o.start(); lfo.start(); o.stop(t+dur+0.1); lfo.stop(t+dur+0.1); reg(o,dur+0.1); reg(lfo,dur+0.1);
+  }
+  function scrape(peak){
+    if(!ok()) return; peakHit(peak);
+    var t=ctx.currentTime;
+    var s=noise(0.5), bp=ctx.createBiquadFilter(), g=ctx.createGain();
+    bp.type='bandpass'; bp.Q.value=3.2;
+    bp.frequency.setValueAtTime(3200,t); bp.frequency.exponentialRampToValueAtTime(420,t+0.5);
+    ramp(g,peak,0.02,0.5);
+    s.connect(bp); bp.connect(g); g.connect(comp);
+    s.start(); s.stop(t+0.7); reg(s,0.7);
+  }
+  var droneNodes=null;
+  function drone(){
+    if(!ok()) return;
+    var t=ctx.currentTime;
+    var g=ctx.createGain(), lp=ctx.createBiquadFilter();
+    lp.type='lowpass'; lp.frequency.setValueAtTime(180,t); lp.frequency.linearRampToValueAtTime(760,t+10);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(0.05,t+1.4);
+    g.gain.exponentialRampToValueAtTime(0.085,t+9.4);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+10.35);
+    var os=[];
+    [41,41.7].forEach(function(f){
+      var o=ctx.createOscillator(); o.type='sawtooth'; o.frequency.value=f;
+      o.connect(lp); o.start(); o.stop(t+10.5); os.push(o); reg(o,10.5);
+    });
+    lp.connect(g); g.connect(comp);
+    droneNodes=os;
+  }
+  function stopDrone(){
+    if(!droneNodes) return;
+    droneNodes.forEach(function(o){ try{ o.stop(); }catch(e){} });
+    droneNodes=null;
+  }
+
+  /* --- bascule --- */
+  function riser(dur){
+    if(!ok()) return;
+    var t=ctx.currentTime;
+    var s=noise(1), bp=ctx.createBiquadFilter(), g=ctx.createGain();
+    bp.type='bandpass'; bp.Q.value=1.6;
+    bp.frequency.setValueAtTime(260,t); bp.frequency.exponentialRampToValueAtTime(5200,t+dur);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(0.16,t+dur*0.92);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur+0.06);
+    s.connect(bp); bp.connect(g); g.connect(comp);
+    s.start(); s.stop(t+dur+0.2); reg(s,dur+0.2);
+  }
+  function impact(peak){
+    if(!ok()) return; peakHit(peak);
+    var t=ctx.currentTime;
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(34,t+0.6);
+    ramp(g,peak,0.005,0.65); o.connect(g); g.connect(comp);
+    o.start(); o.stop(t+0.9); reg(o,0.9);
+    var s=noise(0.3), lp=ctx.createBiquadFilter(), ng=ctx.createGain();
+    lp.type='lowpass'; lp.frequency.setValueAtTime(1800,t); lp.frequency.exponentialRampToValueAtTime(220,t+0.3);
+    ramp(ng,peak*0.4,0.003,0.3);
+    s.connect(lp); lp.connect(ng); ng.connect(comp);
+    s.start(); s.stop(t+0.5); reg(s,0.5);
+  }
+
+  /* --- acte 2 : matières nettes et accordées --- */
+  function mallet(freq,peak,dec){
+    if(!ok()) return; peakHit(peak*1.4);
+    var t=ctx.currentTime;
+    [1,2.01,3.02].forEach(function(m,i){
+      var o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='sine'; o.frequency.value=freq*m;
+      ramp(g,peak/(i*2.2+1),0.006,dec/(i*0.7+1));
+      o.connect(g); g.connect(comp);
+      o.start(); o.stop(t+dec+0.3); reg(o,dec+0.3);
+    });
+  }
+  function air(peak){
+    if(!ok()) return;
+    var t=ctx.currentTime;
+    var s=noise(0.4), hp=ctx.createBiquadFilter(), g=ctx.createGain();
+    hp.type='highpass'; hp.frequency.value=4200;
+    ramp(g,peak,0.02,0.34);
+    s.connect(hp); hp.connect(g); g.connect(comp);
+    s.start(); s.stop(t+0.6); reg(s,0.6);
+  }
+  function pad(){
+    if(!ok()) return;
+    var t=ctx.currentTime;
+    [73.42,110,146.83].forEach(function(f,i){
+      var o=ctx.createOscillator(), g=ctx.createGain(), lp=ctx.createBiquadFilter();
+      o.type='sine'; o.frequency.value=f; lp.type='lowpass'; lp.frequency.value=800;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.06/(i*0.8+1),t+0.45);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+3.0);
+      o.connect(lp); lp.connect(g); g.connect(comp);
+      o.start(); o.stop(t+3.2); reg(o,3.2);
+    });
+  }
+
+  function peakHit(v){ lastPeak=Math.max(lastPeak,Math.min(1,v*1.6)); }
+
+  /* ---------- repères ---------- */
+  function punch(big){
+    if(reduce) return;
+    reel.classList.remove('hit','big'); void reel.offsetWidth;
+    reel.classList.add('hit'); if(big) reel.classList.add('big');
+    setTimeout(function(){ reel.classList.remove('hit','big'); }, big?310:180);
+  }
+  function doFlash(){
+    if(reduce) return;
+    flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
+    setTimeout(function(){ flash.classList.remove('go'); },320);
+  }
+
+  var CUES=[
+    {t:0    ,r:1,f:function(){ hammer(0.62); drone(); punch(); }},
+    {t:3.45 ,r:1,f:function(){ hammer(0.55); punch(); }},
+    {t:6.45 ,r:1,f:function(){ hammer(0.46); punch(); }},
+    {t:6.6  ,r:1,f:function(){ drill(132,0.26,0.16); }},
+    {t:7.5  ,r:1,f:function(){ drill(148,0.24,0.19); }},
+    {t:8.4  ,r:1,f:function(){ drill(166,0.22,0.23); }},
+    {t:9.0  ,r:1,f:function(){ scrape(0.2); punch(); }},
+    {t:9.75 ,r:1,f:function(){ riser(0.62); }},
+    {t:10.4 ,f:function(){ stopDrone(); impact(0.78); doFlash(); punch(true); }},
+    {t:10.9 ,f:function(){ mallet(110,0.1,1.5); }},
+    {t:15.05,f:function(){ mallet(146.83,0.1,1.3); air(0.05); punch(); }},
+    {t:15.3 ,f:function(){ mallet(220,0.045,0.7); }},
+    {t:18.65,f:function(){ mallet(164.81,0.1,1.2); punch(); }},
+    {t:18.9 ,f:function(){ mallet(261.63,0.075,0.6); }},
+    {t:19.5 ,f:function(){ mallet(329.63,0.075,0.6); }},
+    {t:20.1 ,f:function(){ mallet(392,0.085,0.8); }},
+    {t:22.05,f:function(){ mallet(130.81,0.1,1.9); punch(); }},
+    {t:25.25,f:function(){ mallet(261.63,0.09,0.4); air(0.04); punch(); }},
+    {t:25.6 ,f:function(){ mallet(311.13,0.09,0.4); punch(); }},
+    {t:25.95,f:function(){ mallet(392,0.1,0.4); punch(); }},
+    {t:26.3 ,f:function(){ mallet(466.16,0.11,0.4); punch(); }},
+    {t:26.65,f:function(){ impact(0.66); pad(); doFlash(); punch(true); }},
+    {t:27.7 ,f:function(){ mallet(523.25,0.085,1.1); air(0.045); }}
+  ];
+  CUES.sort(function(a,b){ return a.t-b.t; });
+  CUES.forEach(function(c){
+    var u=document.createElement('u');
+    u.style.left=(c.t/DUR*100)+'%'; if(c.r) u.className='rough';
+    ticks.appendChild(u);
+  });
+  var cursor=0;
+
+  /* ---------- rendu ---------- */
+  function fade(el,t){
+    var a=parseFloat(el.dataset.in), b=parseFloat(el.dataset.out);
+    var f=el.dataset.f?parseFloat(el.dataset.f):0.42;
+    if(t<a-f||t>b) return 0;
+    if(t<a) return (t-(a-f))/f;
+    if(t>b-f) return Math.max(0,(b-t)/f);
+    return 1;
+  }
+  var t=0, playing=false, last=null;
+
+  function render(){
+    shots.forEach(function(s){
+      var o=fade(s,t); s.style.opacity=o;
+      if(o>0&&!reduce){
+        var a=parseFloat(s.dataset.in), b=parseFloat(s.dataset.out);
+        var p=Math.min(1,Math.max(0,(t-a)/(b-a)));
+        var z0=parseFloat(s.dataset.z0), z1=parseFloat(s.dataset.z1);
+        s.querySelector('.ph').style.transform='scale('+(z0+(z1-z0)*p).toFixed(4)+')';
+      }
+    });
+    endcard.style.opacity=fade(endcard,t);
+    timed.forEach(function(el){
+      if(el.classList.contains('shot')||el===endcard) return;
+      var o=fade(el,t);
+      el.style.opacity=o;
+      if(!el.classList.contains('cap')&&!reduce){
+        el.style.transform='translateY('+((1-o)*9).toFixed(2)+'px)';
+      }
+    });
+    fill.style.width=(t/DUR*100)+'%';
+    cur.textContent=t.toFixed(1).replace('.',',');
+    scrub.setAttribute('aria-valuenow',t.toFixed(1));
+    scrub.setAttribute('aria-valuetext',t.toFixed(1).replace('.',',')+' seconde');
+    var ai=0;
+    for(var i=0;i<SHEET.length;i++){ if(t>=SHEET[i].at-0.1) ai=i; }
+    rowEls.forEach(function(r,i){ r.setAttribute('aria-current', i===ai?'true':'false'); });
+    lastPeak*=0.82;
+    var on=playing&&!muted&&sfxtog.checked;
+    eqBars.forEach(function(b,i){
+      b.style.height=(on? Math.max(3, 3+lastPeak*6*(i===1?1:0.72)) : 3).toFixed(1)+'px';
+    });
+  }
+
+  function frame(ts){
+    if(!playing) return;
+    if(last===null) last=ts;
+    t+=(ts-last)/1000; last=ts;
+    if(t>=DUR){
+      if(document.getElementById('looptog').checked){ t=0; cursor=0; killAll(); droneNodes=null; }
+      else { t=DUR; toggle(false); render(); return; }
+    }
+    while(cursor<CUES.length && CUES[cursor].t<=t){ CUES[cursor].f(); cursor++; }
+    render(); requestAnimationFrame(frame);
+  }
+  function syncCursor(){ cursor=0; while(cursor<CUES.length && CUES[cursor].t<=t) cursor++; }
+
+  function toggle(on){
+    playing=(on===undefined)?!playing:on;
+    last=null;
+    play.textContent=playing?'Pause':'Lire';
+    bigplay.hidden=playing;
+    if(playing){
+      if(t>=DUR){ t=0; syncCursor(); }
+      audio();
+      if(ctx&&ctx.state==='suspended') ctx.resume();
+      requestAnimationFrame(frame);
+    } else { killAll(); droneNodes=null; }
+    badge();
+  }
+  function seek(v){
+    t=Math.min(DUR,Math.max(0,v)); last=null;
+    killAll(); droneNodes=null; syncCursor(); render();
+  }
+  function badge(){
+    sndlabel.textContent = (muted||!sfxtog.checked) ? 'SANS SON — TEXTE INCRUSTÉ' : 'SON ACTIF';
+  }
+
+  play.addEventListener('click',function(){ toggle(); });
+  bigplay.addEventListener('click',function(){ toggle(true); });
+  document.getElementById('restart').addEventListener('click',function(){ seek(0); toggle(true); });
+  muteBtn.addEventListener('click',function(){
+    muted=!muted;
+    this.setAttribute('aria-pressed',String(!muted));
+    this.textContent=muted?'Son coupé':'Son activé';
+    if(master) master.gain.value=muted?0:0.85;
+    if(muted){ killAll(); droneNodes=null; }
+    badge();
+  });
+  sfxtog.addEventListener('change',function(){ if(!this.checked){ killAll(); droneNodes=null; } badge(); });
+  document.getElementById('safetog').addEventListener('change',function(){
+    document.getElementById('safe').classList.toggle('on',this.checked);
+  });
+
+  function fromEvent(e){
+    var r=scrub.getBoundingClientRect();
+    var x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+    seek(x/r.width*DUR);
+  }
+  var dragging=false;
+  scrub.addEventListener('pointerdown',function(e){ dragging=true; scrub.setPointerCapture(e.pointerId); toggle(false); fromEvent(e); });
+  scrub.addEventListener('pointermove',function(e){ if(dragging) fromEvent(e); });
+  scrub.addEventListener('pointerup',function(e){ dragging=false; scrub.releasePointerCapture(e.pointerId); });
+  scrub.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){ seek(t+0.5); e.preventDefault(); }
+    if(e.key==='ArrowLeft'){ seek(t-0.5); e.preventDefault(); }
+    if(e.key===' '||e.key==='Enter'){ toggle(); e.preventDefault(); }
+  });
+  stage.addEventListener('click',function(e){ if(e.target===stage) toggle(); });
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) toggle(false); });
+  window.addEventListener('pagehide',function(){ killAll(); });
+
+  badge(); render();
+})();
+</script>
