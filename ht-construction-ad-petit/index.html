@@ -317,6 +317,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
           <button class="btn pri" id="play">Lire</button>
           <button class="btn" id="restart">Reprendre</button>
           <button class="btn snd" id="mute" aria-pressed="true">Son activé</button>
+          <button class="btn" id="sndtest" title="Joue un impact, une note et un souffle, hors ligne de temps">Tester le son</button>
           <div class="tc"><b id="cur">0,0</b> / 21,0 s</div>
         </div>
         <div class="toggles">
@@ -525,7 +526,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   ];
   CUES.sort(function(a,b){ return a.t-b.t; });
   CUES.forEach(function(c){ var u=document.createElement('u'); u.style.left=(c.t/DUR*100)+'%'; ticks.appendChild(u); });
-  if(!SFX.ready()){
+  if(!SFX.supported()){
     audiowarn.textContent='Ce navigateur ne permet pas la synthèse audio : la publicité joue en silence. Tout le message reste dans le texte incrusté.';
     audiowarn.classList.add('on');
   }
@@ -592,7 +593,7 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
     bigplay.hidden=playing;
     if(playing){
       if(t>=DUR){ t=0; syncCursor(); }
-      SFX.ready(); SFX.resume();
+      SFX.resume(function(){ audioState(); });
       requestAnimationFrame(frame);
     } else SFX.kill();
     badge();
@@ -633,6 +634,22 @@ body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   document.addEventListener('visibilitychange',function(){ if(document.hidden) toggle(false); });
   window.addEventListener('pagehide',function(){ SFX.kill(); });
 
+  function audioState(){
+    var st=SFX.state();
+    if(!SFX.supported()) return;
+    if(st==='suspended'){
+      audiowarn.textContent='Le navigateur garde le son en veille. Cliquez « Tester le son » : un clic direct suffit à le réveiller.';
+      audiowarn.classList.add('on');
+    } else if(st==='running'){
+      audiowarn.classList.remove('on');
+    }
+  }
+  document.getElementById('sndtest').addEventListener('click',function(){
+    if(muted){ muted=false; SFX.mute(false);
+      muteBtn.setAttribute('aria-pressed','true'); muteBtn.textContent='Son activé'; badge(); }
+    if(!sfxtog.checked){ sfxtog.checked=true; SFX.enable(true); badge(); }
+    SFX.test(); setTimeout(audioState,300);
+  });
   badge(); render();
 })();
 </script>

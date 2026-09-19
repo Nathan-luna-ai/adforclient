@@ -100,8 +100,32 @@
 
   var A = {};
 
+  /* Capacité du navigateur — ne construit AUCUN contexte.
+     Important : un AudioContext créé hors d'un geste de l'utilisateur est
+     suspendu par le navigateur, et le réveiller est asynchrone. On ne le
+     crée donc qu'au premier clic, et on attend qu'il soit vraiment prêt
+     avant de lancer la lecture. */
+  A.supported = function () { return !!(g.AudioContext || g.webkitAudioContext); };
+  A.state = function () { return ctx ? ctx.state : 'idle'; };
   A.ready = function () { return !!ensure(); };
-  A.resume = function () { if (ctx && ctx.state === 'suspended') ctx.resume(); };
+
+  A.resume = function (cb) {
+    if (!ensure()) { if (cb) cb(); return; }
+    if (ctx.state === 'suspended') {
+      var p = ctx.resume();
+      if (p && p.then) { p.then(function () { if (cb) cb(); }, function () { if (cb) cb(); }); }
+      else if (cb) cb();
+    } else if (cb) cb();
+  };
+
+  /* Preuve audible en un clic, indépendante de la ligne de temps. */
+  A.test = function () {
+    A.resume(function () {
+      A.hit({ peak: 0.55, f0: 155, f1: 36, dec: 0.55, send: 0.4 });
+      setTimeout(function () { A.mallet({ freq: 392, peak: 0.1, dec: 1.2, pan: 0.25 }); }, 260);
+      setTimeout(function () { A.whoosh({ dur: 0.3, peak: 0.09, pan: -0.6, panTo: 0.6 }); }, 520);
+    });
+  };
   A.enable = function (on) { enabled = !!on; if (!enabled) A.kill(); };
   A.mute = function (m) {
     muted = !!m;
