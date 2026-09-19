@@ -1,4 +1,4 @@
-<title>Chantier Propre</title>
+<title>On Travaille Autrement</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -207,19 +207,61 @@ body{
   .shot .ph{transform:none!important}
   .reel.hit,.reel.hit.big,.flash.go{animation:none}
 }
+
+/* ------------------------------------------------------------------
+   Ajouts du format long. Deux procédés repris du modèle Canva :
+
+   1. LE TEXTE ARRIVE PAR MORCEAUX. Dans le modèle, le sous-titre suit
+      la voix mot à mot. Ici il n'y a pas de voix — les mêmes morceaux
+      arrivent donc sur les repères sonores. L'œil suit un rythme au
+      lieu de lire un bloc, ce qui est le seul vrai apport du procédé.
+   2. UNE SCÈNE DE DONNÉES. Le modèle montre une quantité en
+      pictogrammes plutôt qu'en phrase. On garde le procédé, avec un
+      chiffre vérifiable : les douze villes desservies. Aucune
+      statistique inventée n'entre dans une publicité client.
+   ------------------------------------------------------------------ */
+.word{display:inline-block; will-change:opacity,transform}
+.hed.xl{font-size:9.2cqw; letter-spacing:-.03em}
+.hed mark{
+  background:var(--sage); color:var(--ink); border-radius:.1em;
+  padding:0 .18em; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+}
+
+.datacard{position:absolute; inset:0; background:var(--ink); opacity:0; z-index:2}
+.datacard .in{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; padding:10% 9%;
+}
+.pins{display:grid; grid-template-columns:repeat(4,1fr); gap:3.2cqw; width:56%}
+.pin{opacity:0; width:100%; aspect-ratio:1}
+.pin svg{display:block; width:100%; height:100%}
+.bignum{
+  font-weight:800; font-size:19cqw; line-height:.95; letter-spacing:-.045em;
+  color:var(--sage); opacity:0; margin-top:6cqw;
+}
+.biglab{
+  font-weight:800; font-size:6cqw; line-height:1.15; color:#fff;
+  letter-spacing:-.022em; opacity:0; margin-top:1cqw;
+}
+.towns{
+  font-family:var(--mono); font-size:2.7cqw; line-height:2.15;
+  letter-spacing:.04em; color:rgba(255,255,255,.62); opacity:0; margin-top:5cqw;
+}
+/* Chaque ligne est insécable : une ville coupée en deux se lit comme une faute. */
+.towns span{display:block; white-space:nowrap}
 </style>
 
 <div class="wrap">
 
   <header class="mast">
     <div>
-      <h1>« Chantier propre » — 30 s</h1>
-      <p class="sub">HT Construction · Meta Reels &amp; TikTok · Montréal et Rive-Sud</p>
+      <h1>« On travaille autrement » — 54 s</h1>
+      <p class="sub">HT Construction · format long · Meta Reels &amp; TikTok · Montréal et Rive-Sud</p>
     </div>
     <div class="specs">
       <span class="spec">9:16 · 1080×1920</span>
-      <span class="spec">30 s · 14 plans</span>
-      <span class="spec on">Effets sonores · réverbe · stéréo</span>
+      <span class="spec">54 s · 15 plans</span>
+      <span class="spec on">Structure reprise du modèle Canva</span>
       <span class="spec">Aucune voix · aucune musique</span>
       <span class="spec on">Aucune personne à l'écran</span>
     </div>
@@ -231,108 +273,169 @@ body{
       <div class="stage" id="stage">
         <div class="reel" id="reel">
 
-          <!-- ACTE 1 · le chantier qui dérape — coupes sèches sur un même lieu -->
-          <div class="shot" data-in="0" data-out="3.4" data-f="0.05" data-z0="1.04" data-z1="1.13">
-            <div class="ph" style="background-image:url('img/reno.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.8) 0%,rgba(7,10,8,.42) 44%,rgba(7,10,8,.88) 100%)"></div>
+          <!-- ACTE 1 · le blocage — trois cadrages du même chantier -->
+          <div class="shot" data-in="0" data-out="4.3" data-z0="1.06" data-z1="1.16">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:50% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.8) 0%,rgba(7,10,8,.52) 48%,rgba(7,10,8,.88) 100%)"></div>
           </div>
-          <div class="shot" data-in="3.4" data-out="6.4" data-f="0.05" data-z0="1.34" data-z1="1.42">
-            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:28% 62%"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.82) 0%,rgba(7,10,8,.46) 44%,rgba(7,10,8,.88) 100%)"></div>
-          </div>
-          <div class="shot" data-in="6.4" data-out="10.4" data-f="0.05" data-z0="1.12" data-z1="1.28">
-            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:72% 38%"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.7) 0%,rgba(7,10,8,.5) 44%,rgba(7,10,8,.9) 100%)"></div>
+          <div class="cap hi" data-in="0.3" data-out="4.15">
+            <div class="hed">
+              <span class="word" data-in="0.35" data-out="4.15" data-f="0.14">Vous repoussez</span>
+              <span class="word" data-in="1.25" data-out="4.15" data-f="0.14">ces travaux</span>
+              <span class="word" data-in="2.15" data-out="4.15" data-f="0.14">depuis des mois.</span>
+            </div>
           </div>
 
-          <div class="cap hi" data-in="0.25" data-out="3.3">
-            <div class="kicker">Rénovation · Montréal et Rive-Sud</div>
-            <div class="hed">Le plus grand risque<br>d'une rénovation?</div>
+          <div class="shot" data-in="4.3" data-out="8.4" data-f="0.05" data-z0="1.22" data-z1="1.3">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:25% 62%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.86) 0%,rgba(7,10,8,.62) 50%,rgba(7,10,8,.9) 100%)"></div>
           </div>
-          <div class="cap hi" data-in="3.5" data-out="6.3">
-            <div class="hed">Ce n'est pas<br>le <em>budget</em>.</div>
+          <div class="cap hi" data-in="4.55" data-out="8.25">
+            <div class="hed">
+              <span class="word" data-in="4.6" data-out="8.25" data-f="0.14">Ce n'est pas</span>
+              <span class="word" data-in="5.5" data-out="8.25" data-f="0.14">une question</span>
+              <span class="word" data-in="6.4" data-out="8.25" data-f="0.14">d'argent.</span>
+            </div>
           </div>
-          <div class="cap mid" data-in="6.5" data-out="10.3" style="transform:translateY(-50%)">
+
+          <div class="shot" data-in="8.4" data-out="12.7" data-f="0.05" data-z0="1.1" data-z1="1.2">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:72% 35%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.84) 0%,rgba(7,10,8,.66) 45%,rgba(7,10,8,.92) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="8.7" data-out="12.5" style="transform:translateY(-50%)">
+            <div class="hed sm">
+              <span class="word" data-in="8.75" data-out="12.5" data-f="0.14">C'est de ne pas savoir</span>
+              <span class="word" data-in="9.7" data-out="12.5" data-f="0.14">à qui ouvrir</span>
+              <span class="word" data-in="10.65" data-out="12.5" data-f="0.14">votre porte.</span>
+            </div>
+          </div>
+
+          <!-- ACTE 2 · les trois irritants -->
+          <div class="shot" data-in="12.7" data-out="20.3" data-f="0.05" data-z0="1.28" data-z1="1.12">
+            <div class="ph" style="background-image:url('img/reno.jpg'); background-position:45% 72%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.9) 0%,rgba(7,10,8,.78) 50%,rgba(7,10,8,.94) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="12.95" data-out="20.1" style="transform:translateY(-50%)">
+            <div class="kicker" data-in="13" data-out="20.1">Ce qui fait vraiment peur</div>
             <div class="bullets">
-              <div class="bul" data-in="6.6" data-out="10.3" data-f="0.12"><i></i><span>Des délais qui s'étirent.</span></div>
-              <div class="bul" data-in="7.5" data-out="10.3" data-f="0.12"><i></i><span>Des extras qui apparaissent.</span></div>
-              <div class="bul" data-in="8.4" data-out="10.3" data-f="0.12"><i></i><span>Un chantier laissé sale.</span></div>
+              <div class="bul" data-in="13.3" data-out="20.1" data-f="0.16"><i></i>Des délais qui glissent</div>
+              <div class="bul" data-in="15.1" data-out="20.1" data-f="0.16"><i></i>Des extras jamais annoncés</div>
+              <div class="bul" data-in="16.9" data-out="20.1" data-f="0.16"><i></i>Un chantier laissé sale</div>
             </div>
           </div>
-          <div class="cap low" data-in="9.0" data-out="10.3">
-            <div class="hed sm">C'est de choisir<br>le mauvais entrepreneur.</div>
-          </div>
 
-          <!-- ACTE 2 · la bascule -->
-          <div class="shot" data-in="10.4" data-out="15.0" data-f="0.06" data-z0="1.2" data-z1="1.03">
+          <!-- ACTE 3 · la bascule -->
+          <div class="shot" data-in="20.3" data-out="24.9" data-f="0.04" data-z0="1.2" data-z1="1.03">
             <div class="ph" style="background-image:url('img/cuisine.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.2) 0%,rgba(7,10,8,.08) 45%,rgba(7,10,8,.8) 100%)"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.28) 0%,rgba(7,10,8,.1) 42%,rgba(7,10,8,.8) 100%)"></div>
           </div>
-          <div class="cap low" data-in="10.8" data-out="14.9">
-            <div class="kicker">HT Construction</div>
-            <div class="hed sm">On travaille<br>autrement.</div>
-          </div>
-
-          <div class="shot" data-in="15.0" data-out="18.6" data-z0="1.03" data-z1="1.13">
-            <div class="ph" style="background-image:url('img/sdb.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.74) 0%,rgba(7,10,8,.22) 42%,rgba(7,10,8,.76) 100%)"></div>
-          </div>
-          <div class="cap hi" data-in="15.25" data-out="18.5">
-            <div class="hed sm">Une soumission claire,<br>avant de commencer.</div>
-            <div class="dek">Ce qui est inclus. Ce que ça coûte.<br>Combien de temps ça prend.</div>
+          <div class="cap low" data-in="20.9" data-out="24.7">
+            <div class="kicker" data-in="20.95" data-out="24.7">HT Construction</div>
+            <div class="hed xl">On travaille<br><mark>autrement.</mark></div>
           </div>
 
-          <div class="shot" data-in="18.6" data-out="22.0" data-z0="1.13" data-z1="1.02">
-            <div class="ph" style="background-image:url('img/plancher.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.62) 0%,rgba(7,10,8,.56) 100%)"></div>
+          <!-- ACTE 4 · le mécanisme -->
+          <div class="shot" data-in="24.9" data-out="29.7" data-z0="1.03" data-z1="1.12">
+            <div class="ph" style="background-image:url('img/sdb.jpg'); background-position:55% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.76) 0%,rgba(7,10,8,.24) 44%,rgba(7,10,8,.78) 100%)"></div>
           </div>
-          <div class="cap mid" data-in="18.8" data-out="21.9" style="transform:translateY(-50%)">
-            <div class="chips">
-              <div class="chip" data-in="18.9" data-out="21.9" data-f="0.14"><b>RBQ</b><span>5823-1101-01</span></div>
-              <div class="chip" data-in="19.5" data-out="21.9" data-f="0.14"><b>CCQ</b><span>er937209</span></div>
-              <div class="chip" data-in="20.1" data-out="21.9" data-f="0.14"><b>APCHQ</b><span>MEMBRE</span></div>
+          <div class="cap hi" data-in="25.25" data-out="29.5">
+            <div class="hed sm">
+              <span class="word" data-in="25.3" data-out="29.5" data-f="0.13">On se déplace.</span>
+              <span class="word" data-in="26.55" data-out="29.5" data-f="0.13">On mesure.</span>
+              <span class="word" data-in="27.8" data-out="29.5" data-f="0.13">On chiffre.</span>
             </div>
           </div>
 
-          <div class="shot" data-in="22.0" data-out="25.2" data-z0="1.02" data-z1="1.1">
-            <div class="ph" style="background-image:url('img/balcon.jpg')"></div>
-            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.36) 0%,rgba(7,10,8,.86) 100%)"></div>
+          <div class="shot" data-in="29.7" data-out="34.3" data-f="0.05" data-z0="1.05" data-z1="1.14">
+            <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:28% 58%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.3) 0%,rgba(7,10,8,.44) 40%,rgba(7,10,8,.9) 100%)"></div>
           </div>
-          <div class="cap low" data-in="22.2" data-out="25.1">
-            <div class="quote">«&#8239;Le chantier était propre chaque soir et le résultat est impeccable.&#8239;»</div>
-            <div class="attrib">Marie-Ève T. · Longueuil</div>
+          <div class="cap low" data-in="30.05" data-out="34.1">
+            <div class="quote">«&#8239;Un prix précis après la visite, pas une estimation vague.&#8239;»</div>
+            <div class="attrib" data-in="31.4" data-out="34.1">constructionht.com · FAQ</div>
           </div>
 
-          <!-- ACTE 3 · rafale avant le logo -->
-          <div class="shot" data-in="25.2" data-out="25.55" data-f="0.03" data-z0="1.1" data-z1="1.16">
+          <!-- ACTE 4b · la scène de données, procédé repris du modèle -->
+          <div class="datacard" data-in="34.3" data-out="40.3" data-f="0.12">
+            <div class="in">
+              <div class="pins">
+                <div class="pin" data-in="34.9" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.11" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.32" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.53" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.74" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="35.95" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.16" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.37" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.58" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="36.79" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="37" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+                <div class="pin" data-in="37.21" data-out="40.2" data-f="0.1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="#93b07f"/></svg></div>
+              </div>
+              <div class="bignum" data-in="37.7" data-out="40.2" data-f="0.14">12</div>
+              <div class="biglab" data-in="38" data-out="40.2" data-f="0.14">villes desservies</div>
+              <div class="towns" data-in="38.4" data-out="40.2" data-f="0.16">
+                <span>MONTRÉAL · LONGUEUIL · BROSSARD</span>
+                <span>SAINT-LAMBERT · BOUCHERVILLE · SAINT-HUBERT</span>
+                <span>LA PRAIRIE · CANDIAC · CHAMBLY</span>
+                <span>SAINTE-JULIE · VARENNES · CHÂTEAUGUAY</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTE 5 · la preuve -->
+          <div class="shot" data-in="40.3" data-out="44.7" data-f="0.05" data-z0="1.12" data-z1="1.03">
+            <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:40% 55%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.88) 0%,rgba(7,10,8,.8) 100%)"></div>
+          </div>
+          <div class="cap mid" data-in="40.75" data-out="44.5" style="transform:translateY(-50%)">
+            <div class="kicker" data-in="40.8" data-out="44.5">Vérifiable en ligne</div>
+            <div class="chips">
+              <div class="chip" data-in="41" data-out="44.5" data-f="0.12"><b>RBQ</b><span>5823-1101-01</span></div>
+              <div class="chip" data-in="41.5" data-out="44.5" data-f="0.12"><b>CCQ</b><span>er937209</span></div>
+              <div class="chip" data-in="42" data-out="44.5" data-f="0.12"><b>ASSURÉS</b><span>APCHQ</span></div>
+            </div>
+          </div>
+
+          <div class="shot" data-in="44.7" data-out="48.7" data-f="0.05" data-z0="1.03" data-z1="1.1">
+            <div class="ph" style="background-image:url('img/balcon.jpg'); background-position:55% 45%"></div>
+            <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.34) 0%,rgba(7,10,8,.16) 40%,rgba(7,10,8,.86) 100%)"></div>
+          </div>
+          <div class="cap low" data-in="45.15" data-out="48.5">
+            <div class="hed">Aucun projet<br>n'est <em>trop petit</em>.</div>
+            <div class="dek" data-in="46.5" data-out="48.5">Une soumission détaillée, sans frais.</div>
+          </div>
+
+          <!-- rafale avant le logo -->
+          <div class="shot" data-in="48.7" data-out="49.05" data-f="0.03" data-z0="1.1" data-z1="1.16">
             <div class="ph" style="background-image:url('img/cuisine.jpg'); background-position:40% 50%"></div>
             <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
           </div>
-          <div class="shot" data-in="25.55" data-out="25.9" data-f="0.03" data-z0="1.14" data-z1="1.2">
+          <div class="shot" data-in="49.05" data-out="49.4" data-f="0.03" data-z0="1.14" data-z1="1.2">
             <div class="ph" style="background-image:url('img/sdb.jpg'); background-position:62% 50%"></div>
             <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
           </div>
-          <div class="shot" data-in="25.9" data-out="26.25" data-f="0.03" data-z0="1.08" data-z1="1.14">
+          <div class="shot" data-in="49.4" data-out="49.75" data-f="0.03" data-z0="1.08" data-z1="1.14">
             <div class="ph" style="background-image:url('img/plancher.jpg'); background-position:35% 55%"></div>
             <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
           </div>
-          <div class="shot" data-in="26.25" data-out="26.6" data-f="0.03" data-z0="1.16" data-z1="1.22">
+          <div class="shot" data-in="49.75" data-out="50.1" data-f="0.03" data-z0="1.16" data-z1="1.22">
             <div class="ph" style="background-image:url('img/balcon.jpg'); background-position:55% 45%"></div>
             <div class="veil" style="background:linear-gradient(180deg,rgba(7,10,8,.18) 0%,rgba(7,10,8,.5) 100%)"></div>
           </div>
 
           <!-- carte de fin -->
-          <div class="endcard" data-in="26.6" data-out="30" data-f="0.12">
+          <div class="endcard" data-in="50.1" data-out="54" data-f="0.12">
             <div class="inner">
-              <img src="img/logo.png" alt="HT Construction" data-in="26.75" data-out="30" data-f="0.2">
-              <div class="ec svc" data-in="27.05" data-out="30">CUISINE · SALLE DE BAIN · PLANCHER<br>GYPSE · BALCON</div>
-              <div class="ec zone" data-in="27.3" data-out="30">Montréal et Rive-Sud</div>
-              <div class="ec offer" data-in="27.7" data-out="30" data-f="0.16">Soumission gratuite</div>
-              <div class="ec tel" data-in="28.1" data-out="30">514 674-8697</div>
-              <div class="ec site" data-in="28.4" data-out="30">CONSTRUCTIONHT.COM</div>
+              <img src="img/logo.png" alt="HT Construction" data-in="50.3" data-out="54" data-f="0.2">
+              <div class="ec svc" data-in="50.65" data-out="54">CUISINE · SALLE DE BAIN · PLANCHER<br>GYPSE · BALCON</div>
+              <div class="ec zone" data-in="50.95" data-out="54">Montréal et Rive-Sud</div>
+              <div class="ec offer" data-in="51.35" data-out="54" data-f="0.16">Soumission gratuite</div>
+              <div class="ec tel" data-in="51.75" data-out="54">514 674-8697</div>
+              <div class="ec site" data-in="52.05" data-out="54">CONSTRUCTIONHT.COM</div>
             </div>
           </div>
-
           <div class="flash" id="flash"></div>
         </div>
 
@@ -355,7 +458,7 @@ body{
 
       <div class="transport">
         <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="Position dans la publicité"
-             aria-valuemin="0" aria-valuemax="30" aria-valuenow="0" aria-valuetext="0,0 seconde">
+             aria-valuemin="0" aria-valuemax="54" aria-valuenow="0" aria-valuetext="0,0 seconde">
           <div class="track"><div class="fill" id="fill"></div><div class="ticks" id="ticks"></div></div>
         </div>
         <div class="tbar">
@@ -363,7 +466,7 @@ body{
           <button class="btn" id="restart">Reprendre</button>
           <button class="btn snd" id="mute" aria-pressed="true">Son activé</button>
           <button class="btn" id="sndtest" title="Joue un impact, une note et un souffle, hors ligne de temps">Tester le son</button>
-          <div class="tc"><b id="cur">0,0</b> / 30,0 s</div>
+          <div class="tc"><b id="cur">0,0</b> / 54,0 s</div>
         </div>
         <div class="toggles">
           <label class="tog"><input type="checkbox" id="sfxtog" checked> Effets sonores</label>
@@ -376,11 +479,11 @@ body{
 
     <section class="sheet">
       <h2>Découpage technique</h2>
-      <p class="lede">Aucune voix, aucune musique. Le son raconte l'histoire tout seul : sec et désordonné pendant le chantier qui dérape, net et ascendant dès que le travail fini apparaît. Chaque coupe est traitée comme une vraie transition — un souffle qui l'annonce, un impact dessus, une queue de réverbe qui déborde sur le plan suivant. Cliquez une ligne pour sauter au plan.</p>
+      <p class="lede">Format long, construit sur l'ossature du modèle Canva : une accroche qui nomme le blocage, trois irritants, une bascule, le mécanisme, une scène de données, la preuve, l'appel à l'action. Ce qui change, c'est le matériau — pas de voix, pas de personne à l'écran, et aucun chiffre qui ne vienne pas du site. Cliquez une ligne pour sauter au plan.</p>
       <div class="acts">
-        <div class="a1">Acte 1 · rugueux<br>0 – 10,4 s</div>
-        <div class="a2">Acte 2 · net<br>10,4 – 25,2 s</div>
-        <div class="a3">Rafale<br>25,2 – 30</div>
+        <div class="a1">Acte 1 · le blocage<br>0 – 20,3 s</div>
+        <div class="a2">Acte 2 · le mécanisme<br>20,3 – 40,3 s</div>
+        <div class="a3">Preuve &amp; fin<br>40,3 – 54</div>
       </div>
       <div class="rows" id="rows"></div>
     </section>
@@ -388,61 +491,62 @@ body{
 
   <div class="lower">
     <div class="col">
-      <h2>Le son comme argument</h2>
-      <p class="lede">Sans voix ni musique, la bande sonore doit porter la démonstration. Elle est construite sur un seul contraste, le même que l'image.</p>
+      <h2>Ce qui vient du modèle</h2>
+      <p class="lede">Le modèle Canva est une publicité solaire de 61 s : une personne parle à la caméra, les sous-titres suivent sa voix mot à mot, et une scène en pictogrammes affiche un pourcentage. Trois procédés valent d'être repris, le reste non.</p>
       <div class="alt">
-        <span class="tag">Acte 1 · rugueux</span>
-        <div class="fr">Marteau, perceuse, raclement</div>
-        <div class="why">Des matières sèches et mal accordées, qui accélèrent à chaque irritant. Le spectateur ressent le chantier qui dérape avant de lire quoi que ce soit.</div>
+        <span class="tag">Repris · le texte par morceaux</span>
+        <div class="fr">Chaque phrase arrive en trois temps</div>
+        <div class="why">Dans le modèle, le découpage suit la voix. Ici il suit les repères sonores. L'effet utile est le même : l'œil suit un rythme au lieu de lire un bloc, ce qui tient l'attention sur un format long.</div>
       </div>
       <div class="alt">
-        <span class="tag">Bascule · 10,4 s</span>
-        <div class="fr">Impact, flash, puis presque rien</div>
-        <div class="why">Le contraste le plus fort de l'annonce est un silence. Tout ce qui était rugueux disparaît d'un coup.</div>
+        <span class="tag">Repris · la scène de données</span>
+        <div class="fr">Douze pastilles, puis le chiffre</div>
+        <div class="why">Le modèle montre une quantité en pictogrammes plutôt qu'en phrase. On garde le procédé avec la seule quantité vérifiable dont on dispose : les douze villes desservies, listées sur le site.</div>
       </div>
       <div class="alt">
-        <span class="tag">Acte 2 · net</span>
-        <div class="fr">Maillets accordés, en montée</div>
-        <div class="why">Des sons justes et ascendants, une note plus haut à chaque preuve. L'oreille entend « ça monte, c'est sous contrôle ».</div>
-      </div>
-    </div>
-
-    <div class="col">
-      <h2>Accroches à tester</h2>
-      <p class="lede">Même montage, on ne change que les trois premières secondes. Une seule variable à la fois, sinon le résultat n'est pas attribuable.</p>
-      <div class="alt">
-        <span class="tag">A1 · retenue ci-contre</span>
-        <div class="fr">« Le plus grand risque d'une rénovation? Ce n'est pas le budget. »</div>
-      </div>
-      <div class="alt">
-        <span class="tag">A2 · propreté</span>
-        <div class="fr">« Demandez à voir le chantier un mercredi soir. »</div>
-        <div class="why">Test très concret, difficile à imiter par un concurrent.</div>
-      </div>
-      <div class="alt">
-        <span class="tag">A3 · soumission</span>
-        <div class="fr">« Une soumission qui tient jusqu'à la fin des travaux. »</div>
-        <div class="why">Vise l'objection « extras surprises ». À garder pour le reciblage.</div>
+        <span class="tag">Repris · la durée</span>
+        <div class="fr">54 s au lieu de 21 ou 30</div>
+        <div class="why">Un format long laisse la place au mécanisme et à la preuve. Il se teste contre les deux versions courtes, il ne les remplace pas.</div>
       </div>
     </div>
 
     <div class="col">
-      <h2>Autres angles</h2>
-      <p class="lede">Angles distincts, pas des reformulations. À produire si A1 plafonne.</p>
+      <h2>Ce qui a été écarté</h2>
+      <p class="lede">Deux éléments du modèle ne peuvent pas passer tels quels, pour des raisons différentes.</p>
       <div class="alt">
-        <span class="tag">Mécanisme</span>
-        <div class="fr">Cinq spécialités, une seule équipe</div>
-        <div class="why">Un seul interlocuteur coordonne tous les corps de métier — répond au cauchemar de la coordination.</div>
+        <span class="tag">Écarté · la personne à l'écran</span>
+        <div class="fr">Les plans de comédien du modèle</div>
+        <div class="why">Ce sont des banques d'images sous licence Canva, utilisables dans Canva. Les reprendre dans un projet distinct pour une campagne payante sort de cette licence. Et la règle posée dès la première publicité tient : aucune personne à l'écran.</div>
       </div>
       <div class="alt">
-        <span class="tag">Proximité</span>
-        <div class="fr">Nommer la ville du prospect</div>
-        <div class="why">Une version par secteur : Longueuil, Brossard, Boucherville. Très performant en local.</div>
+        <span class="tag">Écarté · la voix</span>
+        <div class="fr">La narration du modèle</div>
+        <div class="why">Elle est en anglais et parle de panneaux solaires. Elle ne peut pas porter un message français pour un entrepreneur en rénovation. Une voix de synthèse serait une création nouvelle, écartée selon la consigne.</div>
       </div>
       <div class="alt">
-        <span class="tag">Avant / après</span>
-        <div class="fr">Le même cadrage, deux états</div>
-        <div class="why">Demande de filmer un chantier du début à la fin. Le meilleur format à moyen terme.</div>
+        <span class="tag">Écarté · le témoignage</span>
+        <div class="fr">Marie-Ève T., présente dans la 30 s</div>
+        <div class="why">Son autorisation écrite n'est pas confirmée. Elle n'est pas reprise ici pour ne pas créer un deuxième visuel bloqué par la même question.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h2>Ce qu'il reste à tester</h2>
+      <p class="lede">Un format long coûte cher en attention. Il faut savoir où il décroche.</p>
+      <div class="alt">
+        <span class="tag">Point de décrochage</span>
+        <div class="fr">Regarder la rétention à 3 s, 15 s et 30 s</div>
+        <div class="why">Si la chute est à 15 s, c'est la liste d'irritants qui est trop longue. Si elle est à 30 s, c'est le mécanisme qui n'intéresse pas et il faut couper vers la version 30 s.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Variante d'accroche</span>
+        <div class="fr">« Ce n'est pas une question d'argent. » en ouverture</div>
+        <div class="why">Déplace le démenti en première seconde. Plus abrupt, à tester contre la version retenue.</div>
+      </div>
+      <div class="alt">
+        <span class="tag">Variante de scène de données</span>
+        <div class="fr">Cinq spécialités au lieu de douze villes</div>
+        <div class="why">Même procédé, autre promesse : un seul interlocuteur pour tous les corps de métier. À produire si la version « proximité » plafonne.</div>
       </div>
     </div>
   </div>
@@ -450,22 +554,19 @@ body{
   <div class="note">
     <h3>Notes de production</h3>
     <ul>
-      <li><b>Conçu comme des transitions, pas comme des bips.</b> Chaque coupe importante reçoit trois temps : une anticipation qui commence avant la coupe et culmine dessus, un impact superposé en trois couches (grave, corps, transitoire), et une queue de réverbe qui déborde sur le plan suivant et relie les deux. C'est cette anticipation qui fait qu'une coupe s'entend comme voulue plutôt qu'accidentelle.</li>
-      <li><b>Réverbe et stéréo.</b> La réverbération est une vraie convolution, avec une réponse impulsionnelle générée dans la page. Les souffles traversent l'image d'une oreille à l'autre dans le sens du mouvement. Rien n'est en mono, rien n'est à sec.</li>
-      <li><b>Aucune voix, aucune musique.</b> Tous les sons sont synthétisés dans la page : rien à libérer de droits, rien à faire enregistrer. Pour la diffusion, un monteur peut remplacer chaque repère par un vrai bruitage aux mêmes temps — ils sont listés ci-dessus.</li>
-      <li><b>Le montage reste lisible en sourdine.</b> Le son ajoute le rythme, jamais l'information. Coupez-le : le message passe quand même, entièrement par le texte incrusté.</li>
-      <li><b>14 plans en 30 secondes.</b> L'acte 1 enchaîne trois cadrages du même chantier pour créer de la nervosité sans nouvelle photo. La rafale de quatre plans à 25,2 s relance l'attention juste avant l'appel à l'action.</li>
-      <li><b>Aucune personne à l'écran.</b> Les deux photos du site montrant des travailleurs ont été écartées. Les cinq visuels utilisés sont des lieux, avant et après.</li>
-      <li><b>À valider avant diffusion :</b> les numéros RBQ et CCQ, la gratuité de la soumission, et l'autorisation d'utiliser le témoignage de Marie-Ève T. en publicité.</li>
-      <li><b>Pour exporter en MP4 :</b> enregistrer l'écran sur le cadre 9:16 en 1080×1920, 30 ips, avec capture du son du système.</li>
+      <li><b>Aucun chiffre inventé.</b> Le modèle affiche « 48 % » sans source. La scène de données reprend le procédé, pas l'habitude : le seul nombre à l'écran est le compte des villes listées sur constructionht.com. Une statistique de performance inventée dans une publicité client est un risque juridique, pas une licence créative.</li>
+      <li><b>Le texte arrive par morceaux, sur les repères sonores.</b> Chaque segment de phrase est un élément à part avec son propre temps d'entrée. C'est ce qui remplace le sous-titrage mot à mot du modèle, sans voix à suivre.</li>
+      <li><b>Toujours lisible en sourdine.</b> Comme les deux autres publicités : le son ajoute le rythme, jamais l'information. Coupez-le, le message passe entièrement par le texte incrusté.</li>
+      <li><b>15 plans en 54 secondes.</b> L'acte 1 enchaîne quatre cadrages de la même photo de chantier pour créer de la nervosité sans nouvelle image. La rafale de quatre plans à 48,7 s relance l'attention juste avant la carte de fin.</li>
+      <li><b>Aucune personne à l'écran, aucune voix, aucune musique.</b> Rien à libérer de droits, rien à faire enregistrer, rien à cadrer avec un comédien.</li>
+      <li><b>À valider avant diffusion :</b> les numéros RBQ et CCQ, la gratuité de la soumission, et la liste des douze villes — si la zone desservie change, le chiffre à l'écran change avec elle.</li>
+      <li><b>Pour exporter en MP4 :</b> <code>node tools/render.js ht-construction-ad-long</code>, ou <code>npm run render</code> pour les trois publicités.</li>
     </ul>
   </div>
-</div>
-
 <script src="sfx.js"></script>
 <script>
 (function(){
-  var DUR=30, stage=document.getElementById('stage'), reel=document.getElementById('reel');
+  var DUR=54, stage=document.getElementById('stage'), reel=document.getElementById('reel');
   var shots=[].slice.call(reel.querySelectorAll('.shot'));
   var endcard=reel.querySelector('.endcard');
   var timed=[].slice.call(reel.querySelectorAll('[data-in]'));
@@ -481,42 +582,54 @@ body{
   var muted=false;
 
   var SHEET=[
-    {t:'00:00',dur:'3,4 s',beat:'Accroche',rough:true,
-     fr:'« Le plus grand risque d\'une rénovation? »',
-     son:'Marteau en trois couches — grave, corps, transitoire — puis une nappe basse qui s\'installe et s\'ouvre pendant dix secondes.',
-     vis:'<b>Plan :</b> cuisine en plein chantier, cadrage large. Zoom avant lent.',at:0},
-    {t:'00:03',dur:'3,0 s',beat:'Démenti',rough:true,
-     fr:'« Ce n\'est pas le budget. »',
-     son:'Un souffle de 0,25 s annonce la coupe et culmine dessus. Deuxième marteau, décalé à droite. La nappe monte d\'un cran.',
-     vis:'<b>Plan :</b> coupe sèche, on punche dans le même chantier — cadrage serré sur le gypse à nu.',at:3.45},
-    {t:'00:06',dur:'4,0 s',beat:'Les trois irritants',rough:true,
-     fr:'Délais · Extras · Chantier sale',
-     son:'Une perceuse courte par puce, chaque fois un demi-ton plus haut et plus proche. Le rythme se resserre, puis un raclement sur « mauvais entrepreneur ».',
-     vis:'<b>Plan :</b> troisième cadrage du chantier. Les puces tombent en cascade, de plus en plus vite.',at:6.45},
-    {t:'00:10',dur:'4,6 s',beat:'Bascule',
-     fr:'« On travaille autrement. »',
-     son:'<b>Le moment clé :</b> un souffle inversé de 0,9 s, puis un balayage stéréo qui traverse l\'image de gauche à droite, impact en trois couches sur la coupe, flash blanc — et tout le rugueux disparaît d\'un coup. Il ne reste que la queue de réverbe.',
-     vis:'<b>Plan :</b> coupe franche sur la cuisine terminée, lumineuse. Zoom arrière — on respire.',at:10.45},
-    {t:'00:15',dur:'3,6 s',beat:'Mécanisme',
-     fr:'« Une soumission claire, avant de commencer. »',
-     son:'Maillet accordé, doux. Un petit repère sur l\'arrivée du sous-titre.',
-     vis:'<b>Plan :</b> salle de bain terminée. Sous-titre en trois segments : inclus / coût / durée.',at:15.05},
-    {t:'00:18',dur:'3,4 s',beat:'Preuve',
-     fr:'RBQ · CCQ · APCHQ',
-     son:'Trois notes montantes, une par accréditation. Effet « case cochée » — ça monte, c\'est sous contrôle.',
-     vis:'<b>Plan :</b> plancher de bois franc. Les trois accréditations montent en cascade.',at:18.65},
-    {t:'00:22',dur:'3,2 s',beat:'Preuve sociale',
-     fr:'« Le chantier était propre chaque soir. »',
-     son:'Maillet chaud, tenu plus longtemps. On relâche la tension avant la relance.',
-     vis:'<b>Plan :</b> balcon extérieur. Témoignage client réel, attribué — reprend l\'irritant du plan 3.',at:22.05},
-    {t:'00:25',dur:'1,4 s',beat:'Rafale',
-     fr:'Quatre plans, aucun texte',
-     son:'Quatre notes montantes, une par coupe, alternées gauche-droite. Un souffle ouvre la rafale, un autre la referme sur le logo.',
-     vis:'<b>Plans :</b> cuisine, salle de bain, plancher, balcon — 0,35 s chacun, coupes franches.',at:25.25},
-    {t:'00:26',dur:'3,4 s',beat:'Appel à l\'action',
-     fr:'Soumission gratuite · 514 674-8697',
-     son:'Impact final, nappe basse tenue, puis un éclat clair sur « Soumission gratuite ».',
-     vis:'<b>Plan :</b> carte de fin vert forêt, logo, cinq services, zone desservie.',at:26.65}
+    {t:'00:00',dur:'4,3 s',beat:'Accroche',rough:true,
+     fr:"« Vous repoussez ces travaux depuis des mois. »",
+     son:"Marteau en trois couches, puis une nappe basse qui s'installe et s'ouvre pendant vingt secondes. Un tic de bois sec sur chaque morceau de phrase.",
+     vis:"<b>Plan :</b> chantier en cours, cadrage large, zoom avant lent. Le texte arrive en trois temps.",at:0},
+    {t:'00:04',dur:'4,1 s',beat:'Démenti',rough:true,
+     fr:"« Ce n'est pas une question d'argent. »",
+     son:"Un souffle de 0,24 s annonce la coupe et culmine dessus. Deuxième marteau, décalé à droite. La nappe monte d'un cran.",
+     vis:"<b>Plan :</b> coupe sèche, même chantier, cadrage serré à gauche.",at:4.3},
+    {t:'00:08',dur:'4,3 s',beat:'Le vrai blocage',rough:true,
+     fr:"« C'est de ne pas savoir à qui ouvrir votre porte. »",
+     son:"Souffle traversant de droite à gauche, marteau sur la coupe, tics de bois plus graves à chaque morceau.",
+     vis:"<b>Plan :</b> troisième cadrage du même chantier, côté droit.",at:8.4},
+    {t:'00:12',dur:'7,6 s',beat:'Les trois irritants',rough:true,
+     fr:"Délais qui glissent · Extras jamais annoncés · Chantier laissé sale",
+     son:"Une perceuse par puce, chaque fois plus haute et plus proche. Raclement à 18,6 s, puis souffle inversé de 0,92 s qui annonce la bascule.",
+     vis:"<b>Plan :</b> quatrième cadrage, zoom arrière. Les puces tombent à 1,8 s d'intervalle.",at:12.7},
+    {t:'00:20',dur:'4,6 s',beat:'Bascule',
+     fr:"« On travaille autrement. »",
+     son:"<b>Le moment clé :</b> impact en trois couches sur la coupe, flash blanc, tout le rugueux s'arrête net. Il ne reste que la queue de réverbe et un lit très bas.",
+     vis:"<b>Plan :</b> coupe franche sur la cuisine terminée. Zoom arrière — on respire. « autrement » est surligné en sauge.",at:20.3},
+    {t:'00:24',dur:'4,8 s',beat:'Mécanisme',
+     fr:"« On se déplace. On mesure. On chiffre. »",
+     son:"Trois maillets accordés qui montent — ré, mi, sol. L'oreille entend une progression sous contrôle.",
+     vis:"<b>Plan :</b> salle de bain terminée, zoom avant doux. Un morceau de phrase par maillet.",at:24.9},
+    {t:'00:29',dur:'4,6 s',beat:'La promesse, mot pour mot',
+     fr:"« Un prix précis après la visite, pas une estimation vague. »",
+     son:"Tic de bois sur la coupe, maillet plus haut, puis presque rien : la phrase doit se lire, pas s'entendre.",
+     vis:"<b>Plan :</b> cuisine, autre cadrage. Citation reprise mot pour mot de la FAQ, avec la source sous le texte.",at:29.7},
+    {t:'00:34',dur:'6,0 s',beat:'Scène de données',
+     fr:"12 villes desservies",
+     son:"Douze tics de bois, un par pastille, montant d'un quart de ton chacun. Puis deux maillets sur le chiffre et son libellé.",
+     vis:"<b>Procédé repris du modèle.</b> Douze pastilles apparaissent en 2,3 s, puis le chiffre, puis la liste des villes. Fond plein, pas de photo.",at:34.3},
+    {t:'00:40',dur:'4,4 s',beat:'Preuve',
+     fr:"RBQ 5823-1101-01 · CCQ er937209 · Assurés APCHQ",
+     son:"Impact moyen sur la coupe, un maillet par puce — sol, la, do.",
+     vis:"<b>Plan :</b> plancher terminé. Trois puces en verre dépoli, une demi-seconde d'écart.",at:40.3},
+    {t:'00:44',dur:'4,0 s',beat:"Levée d'objection",
+     fr:"« Aucun projet n'est trop petit. » — soumission détaillée, sans frais",
+     son:"Tic de bois sur la coupe, maillet grave et long. La phrase reste seule à l'écran.",
+     vis:"<b>Plan :</b> balcon, zoom avant lent. Citation reprise mot pour mot du site.",at:44.7},
+    {t:'00:48',dur:'1,4 s',beat:'Rafale',
+     fr:"Cuisine · Salle de bain · Plancher · Balcon",
+     son:"Souffle inversé court, puis quatre impacts secs de plus en plus rapprochés.",
+     vis:"<b>Plans :</b> quatre cadrages de 0,35 s. Relance l'attention juste avant la carte de fin.",at:48.7},
+    {t:'00:50',dur:'3,9 s',beat:'Carte de fin',
+     fr:"HT Construction · Montréal et Rive-Sud · Soumission gratuite · 514 674-8697",
+     son:"Dernier impact, flash, nappe tenue. Quatre maillets qui montent, un par ligne, puis un souffle d'air sur l'adresse du site.",
+     vis:"<b>Plan :</b> fond plein. Logo, services, zone, offre, téléphone, site — dans cet ordre.",at:50.1}
   ];
 
   var rows=document.getElementById('rows'), ticks=document.getElementById('ticks');
@@ -554,45 +667,91 @@ body{
   }
 
   var CUES=[
-    /* ACTE 1 — matières rugueuses, cadence qui se resserre */
-    {t:0    ,r:1,f:function(){ SFX.hammer({peak:0.6}); SFX.rumble({dur:10.4,peak:0.085,open:760}); punch(); }},
-    {t:3.20 ,r:1,f:function(){ SFX.whoosh({dur:0.25,peak:0.06,from:400,to:2600,pan:-0.45,panTo:0.3}); }},
-    {t:3.45 ,r:1,f:function(){ SFX.hammer({peak:0.54,pan:0.12}); punch(); }},
-    {t:6.20 ,r:1,f:function(){ SFX.whoosh({dur:0.25,peak:0.065,from:420,to:3000,pan:0.45,panTo:-0.3}); }},
-    {t:6.45 ,r:1,f:function(){ SFX.hammer({peak:0.48,pan:-0.12}); punch(); }},
-    {t:6.60 ,r:1,f:function(){ SFX.drill({freq:132,dur:0.26,peak:0.17,pan:-0.35}); }},
-    {t:7.50 ,r:1,f:function(){ SFX.drill({freq:148,dur:0.24,peak:0.20,pan:0.30}); }},
-    {t:8.40 ,r:1,f:function(){ SFX.drill({freq:166,dur:0.22,peak:0.24,pan:-0.15}); }},
-    {t:9.00 ,r:1,f:function(){ SFX.scrape({peak:0.22}); punch(); }},
+    /* ACTE 1 — matières rugueuses. Un tic de bois par morceau de phrase :
+       c'est ce qui remplace le sous-titrage mot à mot du modèle. */
+    {t:0    ,r:1,f:function(){ SFX.hammer({peak:0.6}); SFX.rumble({dur:20.3,peak:0.085,open:700}); punch(); }},
+    {t:0.35 ,r:1,f:function(){ SFX.wood({freq:760,peak:0.13,pan:-0.25}); }},
+    {t:1.25 ,r:1,f:function(){ SFX.wood({freq:700,peak:0.12,pan:0.2}); }},
+    {t:2.15 ,r:1,f:function(){ SFX.wood({freq:650,peak:0.12,pan:-0.15}); }},
 
-    /* LA BASCULE — anticipation longue, puis le vide */
-    {t:9.50 ,r:1,f:function(){ SFX.reverseSwell({dur:0.9,peak:0.15}); }},
-    {t:10.05,r:1,f:function(){ SFX.whoosh({dur:0.35,peak:0.11,from:300,to:6000,pan:-0.7,panTo:0.7}); }},
-    {t:10.40,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.8,f0:160,f1:32,dec:0.75,body:2200,send:0.42}); doFlash(); punch(true); }},
+    {t:4.10 ,r:1,f:function(){ SFX.whoosh({dur:0.24,peak:0.06,from:400,to:2600,pan:-0.45,panTo:0.3}); }},
+    {t:4.30 ,r:1,f:function(){ SFX.hammer({peak:0.5,pan:0.15}); punch(); }},
+    {t:4.60 ,r:1,f:function(){ SFX.wood({freq:780,peak:0.13,pan:0.25}); }},
+    {t:5.50 ,r:1,f:function(){ SFX.wood({freq:720,peak:0.12,pan:-0.2}); }},
+    {t:6.40 ,r:1,f:function(){ SFX.wood({freq:660,peak:0.12,pan:0.15}); }},
 
-    /* ACTE 2 — matières nettes, accordées, en montée */
-    {t:10.90,f:function(){ SFX.mallet({freq:110,peak:0.10,dec:1.7}); SFX.roomTone({dur:14.4,peak:0.018}); }},
-    {t:14.85,f:function(){ SFX.air({peak:0.045,pan:-0.3}); }},
-    {t:15.05,f:function(){ SFX.mallet({freq:146.83,peak:0.10,dec:1.4,pan:0.10}); punch(); }},
-    {t:15.30,f:function(){ SFX.mallet({freq:220,peak:0.045,dec:0.7,pan:-0.2}); }},
-    {t:18.45,f:function(){ SFX.air({peak:0.045,pan:0.3}); }},
-    {t:18.65,f:function(){ SFX.mallet({freq:164.81,peak:0.10,dec:1.3,pan:-0.10}); punch(); }},
-    {t:18.90,f:function(){ SFX.mallet({freq:261.63,peak:0.075,dec:0.6,pan:-0.3}); }},
-    {t:19.50,f:function(){ SFX.mallet({freq:329.63,peak:0.075,dec:0.6,pan:0}); }},
-    {t:20.10,f:function(){ SFX.mallet({freq:392,peak:0.085,dec:0.85,pan:0.3}); }},
-    {t:21.85,f:function(){ SFX.air({peak:0.04,pan:-0.25}); }},
-    {t:22.05,f:function(){ SFX.mallet({freq:130.81,peak:0.10,dec:2.1}); punch(); }},
+    {t:8.20 ,r:1,f:function(){ SFX.whoosh({dur:0.22,peak:0.062,from:380,to:3000,pan:0.4,panTo:-0.35}); }},
+    {t:8.40 ,r:1,f:function(){ SFX.hammer({peak:0.54,pan:-0.12}); punch(); }},
+    {t:8.75 ,r:1,f:function(){ SFX.wood({freq:800,peak:0.13,pan:-0.3}); }},
+    {t:9.70 ,r:1,f:function(){ SFX.wood({freq:735,peak:0.12,pan:0.25}); }},
+    {t:10.65,r:1,f:function(){ SFX.wood({freq:670,peak:0.13}); }},
 
-    /* RAFALE — anticipations courtes, pan alterné, accélération */
-    {t:25.10,f:function(){ SFX.whoosh({dur:0.15,peak:0.07,from:700,to:5200,pan:-0.5,panTo:0.5}); }},
-    {t:25.25,f:function(){ SFX.mallet({freq:261.63,peak:0.09,dec:0.42,pan:-0.40}); punch(); }},
-    {t:25.60,f:function(){ SFX.mallet({freq:311.13,peak:0.095,dec:0.42,pan:0.35}); punch(); }},
-    {t:25.95,f:function(){ SFX.mallet({freq:392,peak:0.10,dec:0.42,pan:-0.25}); punch(); }},
-    {t:26.30,f:function(){ SFX.mallet({freq:466.16,peak:0.11,dec:0.42,pan:0.20}); punch(); }},
-    {t:26.40,f:function(){ SFX.whoosh({dur:0.25,peak:0.10,from:500,to:6500,pan:0.6,panTo:-0.6}); }},
-    {t:26.65,f:function(){ SFX.hit({peak:0.68,f0:150,f1:34,dec:0.7,send:0.45}); SFX.pad({dur:3.1}); doFlash(); punch(true); }},
-    {t:27.70,f:function(){ SFX.mallet({freq:523.25,peak:0.085,dec:1.2,pan:0.15}); SFX.air({peak:0.045}); }}
+    /* Les irritants : une perceuse par puce, chaque fois plus haute. */
+    {t:12.50,r:1,f:function(){ SFX.whoosh({dur:0.26,peak:0.065,from:420,to:3200,pan:-0.5,panTo:0.45}); }},
+    {t:12.70,r:1,f:function(){ SFX.hammer({peak:0.58}); punch(); }},
+    {t:13.30,r:1,f:function(){ SFX.drill({dur:0.22,freq:132,peak:0.2,pan:-0.3}); }},
+    {t:15.10,r:1,f:function(){ SFX.drill({dur:0.24,freq:150,peak:0.22,pan:0.25}); }},
+    {t:16.90,r:1,f:function(){ SFX.drill({dur:0.26,freq:168,peak:0.24,pan:-0.15}); }},
+    {t:18.60,r:1,f:function(){ SFX.scrape({peak:0.22,pan:0.3}); }},
+
+    /* LA BASCULE — anticipation longue, impact, flash, puis le rugueux
+       disparaît d'un coup. Le contraste le plus fort de l'annonce. */
+    {t:19.35,f:function(){ SFX.reverseSwell({dur:0.92,peak:0.15}); }},
+    {t:20.30,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.8,f0:160,f1:32,dec:0.75,body:2200,send:0.42}); doFlash(); punch(true); }},
+    {t:20.85,f:function(){ SFX.mallet({freq:110,peak:0.10,dec:1.8}); SFX.roomTone({dur:19.4,peak:0.018}); }},
+
+    /* ACTE 2 — maillets accordés, une note plus haut à chaque preuve. */
+    {t:24.75,f:function(){ SFX.air({peak:0.045,pan:-0.3}); }},
+    {t:24.90,f:function(){ SFX.wood({freq:620,peak:0.2}); punch(); }},
+    {t:25.30,f:function(){ SFX.mallet({freq:146.83,peak:0.09,dec:1.3,pan:-0.2}); }},
+    {t:26.55,f:function(){ SFX.mallet({freq:164.81,peak:0.09,dec:1.3,pan:0.2}); }},
+    {t:27.80,f:function(){ SFX.mallet({freq:196,peak:0.09,dec:1.4}); }},
+
+    {t:29.55,f:function(){ SFX.air({peak:0.042,pan:0.3}); }},
+    {t:29.70,f:function(){ SFX.wood({freq:640,peak:0.18,pan:0.15}); punch(); }},
+    {t:30.10,f:function(){ SFX.mallet({freq:220,peak:0.085,dec:1.6,pan:-0.15}); }},
+
+    /* Scène de données : les douze tics sont générés plus bas. */
+    {t:34.15,f:function(){ SFX.whoosh({dur:0.3,peak:0.055,from:500,to:2200,pan:0.4,panTo:-0.4}); }},
+    {t:34.30,f:function(){ SFX.hit({peak:0.5,f0:120,f1:40,dec:0.4,body:1200,send:0.3}); punch(); }},
+    {t:37.70,f:function(){ SFX.mallet({freq:261.63,peak:0.1,dec:1.5}); }},
+    {t:38.00,f:function(){ SFX.mallet({freq:329.63,peak:0.085,dec:1.4,pan:0.15}); }},
+    {t:38.40,f:function(){ SFX.air({peak:0.04}); }},
+
+    /* Preuve */
+    {t:40.15,f:function(){ SFX.air({peak:0.042,pan:-0.25}); }},
+    {t:40.30,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.55,f0:140,f1:38,dec:0.45,body:1500,send:0.32}); punch(); SFX.roomTone({dur:8.2,peak:0.018}); }},
+    {t:41.00,f:function(){ SFX.mallet({freq:392,peak:0.09,dec:1.1,pan:-0.2}); }},
+    {t:41.50,f:function(){ SFX.mallet({freq:440,peak:0.09,dec:1.1}); }},
+    {t:42.00,f:function(){ SFX.mallet({freq:523.25,peak:0.09,dec:1.2,pan:0.2}); }},
+
+    {t:44.55,f:function(){ SFX.air({peak:0.04,pan:0.25}); }},
+    {t:44.70,f:function(){ SFX.wood({freq:600,peak:0.18}); punch(); }},
+    {t:45.20,f:function(){ SFX.mallet({freq:196,peak:0.1,dec:1.7}); }},
+
+    /* Rafale puis carte de fin */
+    {t:48.55,f:function(){ SFX.reverseSwell({dur:0.5,peak:0.1}); }},
+    {t:48.70,f:function(){ SFX.hit({peak:0.5,f0:130,f1:44,dec:0.22,body:1800,send:0.24}); punch(); }},
+    {t:49.05,f:function(){ SFX.hammer({peak:0.42,pan:-0.3}); punch(); }},
+    {t:49.40,f:function(){ SFX.hammer({peak:0.44,pan:0.3}); punch(); }},
+    {t:49.75,f:function(){ SFX.hammer({peak:0.46}); punch(); }},
+    {t:50.10,f:function(){ SFX.stopBeds(); SFX.hit({peak:0.75,f0:150,f1:34,dec:0.7,body:2000,send:0.44}); doFlash(); punch(true); SFX.pad({dur:3.8,peak:0.05}); }},
+    {t:50.65,f:function(){ SFX.mallet({freq:261.63,peak:0.1,dec:1.6}); }},
+    {t:51.35,f:function(){ SFX.mallet({freq:329.63,peak:0.095,dec:1.5,pan:-0.15}); }},
+    {t:51.75,f:function(){ SFX.mallet({freq:392,peak:0.09,dec:1.4,pan:0.15}); }},
+    {t:52.05,f:function(){ SFX.mallet({freq:523.25,peak:0.085,dec:1.3}); SFX.air({peak:0.045}); }}
   ];
+
+  /* Un tic par pastille de la scène de données, calé sur les mêmes temps
+     que les éléments du DOM. Généré plutôt qu'écrit douze fois : si
+     l'espacement change, il ne change qu'ici et dans le balisage. */
+  for(var pi=0; pi<12; pi++){
+    (function(i){
+      CUES.push({t:+(34.90+i*0.21).toFixed(2), f:function(){
+        SFX.wood({freq:520+i*26, peak:0.10, pan:((i%4)-1.5)/3});
+      }});
+    })(pi);
+  }
   CUES.sort(function(a,b){ return a.t-b.t; });
   CUES.forEach(function(c){
     var u=document.createElement('u');
